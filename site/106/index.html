@@ -1,0 +1,1216 @@
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/106/">
+      
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>任务五:使用Resnet+GRU进行多模态处理 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-36723568-3","mkdocs.org"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            基于多模态的视频标签化系统
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              任务五:使用Resnet+GRU进行多模态处理
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../101/" title="项目背景" class="md-nav__link">
+      项目背景
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../102/" title="任务一:构建文本标签化主服务" class="md-nav__link">
+      任务一:构建文本标签化主服务
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../103/" title="任务二:构建标签词汇图谱" class="md-nav__link">
+      任务二:构建标签词汇图谱
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../104/" title="任务三:文本标签化模型的训练和部署" class="md-nav__link">
+      任务三:文本标签化模型的训练和部署
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../105/" title="任务四:文本标签化服务的分布式集成" class="md-nav__link">
+      任务四:文本标签化服务的分布式集成
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        任务五:使用Resnet+GRU进行多模态处理
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="任务五:使用Resnet+GRU进行多模态处理" class="md-nav__link md-nav__link--active">
+      任务五:使用Resnet+GRU进行多模态处理
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 对多模态数据进行预处理和数据分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2-resnetgru" class="md-nav__link">
+    Step2: 构建Resnet+GRU模型
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3-resnetgru" class="md-nav__link">
+    Step3: 对Resnet+GRU模型进行训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../107/" title="任务六:使用VisualBERT进行多模态处理" class="md-nav__link">
+      任务六:使用VisualBERT进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../108.md" title="任务七:模态交互方式Co-Attention的优化改进" class="md-nav__link">
+      任务七:模态交互方式Co-Attention的优化改进
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 对多模态数据进行预处理和数据分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2-resnetgru" class="md-nav__link">
+    Step2: 构建Resnet+GRU模型
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3-resnetgru" class="md-nav__link">
+    Step3: 对Resnet+GRU模型进行训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                  <h1>任务五:使用Resnet+GRU进行多模态处理</h1>
+                
+                <h3 id="_1">任务简述</h3>
+<ul>
+<li>在过去年月里，由于算力的限制，一般公司无力支持图像的处理，因此主要以处理视频周边的文本，如title，获赞最多的评论内容等，作为标签化的输入，而今我们将迈出一步，以视频中的关键帧+文本信息作为输入构建多模态模型，来进行更精准的标签化。也是从这个任务开始我们正式学习多模态有关的技术，在该任务中开始使用多模态模型，最早期的多模态模型就是经典Resnet与GRU的结合，有了它，我们将能够综合利用图像信息和文本信息。</li>
+</ul>
+<h3 id="_2">任务目的</h3>
+<ul>
+<li>构建起最基础的多模态处理模型Resnet+GRU，完成基于此的训练过程。</li>
+</ul>
+<h3 id="_3">任务步骤</h3>
+<ul>
+<li>Step1: 对多模态数据进行预处理和数据分析</li>
+<li>Step2: 构建Resnet+GRU模型</li>
+<li>Step3: 对Resnet+GRU模型进行训练</li>
+</ul>
+<hr />
+<h4 id="step1">Step1: 对多模态数据进行预处理和数据分析</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>每一次使用模型前都需要对训练数据进行预处理和数据分析，多模态模型也不例外。这一次我们将定义使用多模态模型的数据结构，文本和图片以何种方式存储，以及该做哪些必要的分析工作。</li>
+</ul>
+</li>
+<li>
+<p>数据规模要求：</p>
+<ul>
+<li>多模态需要文本-图像的对应数据，由于模型构造一般比较复杂，因此对数据总量的要求也比较高，生产中至少提供10万对多模态数据（单类别）。</li>
+</ul>
+</li>
+<li>
+<p>数据存储形式：</p>
+<ul>
+<li>我们定义了这种数据存储结构，叫做jsonl</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code># id 为序号，img 为图像的文件位置，label 为标签值，text 为文本内容
+{&quot;id&quot;:7,&quot;img&quot;:&quot;img/7.png&quot;,&quot;label&quot;:1,&quot;text&quot;:&quot;苦尽甘来时，我给你讲讲来时的路&quot;}
+{&quot;id&quot;:10896,&quot;img&quot;:&quot;img/10896.png&quot;,&quot;label&quot;:0,&quot;text&quot;:&quot;when you try acid for the first time&quot;}
+</code></pre></div>
+
+
+<ul>
+<li>多模态下的标签体系设计：<ul>
+<li>之前的文本标签设计，依赖于文本中的内容描述来指向标签，比如谈论某个游戏人物就判断和游戏有关</li>
+<li>但这样的文本内容其实都是“直述”内容，最容易表达“直述”内容的应该是图像（游戏画面）,而文本（title）往往在表达情感，情绪（这个也和应用本身的定位有关），按照这个逻辑，多模态下的标签体系可以更加的丰富</li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="http://www.tisv.cn:8900/img/label.png" /></p>
+<ul>
+<li>
+<p>数据分析：</p>
+<ul>
+<li>对于文本：文本长度分布</li>
+<li>对于图像：图像长宽分布</li>
+</ul>
+</li>
+<li>
+<p>重要说明：</p>
+<blockquote>
+<ul>
+<li>数据是严格的公司资产，因此我们在学习过程中一般无法拿到真实的数据，但是这并不影响我们在面试过程中阐述数据形式，和学习有关数据的技术，下面的数据分析将以“MELD”开源数据为例进行分析和讲解。</li>
+<li>数据集介绍：以视频和文本为模态的情感分析（分类任务）数据集</li>
+<li>数据集github地址：https://github.com/declare-lab/MELD/</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>具体实现内容：</p>
+<ul>
+<li>下载数据后你将看到很多视频文件，你需要截取它们的首帧图片</li>
+<li>在下载数据中你还会看到一份csv文件，你需要将它们转化成jsonl形式</li>
+<li>最后，你需要对其中的文本做长度分布以及获取那些首帧图片的宽高分布</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>不存在的路径需要自己的创建，我们将把数据下载到下面的路径下</li>
+<li>/data/labeled_project/multimodal_labeled/model_train/data/</li>
+<li>在该路径下创建data_process.py文件用于存储代码</li>
+</ul>
+</li>
+</ul>
+<h4 id="_4">让我们动手做起来吧！</h4>
+<ul>
+<li>视频首帧截取代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># pip3 install cv2</span>
+<span class="c1"># 如果出现ImportError: libXext.so.6: cannot open shared object file: No such file or directory</span>
+<span class="c1"># 可以执行：yum install libXext</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;./dev_splits_complete/&quot;</span>
+<span class="n">output_path</span> <span class="o">=</span> <span class="s2">&quot;./dev_sent_emo/&quot;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+
+
+
+
+<span class="k">def</span> <span class="nf">get_jpg</span><span class="p">(</span><span class="n">input_path</span><span class="p">):</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="n">input_path</span> <span class="o">+</span> <span class="n">fn</span>
+        <span class="n">get_video_cover</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+
+
+
+<span class="k">def</span> <span class="nf">get_video_cover</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+    <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">frame_number</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>  <span class="c1"># 视频文件的帧数</span>
+    <span class="k">if</span> <span class="n">rate</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">duration</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame_number</span> <span class="o">/</span> <span class="n">rate</span><span class="p">)</span>  <span class="c1"># 单位秒</span>
+    <span class="n">cap</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 取它的第一帧</span>
+    <span class="n">rval</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># 如果rval为False表示这个视频有问题，为True则正常</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.jpg&quot;</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">output_path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+    <span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">get_jpg</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>你将在dev_sent_emo路径下得到很多jpg图片，它们是对应视频的首帧。</li>
+</ul>
+</blockquote>
+<ul>
+<li>将csv文件向jsonl转换代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;./dev_sent_emo.csv&quot;</span>
+<span class="n">dev_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;dev_sent_emo.jsonl&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">dl</span> <span class="ow">in</span> <span class="n">dev_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dl</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;neutral&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dl</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;negative&quot;</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">dl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">dl</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="s2">&quot;img&quot;</span><span class="p">:</span> <span class="s2">&quot;./dev_sent_emo/dia&quot;</span>
+                        <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dl</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+                        <span class="o">+</span> <span class="s2">&quot;_utt&quot;</span>
+                        <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dl</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+                        <span class="o">+</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+</code></pre></div>
+
+
+<ul>
+<li>统计文本长度分布代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 以csv文件为基础进行文本解析</span>
+<span class="c1"># 导入必备工具包</span>
+<span class="c1"># seaborn == 0.10.1</span>
+<span class="c1"># matplotlib == 3.1.1</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="c1"># 这里以给定的excel表格为输入</span>
+<span class="c1"># 该数据可以在给定的原始代码中找到</span>
+<span class="c1"># 可以将该段代码和数据拷贝到本地运行，查看可视化效果</span>
+
+<span class="c1"># 读取csv文件</span>
+<span class="n">original_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+
+<span class="c1"># 分别在数据中添加新的句子长度列</span>
+<span class="n">original_data</span><span class="p">[</span><span class="s2">&quot;sentence_length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+    <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">original_data</span><span class="p">[</span><span class="s2">&quot;Utterance&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;绘制句子长度分布图:&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="s2">&quot;sentence_length&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">original_data</span><span class="p">)</span>
+<span class="c1"># 主要关注count长度分布的纵坐标, 不需要绘制横坐标, 横坐标范围通过dist图进行查看</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;./fig1.png&quot;</span><span class="p">)</span>
+
+
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">original_data</span><span class="p">[</span><span class="s2">&quot;sentence_length&quot;</span><span class="p">])</span>
+<span class="c1"># 主要关注dist长度分布横坐标, 不需要绘制纵坐标</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;./fig2.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>输出效果：</li>
+</ul>
+</blockquote>
+<p><img alt="" src="http://www.tisv.cn:8900/img/fig1.png" /></p>
+<p><img alt="" src="http://www.tisv.cn:8900/img/fig2.png" /></p>
+<blockquote>
+<ul>
+<li>分析:<ul>
+<li>通过文本长度分布可以选择合适的模型截断补齐长度150.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>获得图片宽-高分布代码实现：<ul>
+<li>在我们的语料中，图片尺寸都是相同的，只需要看任意一张的宽高尺寸即可。</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;./dev_sent_emo/dia9_utt7.jpg&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 1280 720</span>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过这一步，我们对原生的视频数据进行了处理，并对文本和图像进行一定的分析，确定了一些训练时需要的参数。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step2-resnetgru">Step2: 构建Resnet+GRU模型</h4>
+<ul>
+<li>当前步骤简述：<ul>
+<li>在Transformer没有出现之前，早前的多模态构建更多就是根据已有的模型自定义结构，比如GRU处理文本，Resnet处理图像，再将两者的张量融合，最后通过一个网络做输出。</li>
+<li>将已有的模型融合或者说自定义业务需求的模型输入头，是算法工程师在企业里最常见也是最重要的工作。因此，在这里将带着大家来一步步构建Resnet和GRU结合的多模态模型。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>注：这里需要了解GRU和Resnet，解释梯度消失。</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>模型结构设计：</p>
+<ul>
+<li>在文本侧，首先经过Embedding层，再经过Bi-GRU得到高维张量。在图像侧，使用带有预训练参数的Resnet18，并使用一个全连接替换它的输出层，以便保证输出维度与Bi-GRU一致，最后将两侧输出张量加性融合通过一个全连接做二分类。</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/multimodal_labeled/model_train/gru_resnet_train.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_5">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
+
+
+<span class="k">class</span> <span class="nc">ResnetGRUModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">vocab_size</span><span class="p">,</span>
+        <span class="n">embed_dim</span><span class="p">,</span>
+        <span class="n">num_class</span><span class="p">,</span>
+        <span class="c1"># max_length,</span>
+        <span class="n">dropout</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="p">,</span>
+        <span class="n">num_layers</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResnetGRUModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resnet_model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_ftrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resnet_model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resfc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="n">hidden_size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gru</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">GRU</span><span class="p">(</span>
+            <span class="n">embed_dim</span><span class="p">,</span>
+            <span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">num_layers</span><span class="p">,</span>
+            <span class="n">bidirectional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">num_class</span><span class="p">)</span>
+        <span class="c1"># self.init_weights()</span>
+
+    <span class="k">def</span> <span class="nf">init_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">initrange</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_embedding</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">initrange</span><span class="p">,</span> <span class="n">initrange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resfc</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">initrange</span><span class="p">,</span> <span class="n">initrange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">initrange</span><span class="p">,</span> <span class="n">initrange</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="n">token_embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">txt_out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gru</span><span class="p">(</span><span class="n">token_embedded</span><span class="p">)</span>
+        <span class="c1"># print(txt_out)</span>
+        <span class="c1"># print(txt_out.shape)</span>
+        <span class="c1"># print(txt_out[:, -1, :])</span>
+        <span class="c1"># print(txt_out[:, -1, :].shape)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resnet_model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resfc</span>
+        <span class="n">img_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resnet_model</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">txt_out</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">img_out</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ResnetGRUModel</span><span class="p">(</span>
+               <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span>
+               <span class="n">embed_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+               <span class="n">num_class</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+               <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+               <span class="n">hidden_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+               <span class="n">num_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="c1"># 随机单条数据</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1280</span><span class="p">,</span> <span class="mi">720</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">img</span><span class="p">))</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>tensor([[ 4.7096, 11.9539]], grad_fn=&lt;AddmmBackward&gt;)
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过这一步，我们构建了Resnet+GRU模型，接下来我们将基于该模型进行训练。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step3-resnetgru">Step3: 对Resnet+GRU模型进行训练</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>在上一步中，我们已经构建起了模型，这一步我们将完成它的训练流程。</li>
+</ul>
+</li>
+<li>
+<p>具体实现内容：</p>
+<ul>
+<li>对文本处理：<ul>
+<li>对文本进行tokenizer映射并记录映射器</li>
+<li>对文本进行截断补齐</li>
+</ul>
+</li>
+<li>图像处理：<ul>
+<li>定义一系列标准处理流程，Resize，张量化，规范化</li>
+</ul>
+</li>
+<li>定义损失函数，优化器以及重要的超参数</li>
+<li>进行模型训练部分实现</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/multimodal_labeled/model_train/gru_resnet_train.py </li>
+</ul>
+</li>
+</ul>
+<h4 id="_6">让我们动手做起来吧!</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># train_multimodal_data.jsonl</span>
+<span class="c1"># {&quot;id&quot;:7,&quot;img&quot;:&quot;./img/7.png&quot;,&quot;label&quot;:1,&quot;text&quot;:&quot;苦尽甘来时，我给你讲讲来时的路&quot;}</span>
+<span class="c1"># {&quot;id&quot;:8,&quot;img&quot;:&quot;./img/8.png&quot;,&quot;label&quot;:0,&quot;text&quot;:&quot;苏州老大凌阿九！&quot;}</span>
+
+<span class="c1"># 读取数据并转成json</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./train_multimodal_data.jsonl&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+    <span class="n">multimodal_data_list</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+<span class="c1"># 处理文本读取时附带一些符号，比如换行符</span>
+<span class="n">multimodal_data_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">multimodal_data_list</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">multimodal_data_list</span><span class="p">)</span>
+
+
+<span class="c1">## 文本处理流程</span>
+
+<span class="c1">### 提取文本</span>
+<span class="n">multimodal_data_text</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="n">multimodal_data_list</span><span class="p">))</span>
+
+
+<span class="c1">### 对文本进行tokenizer映射并记录映射器</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">fit_text</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">multimodal_data_text</span><span class="p">))</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fit_text</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fit_text</span><span class="p">)}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_use_tokenizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./gru_tokenizer.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">))</span>
+
+
+<span class="c1">### 对文本进行截断补齐</span>
+<span class="k">def</span> <span class="nf">_pad_sequences</span><span class="p">(</span><span class="n">text</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">txt</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_length</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">txt</span><span class="p">[:</span><span class="n">max_length</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">txt</span> <span class="o">+</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">txt</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="c1">### 整合处理函数</span>
+
+<span class="k">def</span> <span class="nf">text_preprocess</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">):</span>
+    <span class="n">text_token</span> <span class="o">=</span> <span class="n">_use_tokenizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text_token</span> <span class="o">=</span> <span class="n">_pad_sequences</span><span class="p">(</span>
+        <span class="n">text_token</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">text_token</span><span class="p">)</span>
+
+
+<span class="n">train_txt_list</span> <span class="o">=</span> <span class="n">text_preprocess</span><span class="p">(</span><span class="n">multimodal_data_text</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+
+
+
+
+<span class="c1">## 图像处理流程</span>
+
+<span class="c1"># 根据当前图片的尺寸进行设定</span>
+<span class="n">gold_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">720</span><span class="p">)</span>
+
+<span class="c1"># 使模型输入张量服从标准正态分布，第一个参数为均值列表，代表各个通道的均值，</span>
+<span class="c1"># 第二个参数为标准差列表，代表各个通道的标准差。这里的图片都是有三个通道。</span>
+<span class="c1"># 其中均值和标准差列表中的数值来自对ImageNet的全局采样结果。</span>
+<span class="n">gold_normalize</span> <span class="o">=</span> <span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+
+<span class="c1"># 定义一系列标准处理流程，Resize，张量化，规范化</span>
+<span class="c1"># Resize和张量化用于统一图片尺寸和满足框架要求</span>
+<span class="c1"># 规范化便于模型快速收敛</span>
+
+
+<span class="n">data_transforms</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="n">gold_size</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">gold_normalize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gold_normalize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">]),</span>
+    <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">gold_size</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">gold_normalize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gold_normalize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">]),</span>
+<span class="p">}</span>
+
+<span class="n">train_data_dir_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">],</span> <span class="n">multimodal_data_list</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">def</span> <span class="nf">img_loader</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;图片读取&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+
+<span class="c1"># 进行指定的转化</span>
+<span class="n">train_img_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">data_transforms</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">](</span><span class="n">img_loader</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">train_data_dir_list</span><span class="p">))</span>
+
+
+<span class="c1">## 获取标签</span>
+
+<span class="n">train_label_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">multimodal_data_list</span><span class="p">))</span>
+
+
+<span class="c1">## 整合数据成为DataLoader</span>
+
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+
+<span class="n">train_iter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">train_img_list</span><span class="p">,</span> <span class="n">train_txt_list</span><span class="p">,</span> <span class="n">train_label_list</span><span class="p">))</span>
+
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">train_iter</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span>
+</code></pre></div>
+
+
+<ul>
+<li>定义损失函数，优化器以及重要的超参数，训练和评估你的模型</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># Hyperparameters</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># epoch</span>
+<span class="n">LR</span> <span class="o">=</span> <span class="mf">0.05</span>  <span class="c1"># learning rate</span>
+
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">LR</span><span class="p">)</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">StepLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">total_accu</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># 暂且认为三个数据集是相同的</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">valid_dataloader</span> <span class="o">=</span> <span class="n">train_dataloader</span>
+
+<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">total_acc</span><span class="p">,</span> <span class="n">total_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">log_interval</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">predited_label</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">predited_label</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="c1"># torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">total_acc</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predited_label</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">total_count</span> <span class="o">+=</span> <span class="n">label</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">%</span> <span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;| epoch </span><span class="si">{:3d}</span><span class="s2"> | </span><span class="si">{:5d}</span><span class="s2">/</span><span class="si">{:5d}</span><span class="s2"> batches &quot;</span>
+                <span class="s2">&quot;| accuracy </span><span class="si">{:8.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">epoch</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">),</span> <span class="n">total_acc</span> <span class="o">/</span> <span class="n">total_count</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">total_acc</span><span class="p">,</span> <span class="n">total_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">total_acc</span><span class="p">,</span> <span class="n">total_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+            <span class="n">predited_label</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">predited_label</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="n">total_acc</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predited_label</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">total_count</span> <span class="o">+=</span> <span class="n">label</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_acc</span> <span class="o">/</span> <span class="n">total_count</span>
+
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">EPOCHS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">epoch_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">train</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span>
+    <span class="n">accu_val</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">valid_dataloader</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">total_accu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">total_accu</span> <span class="o">&gt;</span> <span class="n">accu_val</span><span class="p">:</span>
+        <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">total_accu</span> <span class="o">=</span> <span class="n">accu_val</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">59</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;| end of epoch </span><span class="si">{:3d}</span><span class="s2"> | time: </span><span class="si">{:5.2f}</span><span class="s2">s | &quot;</span>
+        <span class="s2">&quot;valid accuracy </span><span class="si">{:8.3f}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">epoch</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">epoch_start_time</span><span class="p">,</span> <span class="n">accu_val</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">59</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checking the results of test dataset.&quot;</span><span class="p">)</span>
+<span class="n">accu_test</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test accuracy </span><span class="si">{:8.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accu_test</span><span class="p">))</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s1">&#39;./model_weights.pth&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>我们通过该步骤完成了任务五的全部内容，掌握了多模态模型的数据处理和训练逻辑，我们将在接下来的任务中尝试效果更好的模型。</li>
+</ul>
+</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../105/" title="任务四:文本标签化服务的分布式集成" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                任务四:文本标签化服务的分布式集成
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../107/" title="任务六:使用VisualBERT进行多模态处理" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                任务六:使用VisualBERT进行多模态处理
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

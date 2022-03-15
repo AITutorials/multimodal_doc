@@ -1,0 +1,1695 @@
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/104/">
+      
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>任务三:文本标签化模型的训练和部署 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-36723568-3","mkdocs.org"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            基于多模态的视频标签化系统
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              任务三:文本标签化模型的训练和部署
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../101/" title="项目背景" class="md-nav__link">
+      项目背景
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../102/" title="任务一:构建文本标签化主服务" class="md-nav__link">
+      任务一:构建文本标签化主服务
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../103/" title="任务二:构建标签词汇图谱" class="md-nav__link">
+      任务二:构建标签词汇图谱
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        任务三:文本标签化模型的训练和部署
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="任务三:文本标签化模型的训练和部署" class="md-nav__link md-nav__link--active">
+      任务三:文本标签化模型的训练和部署
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 获取训练语料
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2" class="md-nav__link">
+    Step2: 进行文本数据分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3" class="md-nav__link">
+    Step3: 特征处理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step4-fasttext" class="md-nav__link">
+    Step4: 构建fasttext模型并训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step5" class="md-nav__link">
+    Step5：单模型服务部署
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../105/" title="任务四:文本标签化服务的分布式集成" class="md-nav__link">
+      任务四:文本标签化服务的分布式集成
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../106/" title="任务五:使用Resnet+GRU进行多模态处理" class="md-nav__link">
+      任务五:使用Resnet+GRU进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../107/" title="任务六:使用VisualBERT进行多模态处理" class="md-nav__link">
+      任务六:使用VisualBERT进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../108.md" title="任务七:模态交互方式Co-Attention的优化改进" class="md-nav__link">
+      任务七:模态交互方式Co-Attention的优化改进
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 获取训练语料
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2" class="md-nav__link">
+    Step2: 进行文本数据分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3" class="md-nav__link">
+    Step3: 特征处理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step4-fasttext" class="md-nav__link">
+    Step4: 构建fasttext模型并训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step5" class="md-nav__link">
+    Step5：单模型服务部署
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                  <h1>任务三:文本标签化模型的训练和部署</h1>
+                
+                <h3 id="_1">任务简述</h3>
+<ul>
+<li>在该任务中，我们开始构建文本分类模型，模型的数量等同于标签体系中最后一级标签的数量，每个模型都是一个二分类模型，当“关键词”有歧义时，来判断文本是否属于某一个标签。每个模型的构建包括数据处理，特征处理，模型构建等，它是基于Fasttext结构的快速预测模型。有了它，我们将能够解决文本标签化中最棘手的歧义问题，最后还会将这些模型封装成微服务。</li>
+</ul>
+<h3 id="_2">任务目的</h3>
+<ul>
+<li>构建并训练文本分类模型并使用它进行歧义判断，确定文本指向的标签，最后将其部署成模型子服务。</li>
+</ul>
+<h3 id="_3">任务步骤</h3>
+<ul>
+<li>Step1: 获取训练语料</li>
+<li>Step2: 进行文本数据分析</li>
+<li>Step3: 特征处理</li>
+<li>Step4: 构建fasttext模型并训练</li>
+<li>Step5: 单模型服务部署</li>
+</ul>
+<hr />
+<h4 id="step1">Step1: 获取训练语料</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>我们需要训练等同于“叶子标签”数量的二分类模型，因为就需要同样份数的训练语料，假设我们现在只有4个标签，那么在这一步，我们就需要获取4份语料，每份语料中还需要区分正负样本。</li>
+</ul>
+</li>
+<li>
+<p>语料来源：</p>
+<ul>
+<li>正是我们在[任务二步骤三]中的原始语料。</li>
+</ul>
+</li>
+<li>
+<p>正负样本的定义：</p>
+<ul>
+<li>将文章中的每一条句子作为该类别的正样本； 将其他类别文章中的每一条句子作为负样本。</li>
+</ul>
+</li>
+<li>
+<p>输入：</p>
+<ul>
+<li>每一种标签对应的N篇文章路径</li>
+</ul>
+</li>
+<li>
+<p>输出：</p>
+<ul>
+<li>csv形式的文件，第一列是代表标签，第二列代表文本</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>不存在的路径需要自己的创建</li>
+<li>/data/labeled_project/text_labeled/model_train/get_sample.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_4">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># 限制句子的最小字符数和句子的最大字符数</span>
+<span class="n">MIN_LENGTH</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="k">def</span> <span class="nf">get_p_text_list</span><span class="p">(</span><span class="n">single_article_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;获取单篇文章的文本列表&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">single_article_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="c1"># 去掉换行符, 并以句号划分</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;。&quot;</span><span class="p">)</span>
+        <span class="c1"># 过滤掉长度范围之外的句子</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">MIN_LENGTH</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&lt;</span><span class="n">MAX_LENGTH</span><span class="p">,</span> <span class="n">cl</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">cl</span>
+
+
+<span class="k">def</span> <span class="nf">get_p_sample</span><span class="p">(</span><span class="n">a_path</span><span class="p">,</span> <span class="n">p_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;该函数用于获得正样本的csv, 以文章路径和正样本csv写入路径为参数&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">a_path</span><span class="p">):</span> <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">p_path</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">p_path</span><span class="p">)</span>
+    <span class="c1"># 以追加的方式打开预写入正样本的csv</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_path</span><span class="p">,</span> <span class="s2">&quot;p_sample.csv&quot;</span><span class="p">),</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="c1"># 遍历文章目录下的每一篇文章</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">a_path</span><span class="p">):</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="n">get_p_text_list</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">a_path</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">clc</span> <span class="ow">in</span> <span class="n">cl</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;1&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">clc</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_sample</span><span class="p">(</span><span class="n">p_path</span><span class="p">,</span> <span class="n">n_path_csv_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;该函数用于获取样本集包括正负样本, 以正样本csv文件路径和负样本csv文件路径列表为参数&quot;&quot;&quot;</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_path</span><span class="p">,</span> <span class="s2">&quot;sample.csv&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_path</span><span class="p">,</span> <span class="s2">&quot;p_sample.csv&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="c1"># 先将正样本写入样本csv之中</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># 遍历负样本的csv列表</span>
+    <span class="k">for</span> <span class="n">n_p_c</span> <span class="ow">in</span> <span class="n">n_path_csv_list</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">n_p_c</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># 将其中的标签1改写为0</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+        <span class="c1"># 然后写入样本的csv之中</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 我们以beauty为例：</span>
+<span class="n">single_article_path</span> <span class="o">=</span> <span class="s2">&quot;../create_graph/beauty/article-191721&quot;</span>
+<span class="n">get_p_text_list</span><span class="p">(</span><span class="n">single_article_path</span><span class="p">)</span>
+<span class="n">a_path</span> <span class="o">=</span> <span class="s2">&quot;../create_graph/beauty/&quot;</span>
+<span class="n">p_path</span> <span class="o">=</span> <span class="s2">&quot;./beauty&quot;</span>
+<span class="n">get_p_sample</span><span class="p">(</span><span class="n">a_path</span><span class="p">,</span> <span class="n">p_path</span><span class="p">)</span>
+<span class="c1"># 选取哪些标签作为beauty的负样本</span>
+<span class="n">n_path_csv_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;./movie/p_sample.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;./star/p_sample.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;./fashion/p_sample.csv&quot;</span><span class="p">]</span>
+<span class="n">get_sample</span><span class="p">(</span><span class="n">p_path</span><span class="p">,</span> <span class="n">n_path_csv_list</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>1   #PINKGANG#：不粉所有人纪梵希2018全新禁忌之吻漆光唇蜜发布会暨派对 2018年8月19日，法国品牌纪梵希特别打造了一场精致酷炫的#PINKGANG#时尚派对，为庆祝纪梵希全新禁忌之吻漆光唇蜜（Gloss Interdit Vinyl）的闪耀上市
+1   上海黄浦江畔的德必外滩8号，在历史悠久的法式古典建筑中，纪梵希与国内各大时尚媒体、时尚美妆领域的达人以及时髦人士一起分享并体验品牌的全新产品，感受品牌时尚叛逆的奢华魅力
+1   超人气青春偶像陈立农作为品牌挚友出席活动，演员胡冰卿、陈瑶、李兰迪代表新时代潮流标杆受邀一同亮相派对，共同分享纪梵希全新唇蜜的炫目发布
+1   值此之际，围绕着“#PINKGANG#不粉所有人”的主题，纪梵希为来宾营造出叛逆时髦、不受约束的派对氛围，充分展示了品牌一贯以来突破经典、个性前卫的态度
+1   现场的布置以禁忌之吻漆光唇蜜的色彩为灵感，将霓虹粉色作为场馆的主色调，突显纪梵希全新产品神秘、禁忌、时尚的风格
+...
+...
+...
+0   它采用皮革饰边塑造柔软休闲款式的轮廓，激光切割顶部
+0   绉胶鞋底非常耐穿
+0   系带的款式也很时髦哦~皮毛是天然连毛小绵羊皮，来自瑞士
+0   皮革采用小绵羊皮，材质非常好，所以特别保暖，价格自然也会贵一些
+0   大家可去Shopbop上购买，价格比UGG贵很多，但是质量也好~品牌：INUIKI 官网链接戳这←单品购买链接戳这←最后一句哎哟喂，这双00刚结束，又要开始剁手买雪地靴了！
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>这样我们通过一系列函数构建了某一种标签的正负样本，对于其他标签也是相同的方法，大家可以通过修改文件路径进行尝试。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step2">Step2: 进行文本数据分析</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>对语料的数据分析是AI工程师进行模型训练前非常重要的一步，它能帮助我们更好的了解语料情况，对数据质量把控起到关键作用；对于文本训练数据来讲，常见的数据分析有标签分布，文本长度分布，常见词频分布等，我们在这一步骤中就是来实现和分析这些过程。</li>
+</ul>
+</li>
+<li>
+<p>获取正负标签数量分布的作用：</p>
+<ul>
+<li>用于帮助调整正负样本比例, 而调整正负样本比例, 对我们进行接下来的数据分析和判断模型准确率基线起到关键作用。</li>
+</ul>
+</li>
+<li>
+<p>获取句子长度分布的作用：</p>
+<ul>
+<li>用于帮助判断句子合理的截断对齐长度, 而合理的截断长度将有效的避免稀疏特征或冗余特征的产生, 提升训练效率。</li>
+</ul>
+</li>
+<li>
+<p>获取常见词频分布的作用：</p>
+<ul>
+<li>指导之后模型超参数max_feature(最大的特征总数)的选择和初步评估数据质量。</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/text_labeled/model_train/data_analysis.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_5">让我们动手做起来吧！</h4>
+<ul>
+<li>标签数量分布代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">jieba</span>
+
+<span class="k">def</span> <span class="nf">get_data_labels</span><span class="p">(</span><span class="n">csv_path</span><span class="p">):</span> 
+    <span class="sd">&quot;&quot;&quot;获得训练数据和对应的标签, 以正负样本的csv文件路径为参数&quot;&quot;&quot;</span>
+    <span class="c1"># 使用pandas读取csv文件至内存</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 对句子进行分词处理并过滤掉长度为1的词</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">,</span> 
+                                    <span class="n">jieba</span><span class="o">.</span><span class="n">lcut</span><span class="p">(</span><span class="n">x</span><span class="p">))),</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">))</span> 
+
+    <span class="c1"># 取第0列的值作为训练标签</span>
+    <span class="n">train_labels</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> 
+    <span class="k">return</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">train_labels</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="k">def</span> <span class="nf">pic_show</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于图片显示，以图片对象和预保存的路径为参数&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pic_path</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">pic_path</span><span class="p">)</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="p">))</span>
+
+
+
+<span class="k">def</span> <span class="nf">get_labels_distribution</span><span class="p">(</span><span class="n">train_labels</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="o">=</span><span class="s2">&quot;ld.png&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;获取正负样本数量的基本分布情况&quot;&quot;&quot;</span>
+    <span class="c1"># class_dict &gt;&gt;&gt; {1: 3995, 0: 4418}</span>
+    <span class="n">class_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">train_labels</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">class_dict</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">class_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">class_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">pic</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;类别分布图&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+    <span class="n">pic_show</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 训练语料路径</span>
+<span class="n">csv_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/sample.csv&quot;</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">train_labels</span> <span class="o">=</span> <span class="n">get_data_labels</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+<span class="n">pic_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/&quot;</span>
+<span class="n">get_labels_distribution</span><span class="p">(</span><span class="n">train_labels</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>{1: 4640, 0: 7165}
+</code></pre></div>
+
+
+<p><img alt="" src="http://121.199.45.168:8000/img/%E7%B1%BB%E5%88%AB%E5%88%86%E5%B8%83%E5%9B%BE.png" /></p>
+<ul>
+<li>结果分析:<ul>
+<li>当前的正负样本数量是分别是: 4640和7165,相差2525条数据.</li>
+<li>为了使正负样本均衡, 让它们的比例为1:1, 我们将在之后进行的该类别的数据分析和模型训练中, 随机去除约2500条负样本的数量. </li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>句子长度分布代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_sentence_length_distribution</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="o">=</span><span class="s2">&quot;sld.png&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;该函数用于获得句子长度分布情况&quot;&quot;&quot;</span>
+    <span class="n">sentence_len_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">train_data</span><span class="p">))</span>
+    <span class="c1"># len_dict &gt;&gt;&gt; {38: 62, 58: 18, 40: 64, 35: 83,....}  </span>
+    <span class="n">len_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">sentence_len_list</span><span class="p">))</span>
+    <span class="n">len_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">len_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">len_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="c1"># len_list &gt;&gt;&gt; [(1, 3), (2, 20), (3, 51), (4, 96), (5, 121), (6, 173), ...]</span>
+    <span class="n">len_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">len_list</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">len_list</span><span class="p">)))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;句子长度分布图&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;句子长度&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;该长度出现的次数&quot;</span><span class="p">)</span>
+    <span class="n">pic</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+    <span class="n">pic_show</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">pic_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/&quot;</span>
+<span class="n">pic_name</span> <span class="o">=</span> <span class="s2">&quot;sld.png&quot;</span>
+<span class="c1"># train_data通过get_data_labels得到，需要进行正负样本均衡切片</span>
+<span class="n">get_sentence_length_distribution</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="o">=</span><span class="s2">&quot;sld.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p><img alt="" src="http://121.199.45.168:8000/img/sld.png" /></p>
+<ul>
+<li>结果分析:
+        * 通过句子长度分布图, 我们知道了句子的长度范围在0-151之间.<ul>
+<li>但在0-60的长度之间, 已经包含了超过90%的句子, 因此这里可以认为60的长度是一个合理的截断对齐长度, 即不会使大量句子被截断而失去主要信息, 又能够有效避免补齐的特征数量太多, 导致模型参数过大.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>常见词频分布代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="k">def</span> <span class="nf">get_word_frequency_distribution</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="o">=</span><span class="s2">&quot;wfd.png&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;该函数用于获得词频分布&quot;&quot;&quot;</span>
+    <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">train_data</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;所有样本共包含不同词汇数量为：&quot;</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+    <span class="c1"># 获取常见词分布字典，以便进行绘图</span>
+    <span class="c1"># common_word_dict &gt;&gt;&gt; {&#39;电影&#39;: 1548, &#39;自己&#39;: 968, &#39;一个&#39;: 850, &#39;导演&#39;: 757, &#39;现场&#39;: 744, ...}</span>
+    <span class="n">common_word_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">train_data</span><span class="p">))</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">common_word_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                       <span class="nb">list</span><span class="p">(</span><span class="n">common_word_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">pic</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;常见词分布图&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+    <span class="n">pic_show</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">pic_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/&quot;</span>
+<span class="n">pic_name</span> <span class="o">=</span> <span class="s2">&quot;wfd.png&quot;</span>
+<span class="c1"># train_data通过get_data_labels得到，需要进行正负样本均衡切片</span>
+<span class="n">get_word_frequency_distribution</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">pic_path</span><span class="p">,</span> <span class="n">pic_name</span><span class="o">=</span><span class="s2">&quot;wfd.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">所有样本共包含不同词汇数量为：24020</span>
+</code></pre></div>
+
+
+<p><img alt="" src="http://121.199.45.168:8000/img/wfd.png" /></p>
+<ul>
+<li>
+<p>结果分析:</p>
+<ul>
+<li>通过常见词频分析, 全文词汇总数为24020, 在模型训练时定义的max_features应大于该数值.</li>
+<li>同时对比高频词汇中出现的与影视相关的词汇占比大概在50%左右, 符合正负样本的分布比例, 因此语料质量尚可.</li>
+</ul>
+</li>
+<li>
+<p>当前步骤总结：</p>
+<ul>
+<li>我们以movie为例完成了一系列文本数据分析工作，包括标签分布，长度分布，常见词分布，同学们需要自己动手，将其他给定的标签进行数据分析。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step3">Step3: 特征处理</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>特征处理是语料进行模型前的必要准备过程，它一般包括：词汇数值映射（tokenizer），截断补齐，n-gram特征提取，最后还需要进行一次最长补齐。</li>
+</ul>
+</li>
+<li>
+<p>词汇数值映射（tokenizer）：</p>
+<ul>
+<li>将分词列表中的每个词映射成数字.</li>
+</ul>
+</li>
+<li>
+<p>截断补齐：</p>
+<ul>
+<li>将映射后的句子向量进行截断，以降低模型输入的特征维度，来防止过拟合.</li>
+</ul>
+</li>
+<li>
+<p>n-gram特征提取：</p>
+<ul>
+<li>当我们处理文本问题时，上下文之间的关系往往是重要的语义信息来源，因此我们需要一定的特征处理过程，其中最重要的就是n-gram特征处理，它能够帮助我们更好的捕捉上下文信息。</li>
+</ul>
+</li>
+<li>
+<p>n-gram特征的例子：</p>
+<ul>
+<li>在这里, 可以将n-gram特征可以理解为相邻词汇的共现特征, 当n为2时, 就是连续两个词的共现。我们这里将使用2-gram, 因此以2-gram为例进行解释: 分词列表: ["是谁", "敲动", "我心"]，对应的序列列表: [1, 34, 21]，我们可以认为序列列表中的每个数字就是原始句子的特征, 即词汇是原始句子的特征. 除此之外, 我们还可以把"是谁"和"敲动"两个词共同出现且相邻也作为一种特征加入到序列列表中，此时序列列表就变成了包含2-gram特征的特征列表: [1, 34, 21, 1000]，这里的1000就代表"是谁"和"敲动"共同出现且相邻, 这种特征也就是n-gram特征.其中n为2.</li>
+</ul>
+</li>
+<li>
+<p>最长补齐：</p>
+<ul>
+<li>为了不损失n-gram特征，使向量能够以矩阵形式作为模型输入.</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>我们将以构建movie特征处理过程为例进行代码实现</li>
+<li>/data/labeled_project/text_labeled/model_train/movie_model_train.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_6">让我们动手做起来吧!</h4>
+<ul>
+<li>词汇数值映射代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入用于对象保存与加载的joblib</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+<span class="c1"># 导入keras中的词汇映射器Tokenizer</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="c1"># 导入从样本csv到内存的get_data_labels函数</span>
+<span class="kn">from</span> <span class="nn">data_analysis</span> <span class="kn">import</span> <span class="n">get_data_labels</span>
+
+
+<span class="k">def</span> <span class="nf">word_map</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">tokenizer_path</span><span class="p">,</span> <span class="n">cut_num</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;进行词汇映射，以训练数据的csv路径和映射器存储路径以及截断数为参数&quot;&quot;&quot;</span>
+    <span class="c1"># 使用get_data_labels函数获取简单处理后的训练数据和标签</span>
+    <span class="n">train_data</span><span class="p">,</span> <span class="n">train_labels</span> <span class="o">=</span> <span class="n">get_data_labels</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+    <span class="c1"># 进行正负样本均衡切割, 使其数量比例为1:1</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[:</span><span class="o">-</span><span class="n">cut_num</span><span class="p">]</span>
+    <span class="n">train_labels</span> <span class="o">=</span> <span class="n">train_labels</span><span class="p">[:</span><span class="o">-</span><span class="n">cut_num</span><span class="p">]</span>
+    <span class="c1"># 实例化一个词汇映射器对象</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># 使用映射器拟合现有文本数据</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+    <span class="c1"># 使用joblib工具保存映射器</span>
+    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tokenizer_path</span><span class="p">)</span>
+    <span class="c1"># 使用映射器转化现有文本数据</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+    <span class="c1"># 获得标签数据</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">train_labels</span>
+    <span class="k">return</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 对应的样本csv路径</span>
+<span class="n">csv_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/sample.csv&quot;</span>
+<span class="c1"># 词汇映射器保存的路径</span>
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/Tokenizer&quot;</span>
+<span class="c1"># 截断数</span>
+<span class="n">cut_num</span> <span class="o">=</span> <span class="mi">2525</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">word_map</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">tokenizer_path</span><span class="p">,</span> <span class="n">cut_num</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code># x_train
+[[3480, 485, 9674, 979, 23, 67, 39, 1097, 432, 49, 27584, 205], 
+ [17, 27585, 27586, 1355, 27587, 14019, 65, 100],
+ [2282, 2609, 7, 7616, 1897, 2302, 274, 1355, 2302, 20],
+ [57, 27588, 13601, 135, 586, 134, 4138], ...]
+
+# y_train
+[1 1 1 ... 0 0 0]
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>截断补齐代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">keras.preprocessing</span> <span class="kn">import</span> <span class="n">sequence</span>
+
+<span class="c1"># cutlen根据数据分析中句子长度分布，覆盖90%语料的最短长度.</span>
+<span class="n">cutlen</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="k">def</span> <span class="nf">padding</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">cutlen</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">cutlen</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 通过word_map函数获得的x_train</span>
+<span class="c1"># 通过数据分析获得的截断长度</span>
+<span class="n">cutlen</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">padding</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">cutlen</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>[[    0     0     0 ...    49  5576  5577]
+ [    0     0  1682 ...     1  1682  7179]
+ [    0     0     0 ...   148 10517  7183]
+ ...
+ [    0     0     0 ...  7245  1567  1731]
+ [    0     0     0 ...  1872   364 20985]
+ [    0     0     0 ... 10353  1207 20989]]
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>n-gram特征提取代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># 根据样本集最大词汇数选择最大特征数，应大于样本集最大词汇数</span>
+<span class="n">max_features</span> <span class="o">=</span> <span class="mi">25000</span>
+
+<span class="c1"># n-gram特征的范围，一般选择为2</span>
+<span class="n">ngram_range</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">create_ngram_set</span><span class="p">(</span><span class="n">input_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    从列表中提取n-gram特征</span>
+<span class="sd">    &gt;&gt;&gt; create_ngram_set([1, 4, 9, 4, 1, 4])</span>
+<span class="sd">    {(4, 9), (4, 1), (1, 4), (9, 4)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">input_list</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ngram_range</span><span class="p">)]))</span>
+
+
+<span class="k">def</span> <span class="nf">get_ti_and_nmf</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">ti_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;从训练数据中获得token_indice和新的max_features&quot;&quot;&quot;</span>
+    <span class="c1"># &gt;&gt;&gt; token_indice = {(1, 3): 1337, (9, 2): 42, (4, 5): 2017}</span>
+    <span class="c1"># 创建一个盛装n-gram特征的集合.</span>
+    <span class="n">ngram_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="c1"># 遍历每一个数值映射后的列表</span>
+    <span class="k">for</span> <span class="n">input_list</span> <span class="ow">in</span> <span class="n">x_train</span><span class="p">:</span>
+        <span class="c1"># 遍历可能存在2-gram, 3-gram等</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ngram_range</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># 获得对应的n-gram表示 </span>
+            <span class="n">set_of_ngram</span> <span class="o">=</span> <span class="n">create_ngram_set</span><span class="p">(</span><span class="n">input_list</span><span class="p">,</span> <span class="n">ngram_value</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+            <span class="c1"># 更新n-gram集合</span>
+            <span class="n">ngram_set</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">set_of_ngram</span><span class="p">)</span>
+
+    <span class="c1"># 去除掉(0, 0)这个2-gram特征</span>
+    <span class="n">ngram_set</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="nb">tuple</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">ngram_range</span><span class="p">))</span>
+    <span class="c1"># 将n-gram特征映射成整数.</span>
+    <span class="c1"># 为了避免和之前的词汇特征冲突，n-gram产生的特征将从max_features+1开始</span>
+    <span class="n">start_index</span> <span class="o">=</span> <span class="n">max_features</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># 得到对n-gram表示与对应特征值的字典</span>
+    <span class="n">token_indice</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="o">+</span> <span class="n">start_index</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ngram_set</span><span class="p">)}</span>
+    <span class="c1"># 将token_indice写入文件以便预测时使用</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ti_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">token_indice</span><span class="p">))</span>
+    <span class="c1"># token_indice的反转字典，为了求解新的最大特征数</span>
+    <span class="n">indice_token</span> <span class="o">=</span> <span class="p">{</span><span class="n">token_indice</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">token_indice</span><span class="p">}</span>
+    <span class="c1"># 获得加入n-gram之后的最大特征数</span>
+    <span class="n">new_max_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">indice_token</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">token_indice</span><span class="p">,</span> <span class="n">new_max_features</span>
+
+
+<span class="k">def</span> <span class="nf">add_ngram</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">token_indice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将n-gram特征加入到训练数据中</span>
+<span class="sd">    如: adding bi-gram</span>
+<span class="sd">    &gt;&gt;&gt; sequences = [[1, 3, 4, 5], [1, 3, 7, 9, 2]]</span>
+<span class="sd">    &gt;&gt;&gt; token_indice = {(1, 3): 1337, (9, 2): 42, (4, 5): 2017}</span>
+<span class="sd">    &gt;&gt;&gt; add_ngram(sequences, token_indice, ngram_range=2)</span>
+<span class="sd">    [[1, 3, 4, 5, 1337, 2017], [1, 3, 7, 9, 2, 1337, 42]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_sequences</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># 遍历序列列表中的每一个元素作为input_list, 即代表一个句子的列表</span>
+    <span class="k">for</span> <span class="n">input_list</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>
+        <span class="c1"># copy一个new_list</span>
+        <span class="n">new_list</span> <span class="o">=</span> <span class="n">input_list</span><span class="p">[:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># 遍历n-gram的value，至少从2开始</span>
+        <span class="k">for</span> <span class="n">ngram_value</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ngram_range</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># 遍历各个可能的n-gram长度</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span> <span class="o">-</span> <span class="n">ngram_value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="c1"># 获得input_list中的n-gram表示</span>
+                <span class="n">ngram</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_list</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">ngram_value</span><span class="p">])</span>
+                <span class="c1"># 如果在token_indice中，则追加相应的数值特征</span>
+                <span class="k">if</span> <span class="n">ngram</span> <span class="ow">in</span> <span class="n">token_indice</span><span class="p">:</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token_indice</span><span class="p">[</span><span class="n">ngram</span><span class="p">])</span>
+        <span class="n">new_sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_sequences</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 数据进行截断对齐后的矩阵x_train</span>
+<span class="c1"># token_indice的保存路径</span>
+<span class="n">ti_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/token_indice&quot;</span>
+<span class="n">token_indice</span><span class="p">,</span> <span class="n">new_max_features</span> <span class="o">=</span> <span class="n">get_ti_and_nmf</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">ti_path</span><span class="p">)</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">add_ngram</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">token_indice</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>[list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1296, 1086, 9, 2510, 2325, 1004, 668, 2990, 669, 482, 669, 335, 126063, 46370, 36768, 93632, 116281, 46593, 136403, 29955, 34254, 127711, 47353, 132158])
+ list([0, 0, 0, 0, 11, 4, 8280, 26, 2511, 2991, 528, 22, 411, 702, 11, 350, 8281, 604, 85, 1501, 468, 52, 11, 56, 3255, 104815, 38229, 35505, 67872, 28659, 50795, 140653, 113341, 65967, 78902, 57072, 108083, 29205, 115079, 61698, 48928, 42416, 46802, 110530, 99281, 40828])
+...
+]
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>最长补齐代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">align</span><span class="p">(</span><span class="n">x_train</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于向量按照最长长度进行补齐&quot;&quot;&quot;</span>
+    <span class="c1"># 获得所有句子长度的最大值</span>
+    <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x_train</span><span class="p">)))</span>
+    <span class="c1"># 调用padding函数</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">padding</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">maxlen</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 由函数add_ngram输出的矩阵x_train</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">maxlen</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code># 进行了最大长度补齐的矩阵x_train
+[[     0      0      0 ... 113541  36959  22941]
+ [     0      0   1682 ...  42518  59855  25524]
+ [     0      0      0 ...  75385  50810  68725]
+ ...
+ [     0      0      0 ...  97401  34490  77114]
+ [     0      0      0 ...  21440  85555  32122]
+ [     0      0      0 ...  56394  95696  45331]]
+
+# 补齐的最大长度
+119
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过一系列函数我们完成了关于movie模型的特征处理过程，包括词汇数值映射（tokenizer），截断补齐，n-gram特征提取和最长补齐。同学们可以以此为模版进行其他标签的处理。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step4-fasttext">Step4: 构建fasttext模型并训练</h4>
+<ul>
+<li>
+<p>当前步骤简述：
+        * 前面我们已经完成了fasttext模型的特征处理，现在我们开始构建fasttext模型并训练，我们需要了解它的结构以及作用，在这一步骤中我们将实现它。</p>
+</li>
+<li>
+<p>fasttext模型结构中三个重要的层（使用keras进行实现）：</p>
+<ul>
+<li>Embedding层</li>
+<li>GAP层(全局平均池化层)</li>
+<li>Dense + sigmoid层</li>
+</ul>
+</li>
+<li>
+<p>keras中的embedding层：</p>
+<ul>
+<li>层结构: 结构可以看作是一个矩阵，它的大小是语料的最大特征数(new_max_features)乘以我们预定义的embedding_dims，这个矩阵就相当于是由每一个特征拓展成embedding_dims后的表示.</li>
+<li>层参数: 矩阵中的每一个数，都是模型需要求解的参数，因此Embedding层的参数总量是new_max_features x embedding_dims.</li>
+<li>输入参数: new_max_features即最大特征数, embedding_dims即词嵌入维度, input_length即句子的最大长度.</li>
+<li>输入形状: [None, input_length]</li>
+<li>输出形状: [None, input_length, embedding_dims]</li>
+<li>作用: 用向量表示每一个特征，在更高维度的映射空间捕捉词与词之间的关系.</li>
+</ul>
+</li>
+<li>
+<p>keras中的GAP层：</p>
+<ul>
+<li>层结构: 本质上是对矩阵的一种计算方法，无结构.</li>
+<li>层参数: 无</li>
+<li>输入参数: 无</li>
+<li>输入形状: [None, input_length, embedding_dims]</li>
+<li>输出形状: [None, embedding_dims]</li>
+<li>作用: 消减模型参数总量，防止过拟合.</li>
+</ul>
+</li>
+<li>
+<p>keras中的Dense + sigmoid层:</p>
+<ul>
+<li>层结构: 具有个1个节点的一层全连接网络，最后的激活函数使用sigmoid.</li>
+<li>层参数: 该节点中的w向量共50维，加上一个偏置b，共51个参数.</li>
+<li>输入参数: 分别是该层的节点数以及使用的sigmoid函数.</li>
+<li>输入形状: [None, embedding_dims]</li>
+<li>输出形状: [None, 1]</li>
+<li>作用: 将抽象的特征表示归一到指定的类别上，能够输出我们想要的0或者1的结果.</li>
+</ul>
+</li>
+<li>
+<p>fasttext模型选取的损失函数:</p>
+<ul>
+<li>二分类交叉熵损失函数</li>
+</ul>
+</li>
+<li>
+<p>fasttext模型选取的优化器:</p>
+<ul>
+<li>Adam</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：
+        * /data/labeled_project/text_labeled/model_train/movie_model_train.py</p>
+</li>
+</ul>
+<h4 id="_7">让我们动手做起来吧！</h4>
+<ul>
+<li>构建模型结构代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 首先导入keras构建模型的必备工具包</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Embedding</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">GlobalAveragePooling1D</span>
+
+<span class="c1"># 定义词嵌入维度为50</span>
+<span class="n">embedding_dims</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># 最大对齐长度, 即输入矩阵中每条向量的长度</span>
+<span class="n">maxlen</span> <span class="o">=</span> <span class="mi">119</span>
+<span class="c1"># 最大特征数, 即输入矩阵中元素的最大值</span>
+<span class="n">new_max_features</span> <span class="o">=</span> <span class="mi">143307</span><span class="n">i</span>
+
+
+<span class="k">def</span> <span class="nf">model_build</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;该函数用于模型结构构建&quot;&quot;&quot;</span>
+
+    <span class="c1"># 在函数中，首先初始化一个序列模型对象</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+    <span class="c1"># 然后首层使用Embedding层进行词向量映射</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Embedding</span><span class="p">(</span><span class="n">new_max_features</span><span class="p">,</span>
+                        <span class="n">embedding_dims</span><span class="p">,</span>
+                        <span class="n">input_length</span><span class="o">=</span><span class="n">maxlen</span><span class="p">))</span>
+
+    <span class="c1"># 然后用构建全局平均池化层，减少模型参数，防止过拟合</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalAveragePooling1D</span><span class="p">())</span>
+
+    <span class="c1"># 最后构建全连接层 + sigmoid层来进行分类.</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">model</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="err">model = model_build()</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">&lt;keras.engine.sequential.Sequential object at 0x7f67cc2bf208&gt;</span>
+</code></pre></div>
+
+
+<ul>
+<li>选取损失函数和优化器的代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">model_compile</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于选取模型的损失函数和优化方法&quot;&quot;&quot;</span>
+    <span class="c1"># 使用model自带的compile方法，选择预定义好的二分类交叉熵损失函数，Adam优化方法，以及准确率评估指标.</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
+                  <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span> 
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="err">model = model_compile(model)</span>
+</code></pre></div>
+
+
+<ul>
+<li>模型训练和绘制准曲率和损失对照曲线代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入作图工具包matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># batch_size是每次进行参数更新的样本数量</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="c1"># epochs将全部数据遍历训练的次数</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">40</span>
+
+
+<span class="k">def</span> <span class="nf">model_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于模型训练&quot;&quot;&quot;</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> 
+                        <span class="n">y_train</span><span class="p">,</span>
+                        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                        <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+                        <span class="c1"># validation_split表示将全部训练数据的多少划分为验证集.</span>
+                        <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">history</span>
+
+
+<span class="k">def</span> <span class="nf">plot_loss_acc</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">acc_png_path</span><span class="p">,</span> <span class="n">loss_png_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于绘制模型的损失和acc对照曲线, 以模型训练历史为参数&quot;&quot;&quot;</span>
+    <span class="c1"># 首先获得模型训练历史字典，</span>
+    <span class="c1"># 形如{&#39;val_loss&#39;: [0.8132099324259264, ..., 0.8765081824927494], </span>
+    <span class="c1">#    &#39;val_acc&#39;: [0.029094827586206896,...,0.13038793103448276], </span>
+    <span class="c1">#     &#39;loss&#39;: [0.6650978644232184,..., 0.5267722122513928], </span>
+    <span class="c1">#     &#39;acc&#39;: [0.5803400383141762, ...,0.8469827586206896]}</span>
+    <span class="n">history_dict</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span>
+
+    <span class="c1"># 取出需要的的各个key对应的value，准备作为纵坐标</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">history_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">history_dict</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">history_dict</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
+    <span class="n">val_loss</span> <span class="o">=</span> <span class="n">history_dict</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+
+    <span class="c1"># 取epochs的递增列表作为横坐标</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 绘制训练准确率的点图</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training acc&#39;</span><span class="p">)</span>
+    <span class="c1"># 绘制验证准确率的线图</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation acc&#39;</span><span class="p">)</span>
+    <span class="c1"># 增加标题</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training and validation accuracy&#39;</span><span class="p">)</span>
+    <span class="c1"># 增加横坐标名字</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="c1"># 增加纵坐标名字 </span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+    <span class="c1"># 将上面的图放在一块画板中 </span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="c1"># 保存图片</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">acc_png_path</span><span class="p">)</span>
+
+    <span class="c1"># 清空面板 </span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+    <span class="c1"># 绘制训练损失的点图</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training loss&#39;</span><span class="p">)</span>
+    <span class="c1"># 绘制验证损失的线图</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation loss&#39;</span><span class="p">)</span>
+    <span class="c1"># 添加标题</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training and validation loss&#39;</span><span class="p">)</span>
+    <span class="c1"># 添加横坐标名字</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="c1"># 添加纵坐标名字</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+    <span class="c1"># 把两张图放在一起</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="c1"># 保存图片</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">loss_png_path</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">history</span> <span class="o">=</span> <span class="n">model_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">acc_png_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/acc.png&quot;</span>
+<span class="n">loss_png_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/loss.png&quot;</span> 
+<span class="n">plot_loss_acc</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">acc_png_path</span><span class="p">,</span> <span class="n">loss_png_path</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code># 模型训练日志
+Epoch 3/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.4094 - acc: 0.7998 - val_loss: 0.9937 - val_acc: 0.1800
+Epoch 4/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.3185 - acc: 0.8498 - val_loss: 0.8025 - val_acc: 0.3548
+Epoch 5/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.2379 - acc: 0.9136 - val_loss: 0.7550 - val_acc: 0.4482
+Epoch 6/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.1779 - acc: 0.9500 - val_loss: 0.6113 - val_acc: 0.5857
+Epoch 7/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.1355 - acc: 0.9726 - val_loss: 0.5836 - val_acc: 0.6214
+Epoch 8/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.1056 - acc: 0.9826 - val_loss: 0.4837 - val_acc: 0.6893
+Epoch 9/40
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.0844 - acc: 0.9870 - val_loss: 0.5271 - val_acc: 0.6570
+Epoch 10/40
+4384/5299 [=======================&gt;......] - ETA: 1s - loss: 0.0691 - acc: 0.991
+</code></pre></div>
+
+
+<p><img alt="" src="http://121.199.45.168:8000/img/loss.png" /></p>
+<ul>
+<li>通过损失对照曲线判断模型是否收敛：<ul>
+<li>当双损失曲线都在下降时,说明模型正在收敛, 大部分情况下,模型都会收敛.</li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="http://121.199.45.168:8000/img/acc.png" /></p>
+<ul>
+<li>
+<p>通过准确率对照曲线判断过拟合：</p>
+<ul>
+<li>当训练准确率平缓或上升而验证准确率开始平缓或下降时，在这个点处开始出现过拟合现象.</li>
+</ul>
+</li>
+<li>
+<p>模型保存与加载代码实现：</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">load_model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1">#模型的保存路径</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="s2">&quot;./movie/model.h5&quot;</span> 
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>在./movie路径下, 获得一个model.h5</li>
+</ul>
+</blockquote>
+<ul>
+<li>当前步骤总结：<ul>
+<li>到这里，我们就完成来一个fasttext模型的训练过程，因为我们文本较短，一般语义是比较明显的，fasttext模型是足够捕捉其语义的，因此在测试集上效果一般不会太差。同学们可以尝试对更多的标签进行判别模型。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step5">Step5：单模型服务部署</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>当我们完成来所有的模型训练后，为了能够使用这些模型，我们需要将其封装成微服务，这里使用flask+gunicorn的组合形式，还记得[任务一步骤七]吗，它们使用的方式是一样的！在这一步中，我们将以一个模型为例来实现它。</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>这里是以beauty为例进行服务搭建</li>
+<li>/data/labeled_project/text_labeled/model_servers/beauty/app.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_8">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Flask框架固定工具</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">root_path</span> <span class="o">=</span> <span class="s2">&quot;/data/labeled_project/text_labeled/model_train/&quot;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+
+<span class="c1"># 导入必备的工具包</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+
+<span class="c1"># 从任意的模型训练文件中导入add_ngram增加n-gram特征以及padding截断函数</span>
+<span class="kn">from</span> <span class="nn">beauty_model_train</span> <span class="kn">import</span> <span class="n">add_ngram</span>
+<span class="kn">from</span> <span class="nn">beauty_model_train</span> <span class="kn">import</span> <span class="n">padding</span>
+<span class="c1"># 定义模型配置路径，它指向一个json文件</span>
+<span class="n">model_config_path</span> <span class="o">=</span> <span class="n">root_path</span> <span class="o">+</span> <span class="s2">&quot;model_config.json&quot;</span>
+<span class="n">config_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">model_config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">))[</span><span class="s2">&quot;美妆&quot;</span><span class="p">]</span>
+
+<span class="c1"># model_config.json形如 ：</span>
+<span class="c1"># {&quot;影视&quot;: [&quot;/data/labeled_project/text_labeled/model_train/movie/Tokenizer&quot;, 60, 2,</span>
+<span class="c1">#           &quot;/data/labeled_project/text_labeled/model_train/movie/token_indice&quot;, 119,</span>
+<span class="c1">#           &quot;http://localhost:8501/v1/models/movie/&quot;],</span>
+<span class="c1"># &quot;美妆&quot;: [&quot;/data/labeled_project/text_labeled/model_train/beauty/Tokenizer&quot;, 75, 2,</span>
+<span class="c1">#           &quot;/data/labeled_project/text_labeled/model_train/beauty/token_indice&quot;, 119,</span>
+<span class="c1">#           &quot;http://localhost:8502/v1/models/beauty/&quot;]}</span>
+<span class="c1"># json文件中是一个字典，字典中的每个key是我们标签的中文字符，每个value是一个列表</span>
+<span class="c1"># 列表的第一项是特征处理时词汇映射器的存储地址</span>
+<span class="c1"># 第二项是特征处理时语料的截断长度</span>
+<span class="c1"># 第三项是n-gram取得n值</span>
+<span class="c1"># 第四项是n-gram特征中token_indice的保存路径</span>
+<span class="c1"># 第五项是最后的最大的对齐长度</span>
+<span class="c1"># 第六项是该模型对应的微服务地址</span>
+
+
+
+<span class="c1"># 将持久化的模型配置文件加载到内存</span>
+
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">config_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">cutlen</span> <span class="o">=</span> <span class="n">config_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ngram_range</span> <span class="o">=</span> <span class="n">config_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">ti_path</span> <span class="o">=</span> <span class="n">config_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">maxlen</span> <span class="o">=</span> <span class="n">config_list</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tokenizer_path</span><span class="p">)</span>
+
+
+<span class="c1"># 获得n-gram映射文件</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ti_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">token_indice</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+
+
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">load_model</span>
+
+<span class="n">model_save_path</span>  <span class="o">=</span> <span class="n">root_path</span> <span class="o">+</span> <span class="s2">&quot;beauty/model.h5&quot;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model_save_path</span><span class="p">)</span>
+
+
+
+<span class="c1"># 定义服务请求路径和方式, 这里使用POST请求</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/v1/models/beauty/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">recognition</span><span class="p">():</span>
+    <span class="n">word_list</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;word_list&quot;</span><span class="p">])</span>
+    <span class="c1"># 使用tokenizer进行数值映射</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="n">word_list</span><span class="p">])</span>
+    <span class="c1"># 进行截断对齐</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">padding</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cutlen</span><span class="p">)</span>
+    <span class="c1"># 添加n-gram特征</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">add_ngram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">token_indice</span><span class="p">,</span> <span class="n">ngram_range</span><span class="p">)</span>
+    <span class="c1"># 进行最大长度对齐</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">padding</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+
+
+<ul>
+<li>服务启动：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>gunicorn -w <span class="m">1</span> -b <span class="m">0</span>.0.0.0:8502 app:app
+</code></pre></div>
+
+
+<ul>
+<li>服务接口测试：<ul>
+<li>写在app.py同路径下api_test.py</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8502/v1/models/beauty/&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;word_list&quot;</span><span class="p">:</span> <span class="s2">&quot;[&#39;我爱&#39;, &#39;美妆&#39;]&quot;</span>
+    <span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">0.9228032</span>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>到这里，我们就完成了单个文本模型的服务封装，再一次温习了flask的使用，同学们可以自己动手将其他标签对应的模型也都封装成微服务。</li>
+</ul>
+</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../103/" title="任务二:构建标签词汇图谱" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                任务二:构建标签词汇图谱
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../105/" title="任务四:文本标签化服务的分布式集成" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                任务四:文本标签化服务的分布式集成
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

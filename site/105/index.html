@@ -1,0 +1,940 @@
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/105/">
+      
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>任务四:文本标签化服务的分布式集成 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-36723568-3","mkdocs.org"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            基于多模态的视频标签化系统
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              任务四:文本标签化服务的分布式集成
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../101/" title="项目背景" class="md-nav__link">
+      项目背景
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../102/" title="任务一:构建文本标签化主服务" class="md-nav__link">
+      任务一:构建文本标签化主服务
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../103/" title="任务二:构建标签词汇图谱" class="md-nav__link">
+      任务二:构建标签词汇图谱
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../104/" title="任务三:文本标签化模型的训练和部署" class="md-nav__link">
+      任务三:文本标签化模型的训练和部署
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        任务四:文本标签化服务的分布式集成
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="任务四:文本标签化服务的分布式集成" class="md-nav__link md-nav__link--active">
+      任务四:文本标签化服务的分布式集成
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 多模型多进程训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2" class="md-nav__link">
+    Step2: 多模型多线程预测
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3" class="md-nav__link">
+    Step3: 系统联调与测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../106/" title="任务五:使用Resnet+GRU进行多模态处理" class="md-nav__link">
+      任务五:使用Resnet+GRU进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../107/" title="任务六:使用VisualBERT进行多模态处理" class="md-nav__link">
+      任务六:使用VisualBERT进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../108.md" title="任务七:模态交互方式Co-Attention的优化改进" class="md-nav__link">
+      任务七:模态交互方式Co-Attention的优化改进
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 多模型多进程训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2" class="md-nav__link">
+    Step2: 多模型多线程预测
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3" class="md-nav__link">
+    Step3: 系统联调与测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                  <h1>任务四:文本标签化服务的分布式集成</h1>
+                
+                <h3 id="_1">任务简述</h3>
+<ul>
+<li>这是文本标签化系统的最后一步，完成各个模块的集成以及API的测试是工作中的重要里程碑，在这个过程中，我们将学习使用多进程训练以及多线程预测技术，至此将得到一个完整的文本标签化系统，它能够对文本进行打标签的工作。</li>
+</ul>
+<h3 id="_2">任务目的</h3>
+<ul>
+<li>对标签模型进行分布式训练，与之对应的服务进行并行部署，并集成文本标签化系统的各个模块，使得服务正常对外提供API。</li>
+</ul>
+<h3 id="_3">任务步骤</h3>
+<ul>
+<li>Step1: 多模型多进程训练</li>
+<li>Step2: 多模型多线程预测</li>
+<li>Step3: 系统联调与测试</li>
+</ul>
+<hr />
+<h4 id="step1">Step1: 多模型多进程训练</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>随着标签体系越来越大，模型循环训练所需要的时间也越来越长，为了更好的利用服务器资源，我们在这一步进行模型的分布式训练，首先会有实现一些资源监控（CPU，内存）的逻辑，进行根据资源的占用情况，合理地开启多进程（分布式）进行训练。</li>
+</ul>
+</li>
+<li>
+<p>使用多进程的原因：</p>
+<ul>
+<li>在python这门语言中，存在一个全局解释锁，它使系统的多个线程无法一同使用CPU资源，对于计算密集型任务，必须采用多进程方式并行化，而我们的模型训练，正是最典型的计算密集型任务，里面涵盖大量的矩阵计算，因此，我们这里使用多进程训练。</li>
+</ul>
+</li>
+<li>
+<p>CPU/内存正常负载值：</p>
+<ul>
+<li>是指我们的CPU/内存正常工作时占用率，比这个值小，说明我们的CPU/内存工作很轻松，比这个值大，说明工作起来已经很劳累了，一般取CPU/内存占用率的55%。</li>
+</ul>
+</li>
+<li>
+<p>CPU/内存危险负载值:</p>
+<ul>
+<li>是指我们的CPU/内存危险工作时的占用率，比这值小，系统不会挂掉或者开启自动保护。比这个值大，系统可能随时会挂掉或开启自动保护。一般取CPU/内存占用率的95%。 </li>
+</ul>
+</li>
+<li>
+<p>多模型多进程的训练逻辑:</p>
+<ul>
+<li>开启第一个模型训练进程，进入训练状态后开始检测占用资源是否小于CPU/内存正常负载值。小于CPU/内存正常负载值，则开启第二个模型训练任务。否则，开始检测占用资源是否大于CPU/内存危险负载值，如果大于，则kill掉这个进程，否则，说明占用率处在正常负载值与危险负载值之间，此时，等待该模型训练进程结束，再自动开启下一个模型训练进程。</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>不存在的路径需要自己的创建</li>
+<li>/data/labeled_project/text_labeled/model_train/multiprocess_train.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_4">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># 用于开启多个进程</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c1"># 使用psutil进行资源监控，主要获取cpu与内存占用情况。</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
+
+<span class="c1"># 设定CPU与内存的正常和危险占用阈值</span>
+<span class="n">CPU_NOR_LIMIT</span> <span class="o">=</span> <span class="n">MEM_NOR_LIMIT</span> <span class="o">=</span> <span class="mi">55</span>
+<span class="n">CPU_DAN_LIMIT</span> <span class="o">=</span> <span class="n">MEM_DAN_LIMIT</span> <span class="o">=</span> <span class="mi">95</span>
+
+<span class="c1"># 模型训练脚本列表</span>
+<span class="n">model_train_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;python movie_model_train.py&quot;</span><span class="p">,</span> <span class="s2">&quot;python beauty_model_train.py&quot;</span><span class="p">]</span>
+
+<span class="c1"># 创建subp的列表容器，用于装载子进程</span>
+<span class="n">subp</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span> <span class="nf">detect_cpu_mem</span><span class="p">():</span> 
+    <span class="sd">&quot;&quot;&quot;检测CPU和内存占用率&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;进行mem和cpu检测:&quot;</span><span class="p">)</span>
+    <span class="c1"># 内存检测</span>
+    <span class="n">mem</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">percent</span>
+    <span class="c1"># psutil检测cpu时间隔至少3s以上</span>
+    <span class="n">cpu</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;当前内存占用率:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mem</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;当前CPU占用率:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cpu</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+    <span class="k">return</span>  <span class="n">mem</span><span class="p">,</span> <span class="n">cpu</span>
+
+
+<span class="k">def</span> <span class="nf">single_model_train</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;开启单个模型的训练&quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># 等待3秒预估模型进入训练状态，即资源占用趋于稳定。</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># 进行资源检测</span>
+    <span class="n">mem</span><span class="p">,</span> <span class="n">cpu</span> <span class="o">=</span> <span class="n">detect_cpu_mem</span><span class="p">()</span>
+
+    <span class="c1"># 内存和CPU同时小于正常负载值，则任其继续运行，并装入列表</span>
+    <span class="k">if</span> <span class="n">mem</span> <span class="o">&lt;</span> <span class="n">MEM_NOR_LIMIT</span> <span class="ow">and</span> <span class="n">cpu</span> <span class="o">&lt;</span> <span class="n">CPU_NOR_LIMIT</span><span class="p">:</span>
+        <span class="n">subp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;该模型进入正常训练过程，并可以开启下一模型训练！&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># 判断是否大于危险负载值，若大于，将kill该进程，</span>
+        <span class="c1"># 否则等待该进程结束，再进行其他训练任务。</span>
+        <span class="k">if</span> <span class="n">mem</span> <span class="o">&gt;</span> <span class="n">MEM_DAN_LIMIT</span> <span class="ow">or</span> <span class="n">cpu</span> <span class="o">&gt;</span> <span class="n">CPU_DAN_LIMIT</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;该模型没有进入正常训练过程！&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;该模型进入正常训练过程, 但不要开启下一个模型训练!&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">start_multiprocess_train</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;开启多进程训练&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;启动多模型训练：&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 遍历启动模型的命令，准备循环开启训练进程</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_train_list</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;__________________________&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;正在启动第&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;个模型：&quot;</span><span class="p">)</span>
+        <span class="c1"># 启动模型训练</span>
+        <span class="n">single_model_train</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># 所有装入列表的进程都会等待其自然结束后才会停止该函数所在的进程</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;正在等待所有模型训练结束!&quot;</span><span class="p">)</span>
+        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">subp</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;完成!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">start_multiprocess_train</span><span class="p">()</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code># 检测内存和cpu占用率, 并打印脚本文件movie_model_train.py的执行内容.
+当前内存占用率:7.5%
+当前CPU占用率:25.1%
+该模型进入正常训练过程, 并可以开启下一模型训练!
+
+Epoch 3/20
+5299/5299 [==============================] - 6s 1ms/step - loss: 0.4098 - acc: 0.7996 - val_loss: 1.0321 - val_acc: 0.1647
+Epoch 4/20
+5299/5299 [==============================] - 7s 1ms/step - loss: 0.3190 - acc: 0.8517 - val_loss: 0.8503 - val_acc: 0.3124
+Epoch 5/20
+5299/5299 [==============================] - 6s 1ms/step - loss: 0.2384 - acc: 0.9109 - val_loss: 0.6873 - val_acc: 0.5025
+Epoch 6/20
+5299/5299 [==============================] - 6s 1ms/step - loss: 0.1781 - acc: 0.9504 - val_loss: 0.6238 - val_acc: 0.5756
+Epoch 7/20
+5299/5299 [==============================] - 6s 1ms/step - loss: 0.1359 - acc: 0.9711 - val_loss: 0.5465 - val_acc: 0.6401
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>这样我们通过一系列函数构建了多模型的多进程训练逻辑，这一步骤中只是添加了两个脚本文件，同学们还可以在自己的服务器上尝试更多的模型。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step2">Step2: 多模型多线程预测</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>在工业生产中，模型的训练是离线的，而预测服务往往是在线的；当前步骤的内容和Step1没有先后顺序，但在当前步骤中实现的多线程预测函数是主服务中重要的一环，我们在[任务一Step4: 匹配歧义判断]时假设的函数将在这里进行完善。</li>
+</ul>
+</li>
+<li>
+<p>进行多线程预测的原因：</p>
+<ul>
+<li>根据我们的业务特点，用户的每次请求，都有可能调用多个模型进行预测，而串行预测的方式，远远不能满足预测的性能要求. 这就需要预测过程必须能够并行化，并很容易的整合全部的结果.</li>
+</ul>
+</li>
+<li>
+<p>模型预测过程也是计算密集型, 为什么没有受到全局解释锁的影响:</p>
+<ul>
+<li>虽然预测过程也是计算密集型的，但是我们对这个计算过程进行了封装, 使它是在模型微服务中进行, 而我们线程只是负责调用服务并整合结果而已, 因此不会受到全局解释锁的影响.</li>
+</ul>
+</li>
+<li>
+<p>相关前提：</p>
+<ul>
+<li>完成了多个标签的模型子服务部署</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/text_labeled/model_train/multithread_predict.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_5">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入必备的工具包</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+
+<span class="c1"># 定义模型配置路径，它指向一个json文件</span>
+<span class="n">model_config_path</span> <span class="o">=</span> <span class="s2">&quot;/data/labeled_project/text_labeled/model_train/model_config.json&quot;</span>
+<span class="n">model_prediction</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 将持久化的模型配置文件加载到内存</span>
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">model_config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;向单个微服务发送预测请求&quot;&quot;&quot;</span>
+    <span class="c1"># 根据名字选择对应的配置列表</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">model_config</span><span class="p">[</span><span class="n">model_name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;word_list&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">word_list</span><span class="p">)}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># 将该线程中获取的结果放到模型预测结果列表中</span>
+    <span class="n">model_prediction</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">model_name</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">text</span>
+
+
+
+
+<span class="k">def</span> <span class="nf">request_model_serve</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">model_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;该函数开启多线程请求封装好的模型微服务&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_start_thread</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;开启预测线程, 以线程需要执行的函数和函数的输入为参数&quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">pred</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">t</span>
+
+    <span class="c1"># 遍历model_list, 调用开启线程函数_start_thread，会获得一个所有开启后的线程列表</span>
+    <span class="n">t_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">model</span><span class="p">:</span> <span class="n">_start_thread</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">word_list</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">model_list</span><span class="p">))</span>
+    <span class="c1"># 线程将逐一join操作等待所有线程完成</span>
+    <span class="n">t_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">(),</span> <span class="n">t_list</span><span class="p">))</span>
+    <span class="c1"># 最后过滤掉所有概率预测小于0.5的类别，返回结果</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">model_prediction</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">word_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;我是&quot;</span><span class="p">,</span> <span class="s2">&quot;美妆&quot;</span><span class="p">,</span> <span class="s2">&quot;博主&quot;</span><span class="p">]</span>
+<span class="n">model_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;美妆&quot;</span><span class="p">,</span> <span class="s2">&quot;电影&quot;</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">request_model_serve</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">model_list</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>[[&#39;美妆&#39;, 0.9164116]]
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过以上函数我们使用多线程对模型子服务进行了请求，对收集到的结果进行的过滤处理，该函数也是我们任务一中主服务请求的一部分。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step3">Step3: 系统联调与测试</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>这是文本标签化系统的最后一个步骤，我们将在这里回顾之前的一些核心环节，再次对系统整体的服务逻辑有一次深刻认识。</li>
+</ul>
+</li>
+<li>
+<p>明确系统处理请求的五个环节:</p>
+<ul>
+<li>输入预处理<ul>
+<li>对输入的文本做长度验证, 分词, 去停用词等处理操作.</li>
+</ul>
+</li>
+<li>图谱匹配<ul>
+<li>使用输入文本中的词汇进入到图谱中进行匹配, 找出所有可能的标签.</li>
+</ul>
+</li>
+<li>匹配歧义判断<ul>
+<li>使用模型对所有不确定的标签进行判断, 找出最合适的标签.</li>
+</ul>
+</li>
+<li>概率调整<ul>
+<li>调整标签的概率, 满足随着相关词汇增多, 概率逐渐增大</li>
+</ul>
+</li>
+<li>概率归一化与父标签检索<ul>
+<li>对概率进行归一化处理, 并检索匹配标签的父级标签列表.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>这些代码在步骤一已经有了一定的实现，这里进行回顾。</li>
+<li>/data/labeled_project/text_labeled/views.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_6">让我们动手做起来吧!</h4>
+<ul>
+<li>主服务逻辑代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Flask框架固定工具</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">api</span>
+
+<span class="c1"># 定义服务请求路径和方式, 这里使用POST请求</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/api/get_label/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">recognition</span><span class="p">():</span>
+    <span class="c1"># 接收POST请求，并取数据中的&quot;text&quot;对应的值</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+    <span class="c1"># 调用输入预处理</span>
+    <span class="n">word_list</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">handle_cn_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># 调用图谱匹配</span>
+    <span class="n">index_map_label</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_index_map_label</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
+    <span class="c1"># 调用匹配歧义判断</span>
+    <span class="n">index_map_label_</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">weight_update</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">index_map_label</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index_map_label_</span><span class="p">:</span>
+        <span class="c1"># 调用概率调整</span>
+        <span class="n">df_</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">control_increase</span><span class="p">(</span><span class="n">index_map_label_</span><span class="p">)</span>
+        <span class="c1"># 调用概率归一化与父标签检索</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">father_label_and_normalized</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+
+
+<ul>
+<li>使用supervisor后台启动服务:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>supervisord -c supervisord.conf
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>到这里，我们就完成文本标签化系统的一系列重点工作，关于启动了一个可用的标签化服务。</li>
+</ul>
+</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../104/" title="任务三:文本标签化模型的训练和部署" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                任务三:文本标签化模型的训练和部署
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../106/" title="任务五:使用Resnet+GRU进行多模态处理" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                任务五:使用Resnet+GRU进行多模态处理
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

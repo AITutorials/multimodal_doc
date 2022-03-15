@@ -1,0 +1,1487 @@
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/102/">
+      
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>任务一:构建文本标签化主服务 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-36723568-3","mkdocs.org"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            基于多模态的视频标签化系统
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              任务一:构建文本标签化主服务
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo" aria-label="基于多模态的视频标签化系统">
+      
+  <img src="../img/AI.jpg" alt="logo">
+
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/AITutorials/datasets" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../101/" title="项目背景" class="md-nav__link">
+      项目背景
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        任务一:构建文本标签化主服务
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="任务一:构建文本标签化主服务" class="md-nav__link md-nav__link--active">
+      任务一:构建文本标签化主服务
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 在服务器上搭建虚拟环境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2" class="md-nav__link">
+    Step2: 在主函数中实现文本预处理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3" class="md-nav__link">
+    Step3: 实现图谱匹配过程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step4" class="md-nav__link">
+    Step4: 匹配歧义判断
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step5" class="md-nav__link">
+    Step5: 概率调整
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step6" class="md-nav__link">
+    Step6: 概率归一化与父标签检索
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step7-flask" class="md-nav__link">
+    Step7: Flask主服务封装与测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../103/" title="任务二:构建标签词汇图谱" class="md-nav__link">
+      任务二:构建标签词汇图谱
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../104/" title="任务三:文本标签化模型的训练和部署" class="md-nav__link">
+      任务三:文本标签化模型的训练和部署
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../105/" title="任务四:文本标签化服务的分布式集成" class="md-nav__link">
+      任务四:文本标签化服务的分布式集成
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../106/" title="任务五:使用Resnet+GRU进行多模态处理" class="md-nav__link">
+      任务五:使用Resnet+GRU进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../107/" title="任务六:使用VisualBERT进行多模态处理" class="md-nav__link">
+      任务六:使用VisualBERT进行多模态处理
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../108.md" title="任务七:模态交互方式Co-Attention的优化改进" class="md-nav__link">
+      任务七:模态交互方式Co-Attention的优化改进
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    任务简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    任务目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    任务步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="任务步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step1" class="md-nav__link">
+    Step1: 在服务器上搭建虚拟环境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step2" class="md-nav__link">
+    Step2: 在主函数中实现文本预处理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step3" class="md-nav__link">
+    Step3: 实现图谱匹配过程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step4" class="md-nav__link">
+    Step4: 匹配歧义判断
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step5" class="md-nav__link">
+    Step5: 概率调整
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    让我们动手做起来吧!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step6" class="md-nav__link">
+    Step6: 概率归一化与父标签检索
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step7-flask" class="md-nav__link">
+    Step7: Flask主服务封装与测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    让我们动手做起来吧！
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                  <h1>任务一:构建文本标签化主服务</h1>
+                
+                <h3 id="_1">任务简述</h3>
+<ul>
+<li>为了更贴合工业项目的开发流程，我们将从系统主服务的构建开始，因此我们的第一个任务是：构建文本标签化主服务，它是一个基于Flask的主服务，有了它，我们将直接得到标签系统的对外API，这个API以一段文本为输入，以该文本被打上的label为输出。此时，我们将完成各个模块的主要流程代码，如：文本预处理，实现图谱匹配，实现匹配歧义判断等，这些步骤的作用和实现都将在之后的介绍中逐个说明。</li>
+</ul>
+<h3 id="_2">任务目的</h3>
+<ul>
+<li>构建起文本标签主服务，对外提供标签化API。</li>
+</ul>
+<h3 id="_3">任务步骤</h3>
+<ul>
+<li>Step1: 在服务器上搭建虚拟环境</li>
+<li>Step2: 在主函数中实现文本预处理</li>
+<li>Step3: 实现图谱匹配过程</li>
+<li>Step4: 匹配歧义判断  </li>
+<li>Step5: 概率调整</li>
+<li>Step6: 概率归一化与父标签检索</li>
+<li>Step7: Flask主服务封装与测试</li>
+</ul>
+<hr />
+<h4 id="step1">Step1: 在服务器上搭建虚拟环境</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>在企业里，每一个项目都会分解任务给不同的工程师，每个人都可能使用不同的技术栈，因此需要搭建不同虚拟环境。我们当前的项目按照文本和多模态阶段分成两个虚拟环境；在这个任务步骤中，我们将搭建文本虚拟环境：text3.5（3.5是python的版本）。</li>
+</ul>
+</li>
+<li>
+<p>当前步骤的目标：</p>
+<ul>
+<li>使用conda搭建起文本虚拟环境：text3.5</li>
+</ul>
+</li>
+<li>
+<p>环境版本要求：</p>
+<ul>
+<li>系统版本：centos7.9</li>
+<li>虚拟环境python版本：python3.5</li>
+<li>python中的工具包版本：<ul>
+<li>neo4j-driver==1.7.4</li>
+<li>psutil==5.9.0</li>
+<li>scikit-learn==0.20.4</li>
+<li>pandas&gt;=0.20.3</li>
+<li>numpy&gt;=1.13.1</li>
+<li>jieba&gt;=0.39</li>
+<li>requests&gt;=2.18.4</li>
+<li>tensorflow==1.14.0</li>
+<li>matplotlib==3.0.3</li>
+<li>keras==2.2.4</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>其他相关要求：</p>
+<ul>
+<li>因为之后会用到图数据库neo4j创建标签图谱，因此需要安装neo4j3.3.5。</li>
+<li>我们的主服务会使用supervisor工具进行监控，因此需要安装supervisor（最新版本即可）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="_4">让我们动手做起来吧！</h4>
+<ul>
+<li>1, 下载安装Anaconda3，其中就包括虚拟环境工具conda以及python环境。</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 解压Anaconda3需要bzip2，所以在这里需要先安装</span>
+yum install -y bzip2
+
+<span class="c1"># 进入指定的安装包下载路径，这里是root路径</span>
+<span class="nb">cd</span> /root 
+
+<span class="c1"># 使用curl进行远程安装包下载</span>
+curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
+<span class="c1"># 以下是最新的anaconda3地址，使用哪一个都可以</span>
+<span class="c1"># curl -O https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh</span>
+
+
+<span class="c1"># 使用sh命令进行安装，中间出现的各种说明，按照默认&quot;yes&quot;即可</span>
+sh Anaconda3-5.2.0-Linux-x86_64.sh
+
+<span class="c1"># 配置~/.bashrc</span>
+vim ~/.bashrc
+<span class="c1"># 添加一行: </span>
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/root/anaconda3/bin/:<span class="nv">$PATH</span>
+
+<span class="c1"># 关闭文件，进行source生效即可</span>
+<span class="nb">source</span> ~/.bashrc
+</code></pre></div>
+
+
+<ul>
+<li>2，使用conda创建虚拟环境</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 创建名字为text3.5的虚拟环境，使用python版本为3.5</span>
+conda create -n text3.5 <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5
+
+<span class="c1"># 根据提示激活环境</span>
+conda activate text3.5
+<span class="c1"># 或者</span>
+<span class="nb">source</span> activate text3.5
+</code></pre></div>
+
+
+<ul>
+<li>3，创建项目路径</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> /
+mkdir data
+<span class="nb">cd</span> /data/
+<span class="c1"># 在/data路径下创建名为 labeled_project 的项目路径</span>
+mkdir labeled_project
+</code></pre></div>
+
+
+<ul>
+<li>4，创建requirements.txt文件并进行工具包安装</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 在/data/labeled_project路径下打开requirements.txt文件</span>
+vim requirements.txt
+
+<span class="c1"># 在requirements.txt中写入必要的安装包版本</span>
+
+<span class="c1"># neo4j-driver==1.7.4</span>
+<span class="c1"># psutil==5.9.0</span>
+<span class="c1"># scikit-learn==0.20.4</span>
+<span class="c1"># pandas&gt;=0.20.3</span>
+<span class="c1"># numpy&gt;=1.13.1</span>
+<span class="c1"># jieba&gt;=0.39</span>
+<span class="c1"># requests&gt;=2.18.4</span>
+<span class="c1"># tensorflow==1.14.0</span>
+<span class="c1"># matplotlib==3.0.3</span>
+<span class="c1"># keras==2.2.4</span>
+
+<span class="c1"># 在虚拟环境text3.5中安装以下工具包</span>
+pip install -r requirements.txt
+</code></pre></div>
+
+
+<ul>
+<li>5，安装图数据库neo4j，因为我们的标签图谱将使用图数据库存储</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 生成yum镜像</span>
+rpm --import http://debian.neo4j.org/neotechnology.gpg.key
+cat <span class="s">&lt;&lt;EOF&gt;  /etc/yum.repos.d/neo4j.repo</span>
+<span class="s">[neo4j]</span>
+<span class="s">name=Neo4j RPM Repository</span>
+<span class="s">baseurl=http://yum.neo4j.org/stable</span>
+<span class="s">enabled=1</span>
+<span class="s">gpgcheck=1</span>
+<span class="s">EOF</span>
+
+<span class="c1"># 安装neo4j</span>
+yum install neo4j-3.3.5
+
+<span class="c1"># 修改图数据库相关配置，配置位置在/etc/neo4j/neo4j.conf</span>
+<span class="c1"># neo4j.conf修改后的文件将在附件中提供</span>
+<span class="c1"># 启动neo4j</span>
+neo4j start
+
+<span class="c1"># 查看启动状态，提示：Neo4j is running at pid 13616</span>
+neo4j status
+</code></pre></div>
+
+
+<ul>
+<li>6，安装必要的服务监控组件</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>yum install supervisor -y
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>到这里，我们就已经搭建起text3.5的项目环境，在接下来的开发中，每次登陆服务器我们需要激活该环境，在其中进行一些列的开发。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step2">Step2: 在主函数中实现文本预处理</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>我们当前是在构建“文本”标签化系统，下一次迭代才会涉及图片和视频的处理。在工业生产中，文本形式的输入少不了一定预处理，我们将在这个步骤中实现。</li>
+</ul>
+</li>
+<li>
+<p>文本预处理包括：</p>
+<ul>
+<li>对输入进行长度限制</li>
+<li>对输入进行分词处理</li>
+<li>对分词结果进行去停用词处理</li>
+</ul>
+</li>
+<li>
+<p>工具要求：</p>
+<ul>
+<li>分词使用主流的jieba工具（在实际大厂中，可能会有自己的基础分词服务，使用方式和工具类似）</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>我们将在/data/labeled_project/创建api.py文件，即：</li>
+<li>/data/labeled_project/api.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_5">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">jieba</span>
+<span class="kn">import</span> <span class="nn">fileinput</span>
+
+<span class="c1"># 定义了用户自定义词典路径和停用词典路径</span>
+<span class="c1"># 两个txt文件将在附件中提供</span>
+<span class="n">userdict_path</span> <span class="o">=</span> <span class="s2">&quot;/data/labeled_project/text_labeled/userdict.txt&quot;</span>
+<span class="n">stopdict_path</span> <span class="o">=</span> <span class="s2">&quot;/data/labeled_project/text_labeled/stopdict.txt&quot;</span>
+
+
+<span class="c1"># 加载用户自定义词典</span>
+<span class="n">jieba</span><span class="o">.</span><span class="n">load_userdict</span><span class="p">(</span><span class="n">userdict_path</span><span class="p">)</span>
+
+<span class="c1"># 定义输入文本最大长度限制为200</span>
+<span class="n">MAX_LIMIT</span> <span class="o">=</span> <span class="mi">200</span>
+
+
+<span class="k">def</span> <span class="nf">handle_cn_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于完成预处理的主要流程, 以原始文本为输入，以分词和去停用词后的词汇列表为输出.&quot;&quot;&quot;</span>
+
+    <span class="c1"># 对输入进行合法性检验</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># 使用jieba的cut方法对使用最大限制进行切片的输入文本进行分词</span>
+    <span class="n">word_list</span> <span class="o">=</span> <span class="n">jieba</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="n">MAX_LIMIT</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_load_stop_dict</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;用于从文件中加载停用词词表&quot;&quot;&quot;</span>
+
+        <span class="c1"># 使用fileinput加载停用词表至内存,使用字符串的strip()方法去除两端空白符</span>
+        <span class="n">stop_word_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">fileinput</span><span class="o">.</span><span class="n">FileInput</span><span class="p">(</span><span class="n">stopdict_path</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">stop_word_set</span>
+
+    <span class="c1"># 调用_load_stop_dict()函数</span>
+    <span class="n">stop_word_set</span> <span class="o">=</span> <span class="n">_load_stop_dict</span><span class="p">()</span>
+
+    <span class="c1"># 使用高阶函数filter进行循环过滤操作生成最终结果</span>
+    <span class="n">word_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_word_set</span><span class="p">,</span> <span class="n">word_list</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">word_list</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;我的眼睛很大很大,可以装得下天空，装得下高山，装得下大海，装得下整个世界；我的眼睛又很小很小，有心事时，就连两行眼泪，也装不下.&quot;</span>
+<span class="n">word_list</span> <span class="o">=</span> <span class="n">handle_cn_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>[&#39;眼睛&#39;, &#39;很大&#39;, &#39;很大&#39;, &#39;装得&#39;, &#39;天空&#39;, &#39;装得&#39;, &#39;高山&#39;, &#39;装得&#39;, &#39;大海&#39;, &#39;装得&#39;, &#39;整个&#39;, &#39;世界&#39;, &#39;眼睛&#39;, &#39;很小&#39;, &#39;很小&#39;, &#39;心事&#39;, &#39;两行&#39;, &#39;眼泪&#39;, &#39;装不下&#39;]
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过handle_cn_text函数，我们就完成了基于jieba的文本预处理中的三个要求。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step3">Step3: 实现图谱匹配过程</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>我们在这里需要实现图谱匹配过程，在实现之前，你需要了解标签-词汇图谱是什么以及它的作用。我们再回顾一下正在做的文本标签化系统，是以一段文本为输入，以该文本应该有的标签为输出，那么标签该如何获得呢，按照中文语言的特点，经常在句子会有一些关键词让我们辨识它的所属类别（也就是标签），比如："张国荣演的《霸王别姬》真不错！"，从“霸王别姬”这样的关键词中，我们就可以做出一些猜测，这句话可能在谈论电影；没错，有的同学也可能猜测是音乐（有首歌也叫霸王别姬），所以可见，文本中的关键词是能够帮助我们有效的缩小标签的范围的。因此，我们的图谱就是由标签-关键词组成，文本在预处理后，将每个词汇通过图谱进行可能的标签查询，来召回一定量的可能标签。</li>
+</ul>
+</li>
+<li>
+<p>标签词汇图谱分析：</p>
+</li>
+</ul>
+<p><img alt="" src="http://121.199.45.168:8000/img/%E5%9B%BE%E8%B0%B1.png" /></p>
+<blockquote>
+<ul>
+<li>图谱由节点和关系(边)组成.</li>
+<li>蓝色节点代表标签,橘色节点代表词汇.</li>
+<li>在节点与节点之间存在着不同类型的边.</li>
+<li>蓝色节点(标签节点)之间的边表示包含关系,没有权重值.</li>
+<li>蓝色节点与橘色节点(词汇节点)之间的边表示隶属关系,有权重值，代表该词汇属于该标签的概率.</li>
+<li>所有的节点与边组成了一个树结构,也就是我们的图谱.</li>
+<li>图谱匹配的过程,即将分词列表中的词汇与词汇节点进行匹配，相同则返回该标签节点名称和边上的权重.</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>图谱匹配在整个系统中的作用：</p>
+<ul>
+<li>通过匹配词汇召回所有可能的标签.</li>
+</ul>
+</li>
+<li>
+<p>相关假设：</p>
+<ul>
+<li>图谱的具体构建我们会在任务二中进行，所以当前我们的图数据库中什么也没有，但我们仍然可以假设它们已经存在来完成代码，虽然我们什么标签也不会查到。等我们之后完成了图谱构建，我们还会来验证你的代码。</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/api.py</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="_6">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 首先导入操作图数据库neo4j的必备官方工具neo4j-driver,</span>
+<span class="c1"># 从settings.py配置文件中导入数据库配置NEO4J_CONFIG</span>
+<span class="c1"># settings.py文件将在附件中提供和说明</span>
+<span class="kn">from</span> <span class="nn">neo4j.v1</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
+<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">NEO4J_CONFIG</span>
+
+<span class="c1"># 导入用于扁平化列表的chain方法</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="k">def</span> <span class="nf">get_index_map_label</span><span class="p">(</span><span class="n">word_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    用于获取每个词汇在图谱中对应的类别标签</span>
+<span class="sd">    该函数以词汇列表为输入, 以词汇出现在词汇列表</span>
+<span class="sd">    中的索引和对应的[标签, 权重]列表为输出.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 对word_list进行合法性检验</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">word_list</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># 使用GraphDatabase开启一个driver.</span>
+    <span class="n">_driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="o">.</span><span class="n">driver</span><span class="p">(</span><span class="o">**</span><span class="n">NEO4J_CONFIG</span><span class="p">)</span>
+
+    <span class="c1"># 开启neo4j的一个session </span>
+    <span class="k">with</span> <span class="n">_driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">_f</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;以词汇列表中一组词索引和词作为输入,</span>
+<span class="sd">            返回该索引和词对应的标签列表.&quot;&quot;&quot;</span>
+            <span class="c1"># 进行输入的合法性判断</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">word</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+
+            <span class="c1"># 建立cypher语句, 它匹配一条图中的路径, 该路径以一个词汇为开端通过一条边连接一个Label节点,</span>
+            <span class="c1"># 返回标签的title属性,和边的权重, 这正是我们图谱构建时定义的连接模式.</span>
+            <span class="n">cypher</span> <span class="o">=</span> <span class="s2">&quot;MATCH(a:Vocabulary{name:</span><span class="si">%r</span><span class="s2">})-[r:Related]-(b:Label) </span><span class="se">\</span>
+<span class="s2">                      RETURN b.title, r.weight&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cypher</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">record</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">result</span><span class="p">]</span>
+
+        <span class="c1"># 将word_list的索引和词汇作为输入传给_f()函数,并将返回结果做chain操作</span>
+        <span class="n">index_map_label</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_f</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">word_list</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">index_map_label</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">word_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;眼睛&#39;</span><span class="p">,</span> <span class="s1">&#39;很大&#39;</span><span class="p">,</span> <span class="s1">&#39;很大&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;天空&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;高山&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;大海&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;整个&#39;</span><span class="p">,</span> <span class="s1">&#39;世界&#39;</span><span class="p">,</span> <span class="s1">&#39;眼睛&#39;</span><span class="p">,</span> <span class="s1">&#39;很小&#39;</span><span class="p">,</span> <span class="s1">&#39;很小&#39;</span><span class="p">,</span> <span class="s1">&#39;心事&#39;</span><span class="p">,</span> <span class="s1">&#39;两行&#39;</span><span class="p">,</span> <span class="s1">&#39;眼泪&#39;</span><span class="p">,</span> <span class="s1">&#39;装不下&#39;</span><span class="p">]</span>
+<span class="n">index_map_label</span> <span class="o">=</span> <span class="n">get_index_map_label</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index_map_label</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># 因为我们图谱还没有构建, 因此暂时会返回一个空列表</span>
+<span class="c1"># 实际上应该返回类似结构: [&quot;0&quot;, [[&quot;美妆&quot;, 0.654], [&quot;电影&quot;:0.765]]]</span>
+<span class="p">[]</span>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过get_index_map_label函数我们就完成来图谱匹配的过程，它在实际生产中，帮助我们召回大量可能性高的标签。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step4">Step4: 匹配歧义判断</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>“匹配歧义判断”虽然听起来比较抽象，但是实际很好理解，所谓匹配歧义正如我们之前“霸王别姬”的例子，到底是电影还是音乐，单纯从关键词的角度去理解，那这就是歧义。出现了歧义我们就需要去做判断哪个是正确的（或者都是正确的/错误的），用什么来判断呢，那就需要文本语义模型。因此，匹配歧义判断实质是检测歧义并调用模型服务的过程。 </li>
+</ul>
+</li>
+<li>
+<p>匹配歧义的例子：</p>
+</li>
+</ul>
+<p><img alt="" src="http://121.199.45.168:8000/img/%E5%88%86%E6%AD%A7.png" /></p>
+<blockquote>
+<ul>
+<li>"闪现"一词匹配到两个标签, LOL和王者农药, 说明这个词汇在句子中具有歧义，需要进行更深层次的判断.</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>匹配歧义判断的作用:</p>
+<ul>
+<li>在词汇出现歧义时,通过模型重新计算所属标签的概率，从语义层面获得更真实的标签概率.</li>
+</ul>
+</li>
+<li>
+<p>相关假设：</p>
+<ul>
+<li>在这里我们还没有模型服务（将在之后的任务中构建），所以需要通过创建“空壳函数”来弥补，保证代码run通。</li>
+<li>在api.py的当前路径创建路径model_train, 在model_train路径下，创建multithread_predict.py文件，在该文件中添加以下函数。（我们将在之后的任务中重写该函数）</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">request_model_serve</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">label_list</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="s2">&quot;电影&quot;</span><span class="p">,</span> <span class="mf">0.865</span><span class="p">]]</span>
+</code></pre></div>
+
+
+<ul>
+<li>代码实现位置：<ul>
+<li>/data/labeled_project/api.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_7">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入多模型预测函数 </span>
+<span class="kn">from</span> <span class="nn">model_train.multithread_predict</span> <span class="kn">import</span> <span class="n">request_model_serve</span>
+
+<span class="k">def</span> <span class="nf">weight_update</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">index_map_label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;该函数将分词列表和具有初始概率的标签-概率列表作为输入,将模型预测后的标签-概率列表作为输出&quot;&quot;&quot;</span>
+    <span class="c1"># 首先将列表转化为字典的形式</span>
+    <span class="c1"># index_map_label &gt;&gt;&gt; [&quot;1&quot;, [[&quot;美食&quot;, 0.735], [&quot;音乐&quot;, 0.654]],  &quot;2&quot;,  [[&quot;美妆&quot;, 0.734]] &gt;&gt;&gt; </span>
+    <span class="c1"># {&quot;1&quot;: [[&quot;美食&quot;, 0.735],[&quot;音乐&quot;,  0.654]], &quot;2&quot;: [[&quot;美妆&quot;, 0.734]]}</span>
+    <span class="n">index_map_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">index_map_label</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">index_map_label</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index_map_label</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># v的长度大于1说明存在歧义现象 </span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># 获取对应的标签作为参数,即通知服务应该调用哪些模型进行预测.</span>
+            <span class="n">label_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">))</span>
+            <span class="c1"># 通过request_model_serve函数获得标签最新的预测概率,并使用字典方式更新.</span>
+            <span class="c1"># v &gt;&gt;&gt; [[&quot;美食&quot;: 0.954]]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">request_model_serve</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">label_list</span><span class="p">)</span>
+            <span class="n">index_map_label</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="p">})</span>
+    <span class="c1"># 将字典转化为列表形式</span>
+    <span class="n">index_map_label_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">index_map_label</span><span class="o">.</span><span class="n">items</span><span class="p">())))</span>
+    <span class="k">return</span> <span class="n">index_map_label_</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">word_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;眼睛&#39;</span><span class="p">,</span> <span class="s1">&#39;很大&#39;</span><span class="p">,</span> <span class="s1">&#39;很大&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;天空&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;高山&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;大海&#39;</span><span class="p">,</span> <span class="s1">&#39;装得&#39;</span><span class="p">,</span> <span class="s1">&#39;整个&#39;</span><span class="p">,</span> <span class="s1">&#39;世界&#39;</span><span class="p">,</span> <span class="s1">&#39;眼睛&#39;</span><span class="p">,</span> <span class="s1">&#39;很小&#39;</span><span class="p">,</span> <span class="s1">&#39;很小&#39;</span><span class="p">,</span> <span class="s1">&#39;心事&#39;</span><span class="p">,</span> <span class="s1">&#39;两行&#39;</span><span class="p">,</span> <span class="s1">&#39;眼泪&#39;</span><span class="p">,</span> <span class="s1">&#39;装不下&#39;</span><span class="p">]</span>         
+
+<span class="n">index_map_label</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="s2">&quot;美妆&quot;</span><span class="p">,</span> <span class="mf">0.654</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;电影&quot;</span><span class="p">,</span> <span class="mf">0.765</span><span class="p">]]]</span>
+<span class="n">index_map_label_</span> <span class="o">=</span> <span class="n">weight_update</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">index_map_label</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index_map_label_</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">[&quot;0&quot;, [[&quot;电影&quot;, 0.865]]]</span>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过weight_update函数我们完成了匹配歧义判断，其中包括歧义检测和调用模型服务，虽然我们的模型服务还是空壳函数，但我们将在之后的任务中实现它。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step5">Step5: 概率调整</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>我们的标签召回思路是使用关键词，关键词是否出现会影响到标签是否被召回。而且同时当某个标签下出现的词汇较多时，我们会认为这种标签的重要性较高。所谓概率调整就是实现这种标签重要性的计算。</li>
+</ul>
+</li>
+<li>
+<p>为什么进行概率调整的例子：</p>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>
+<p>假如"我爱苹果" 中的"苹果"会匹配的标签： [["水果", 0.654], ["电影", 0.654], ["公司", 0.654]] </p>
+<blockquote>
+<ul>
+<li>分析：<blockquote>
+<ul>
+<li>出现了一次苹果, 可能是在说水果，电影，或者公司, 他们的概率基本上是相同的. 这句话打上什么标签不能确定.</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>假如"我爱苹果，橘子，香蕉"会匹配标签： [["水果", 0.654], ["电影", 0.654], ["公司", 0.654], ["水果", 0.654], ["水果", 0.654]]</p>
+<blockquote>
+<ul>
+<li>分析：<blockquote>
+<ul>
+<li>全句共出现了三次有关水果的词，如果水果的概率是苹果，橘子，香蕉为水果的概率和，这样就大于了电影或者公司的概率. 基本上可以打上一个确定的标签了.</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>概率调整的作用:</p>
+<ul>
+<li>保证随着某一类别词汇出现的次数增多,这个类别的概率会随之增加.</li>
+</ul>
+</li>
+<li>
+<p>概率调整的计算方式：</p>
+<ul>
+<li>加性运算（加法）</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/api.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_8">让我们动手做起来吧!</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入可以进行扁平化操作的reduce</span>
+<span class="c1"># 导入进行合并操作的pandas</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">control_increase</span><span class="p">(</span><span class="n">index_map_label_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;以模型预测后的标签-权重列表为输入, 以标签归并后的结果为输出&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">index_map_label_</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># index_map_label_ &gt;&gt;&gt; </span>
+    <span class="c1">#  [&quot;2&quot;, [[&quot;电影&quot;, 0.765]], &quot;3&quot;, [[&quot;情感故事&quot;,  0.876], [&quot;明星&quot;, 0.765]]]</span>
+    <span class="c1"># 将index_map_label_奇数项即[label, score]取出放在字典中</span>
+    <span class="c1"># k的数据结构形式: </span>
+    <span class="c1"># [{&#39;label&#39;: &#39;电影&#39;, &#39;score&#39;: 0.765}, {&#39;label&#39;: &#39;情感故事&#39;, &#39;score&#39;: 0.876},</span>
+    <span class="c1">#  {&#39;label&#39;: &#39;明星&#39;, &#39;score&#39;: 0.765}]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]},</span> <span class="n">reduce</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">z</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">index_map_label_</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])))</span>
+
+    <span class="c1"># 使用pandas中的groupby方法进行合并分值</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">df_</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">index_map_label_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="s2">&quot;电影&quot;</span><span class="p">,</span> <span class="mf">0.765</span><span class="p">]],</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="s2">&quot;情感故事&quot;</span><span class="p">,</span>  <span class="mf">0.876</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;明星&quot;</span><span class="p">,</span> <span class="mf">0.765</span><span class="p">]]]</span>
+<span class="n">df_</span> <span class="o">=</span> <span class="n">control_increase</span><span class="p">(</span><span class="n">index_map_label_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>label
+电影    1.641
+明星      0.765
+Name: score, dtype: float64
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过control_increase我们完成了概率调整操作，可以有效的对比标签的重要性。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step6">Step6: 概率归一化与父标签检索</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>这是我们任务的最后一步，其实也是系统的最后一步；因为之前的概率调整是加性运算，很可能使得概率&gt;1，所以这里我们需要归一化才能进行输出，同时，我们输出的标签也不仅仅是标签体系下的叶子节点标签，也希望能够输出其父标签。现在可以假设“王者荣耀”是我们的叶子节点标签，那么“游戏”就是它的父标签，这些关系都存在图谱当中，当我们一直子标签时，通过查询的方式即可获得其父标签。</li>
+</ul>
+</li>
+<li>
+<p>概率归一化的作用:</p>
+<ul>
+<li>使标签概率的结果在（0到1）的概率值域内.</li>
+</ul>
+</li>
+<li>
+<p>父标签检索的作用:</p>
+<ul>
+<li>当前标签系统应用在推荐系统中时，会需要更多级别的标签来丰富召回策略。</li>
+</ul>
+</li>
+<li>
+<p>代码实现位置：</p>
+<ul>
+<li>/data/labeled_project/api.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_9">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">father_label_and_normalized</span><span class="p">(</span><span class="n">df_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    以概率调整后的DataFrame对象为输入, 以整个系统的最终结果为输出</span>
+<span class="sd">    输入样式为:DataFrame&lt;[[“LOL”, 1.465]]&gt;</span>
+<span class="sd">    输出样式为:[{“label”: “LOL”, “score”: “0.811”, “related”:[“游戏”]}]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_sg</span><span class="p">(</span><span class="n">pair</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获得单个标签的父级标签和归一化概率&quot;&quot;&quot;</span>
+        <span class="c1"># 使用GraphDatabase开启一个driver.</span>
+        <span class="n">_driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="o">.</span><span class="n">driver</span><span class="p">(</span><span class="o">**</span><span class="n">NEO4J_CONFIG</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="c1"># 通过关系查询获得从该标签节点直到根节点的路径上的其他Label节点的title属性</span>
+            <span class="n">cypher</span> <span class="o">=</span> <span class="s2">&quot;MATCH(a:Label{title:</span><span class="si">%r</span><span class="s2">})&lt;-[r:Contain*1..3]-(b:Label) </span><span class="se">\</span>
+<span class="s2">                      WHERE b.title&lt;&gt;&#39;泛娱乐&#39; RETURN b.title&quot;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cypher</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">record</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">_sigmoid</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="s2">&quot;related&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+    <span class="c1"># 遍历所有的标签</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_sg</span><span class="p">,</span> <span class="n">df_</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>运行示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">res</span> <span class="o">=</span> <span class="n">father_label_and_normalized</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">[]</span>
+<span class="err"># 实际上应该返回如下格式：</span>
+<span class="err"># [{&#39;label&#39;: &#39;电影&#39;, &#39;score&#39;: 0.838, &#39;related&#39;: []}, {&#39;label&#39;: &#39;明星&#39;, &#39;score&#39;: 0.682, &#39;related&#39;: []}] </span>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过father_label_and_normalized函数我们就完成了概率归一化和父标签检索，至此我们也基本完成了api.py中的全部内容。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="step7-flask">Step7: Flask主服务封装与测试</h4>
+<ul>
+<li>
+<p>当前步骤简述：</p>
+<ul>
+<li>我们在之前的步骤中，搭建了主服务的环境以及所需的业务流程代码，在这个步骤中，我们将它们串联起来，并封装在Flask服务之中。</li>
+</ul>
+</li>
+<li>
+<p>Flask服务简介：</p>
+<ul>
+<li>Flask框架是当下最受欢迎的python轻量级框架, 也是pytorch官网指定的部署框架. Flask的基本模式为在程序里将一个视图函数分配给一个URL，每当用户访问这个URL时，系统就会执行给该URL分配好的视图函数，获取函数的返回值.</li>
+<li>为了保证服务的健壮性，Flask常常与gunicorn一同使用。</li>
+</ul>
+</li>
+<li>
+<p>安装必要的python工具包：</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>pip install <span class="nv">Flask</span><span class="o">==</span><span class="m">1</span>.1.1
+pip install <span class="nv">gunicorn</span><span class="o">==</span><span class="m">20</span>.0.4
+</code></pre></div>
+
+
+<ul>
+<li>代码实现位置：<ul>
+<li>/data/labeled_project/views.py</li>
+</ul>
+</li>
+</ul>
+<h4 id="_10">让我们动手做起来吧！</h4>
+<ul>
+<li>代码实现：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Flask框架固定工具</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">api</span>
+
+<span class="c1"># 定义服务请求路径和方式, 这里使用POST请求</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/api/get_label/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">recognition</span><span class="p">():</span>
+    <span class="c1"># 接收POST请求，并取数据中的&quot;text&quot;对应的值</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+    <span class="c1"># 调用输入预处理</span>
+    <span class="n">word_list</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">handle_cn_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># 调用图谱匹配</span>
+    <span class="n">index_map_label</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_index_map_label</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
+    <span class="c1"># 调用匹配歧义判断</span>
+    <span class="n">index_map_label_</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">weight_update</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="n">index_map_label</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index_map_label_</span><span class="p">:</span>
+        <span class="c1"># 调用概率调整</span>
+        <span class="n">df_</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">control_increase</span><span class="p">(</span><span class="n">index_map_label_</span><span class="p">)</span>
+        <span class="c1"># 调用概率归一化与父标签检索</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">father_label_and_normalized</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+
+
+<ul>
+<li>使用gunicorn启动服务</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>gunicorn -w <span class="m">1</span> -b <span class="m">0</span>.0.0.0:8888  views:app
+</code></pre></div>
+
+
+<ul>
+<li>使用supervisor后台启动服务</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># supervisord.conf在附件中提供</span>
+supervisord -c supervisord.conf
+</code></pre></div>
+
+
+<ul>
+<li>编写测试脚本：<ul>
+<li>该脚本将写在/data/labeled_project/test.py中</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://0.0.0.0:8888/api/get_label/&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;衬衫、裤子、外套、帽子：均为Wan Hung, 鞋：Samo, 项链：Crazy Rhythmm, 耳钉：Yvmin!&quot;</span><span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">()</span>
+</code></pre></div>
+
+
+<ul>
+<li>当前步骤总结：<ul>
+<li>通过Flask我们将主要的项目步骤封装在了服务之中，并通过test()进行了API测试。至此，我们的任务就已经完成了！ </li>
+</ul>
+</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../101/" title="项目背景" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                项目背景
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../103/" title="任务二:构建标签词汇图谱" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                任务二:构建标签词汇图谱
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
