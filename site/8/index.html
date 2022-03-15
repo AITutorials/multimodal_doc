@@ -1,0 +1,808 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/8/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>8 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-36723568-3", "mkdocs.org")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#api" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo">
+          
+            <img src="../img/AI.jpg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              基于多模态的视频标签化系统
+            </span>
+            <span class="md-header-nav__topic">
+              
+                8
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo">
+      
+        <img src="../img/AI.jpg" width="48" height="48">
+      
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1/" title="第一章：工程师眼中的多模态发展" class="md-nav__link">
+      第一章：工程师眼中的多模态发展
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3/" title="图像数据增强工具Albumentations" class="md-nav__link">
+      图像数据增强工具Albumentations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../4/" title="使用flask部署模型服务" class="md-nav__link">
+      使用flask部署模型服务
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api" title="信息中心对话实体抽取API说明" class="md-nav__link">
+    信息中心对话实体抽取API说明
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="硬件需求" class="md-nav__link">
+    硬件需求
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api_1" title="考试中心填空题API说明" class="md-nav__link">
+    考试中心填空题API说明
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="硬件需求" class="md-nav__link">
+    硬件需求
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" title="必要文件" class="md-nav__link">
+    必要文件
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api_2" title="数据分析图片解析API说明" class="md-nav__link">
+    数据分析图片解析API说明
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" title="硬件需求" class="md-nav__link">
+    硬件需求
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>8</h1>
+                
+                <h3 id="api">信息中心对话实体抽取API说明</h3>
+<ul>
+<li>URL:<ul>
+<li>http://47.241.24.21:8087/api/v1/get_info/</li>
+</ul>
+</li>
+<li>METHOD:<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>DATA:<ul>
+<li>sessionId：对话的唯一标识</li>
+<li>ip：系统识别的学员发起对话地址</li>
+<li>fromTitle：学员发起对话的页面</li>
+<li>content：学员与咨询师的对话内容</li>
+<li>content是一个列表形式，列表的每一项都是一个字典，代表咨询师与学员的一次对话。</li>
+<li>每个字典中一定且只包含"employee"和"customer"两个key，对应的value为对话内容。这里假定employee的对话时间一定发生在customer之前，若customer对话前employee无对话内容，则"employee"为空字符串"", 若customer在最后无对话内容，则"customer"为空字符串""。</li>
+<li>如果一方消息人在连续发送消息，则每个消息以"¥"分割。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>DATA sample:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;sessionId&quot;</span><span class="p">:</span> <span class="s2">&quot;23243&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ip&quot;</span><span class="p">:</span> <span class="s2">&quot;中国 北京 北京&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fromTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;黑马程序员C/C++与网络攻防培训官网-C/C++培训|C/C++与网络攻防培训机构&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;你好，你是想了解哪个课程呢？¥还在么同学？&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;价格？&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;您好¥您想了解哪个专业的学费呢¥专业不同，学时学费也不一样&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;C++&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;贵姓&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;周&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;好的，可以给您发送一份C++的课程资料，学时学费和学习路线，您可以先了解看下&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;好&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>RETURN:<ul>
+<li>sessionId：对话的唯一标识</li>
+<li>subject：学员的意向学科</li>
+<li>school：学员的意向校区    </li>
+<li>phone：学员的手机号  </li>
+<li>wechat：学员的微信  </li>
+<li>qq：学员的QQ号</li>
+<li>name：学员的姓名</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>RETURN Sample</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;sessionId&quot;</span><span class="p">:</span> <span class="s2">&quot;23243&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;subject&quot;</span><span class="p">:</span> <span class="s2">&quot;C++&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;school&quot;</span><span class="p">:</span> <span class="s2">&quot;北京&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;15242200223&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;wechat&quot;</span><span class="p">:</span> <span class="s2">&quot;15242200223&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;qq&quot;</span><span class="p">:</span> <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;周同学&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>PYTHON 请求代码:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="c1"># 请求路径，8087端口在nginx的配置中指定</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://47.241.24.21:8087/api/v1/get_info&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sessionId&quot;</span><span class="p">:</span> <span class="s2">&quot;23243&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ip&quot;</span><span class="p">:</span> <span class="s2">&quot;中国 北京 北京&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fromTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;黑马程序员C/C++与网络攻防培训官网-C/C++培训|C/C++与网络攻防培训机构&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;你好，你是想了解哪个课程呢？¥还在么同学？&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;价格？&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;您好¥您想了解哪个专业的学费呢¥专业不同，学时学费也不一样&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;C++&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;贵姓&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;周&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="s2">&quot;好的，可以给您发送一份C++的课程资料，学时学费和学习路线，您可以先了解看下&quot;</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;好&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+
+<span class="c1"># 多层嵌套必须使用json</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>{
+     &quot;sessionId&quot;:&quot;23243&quot;,
+     &quot;subject&quot;:&quot;C++&quot;,
+     &quot;school&quot;:&quot;unknown&quot;,
+     &quot;phone&quot;:&quot;unknown&quot;,
+     &quot;wechat&quot;:&quot;unknown&quot;,
+     &quot;qq&quot;:&quot;unknown&quot;,
+     &quot;name&quot;:&quot;周同学&quot;
+}
+</code></pre></div>
+
+
+<hr />
+<h4 id="_1">硬件需求</h4>
+<ul>
+<li>该任务属于离线任务，可申请：<ul>
+<li>16C（CPU核数），32G（内存空间），100G（硬盘空间）的服务器规格</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>根据经验以上硬件的AI服务接口QPS上限约为：1500</li>
+</ul>
+<hr />
+<h3 id="api_1">考试中心填空题API说明</h3>
+<ul>
+<li>URL:<ul>
+<li>http://47.241.24.21:8087/api/v1/get_trans/</li>
+</ul>
+</li>
+<li>METHOD:<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>DATA:<ul>
+<li>必须为json格式.</li>
+<li>共四个key，分别为:pid, student_answer, true_answer, full_marks</li>
+<li>pid: 字符串类型，问题的唯一标识</li>
+<li>student_answer: 列表类型，学生的答案，若为多项填空则["a", "b", "..."]</li>
+<li>true_answer: 列表类型，正确答案，若为多项填空则["A", "B", "..."]</li>
+<li>full_marks: 字符串类型，该题的总分.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>DATA sample:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;12312&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;student_answer&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;alt&quot;</span><span class="p">],</span>
+    <span class="nt">&quot;true_answer&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
+    <span class="nt">&quot;full_marks&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>RETURN:<ul>
+<li>json格式.</li>
+<li>共六个key，分别为: status, pid, student_answer, true_answer, score, confidence.</li>
+<li>status: 服务响应的状态，status为0代表正常，status为1代表异常.</li>
+<li>pid, student_answer, true_answer与DATA中的含义相同.</li>
+<li>score: 字符串类型，服务预测的得分.</li>
+<li>confidence: 得分的置信度，分为三个等级H（高置信度），M（中置信度），L（低置信度）.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>RETURN sample:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pid&quot;</span><span class="p">:</span><span class="s2">&quot;12312&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;student_answer&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;alt&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;true_answer&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;title&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="s2">&quot;H&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>PYTHON 请求代码:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://47.241.24.21:8087/api/v1/get_trans/&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;12312&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;student_answer&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;alt&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;true_answer&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;full_marks&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># 多层嵌套必须使用json</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pid&quot;</span><span class="p">:</span><span class="s2">&quot;12312&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;student_answer&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;alt&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;true_answer&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;title&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;score&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;confidence&quot;</span><span class="p">:</span><span class="s2">&quot;M&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<h4 id="_2">硬件需求</h4>
+<ul>
+<li>该任务属于离线任务，可申请：<ul>
+<li>16C（CPU核数），32G（内存空间），100G（硬盘空间）的服务器规格</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>根据经验以上硬件的AI服务接口QPS上限约为：1500</li>
+</ul>
+<hr />
+<h4 id="_3">必要文件</h4>
+<ul>
+<li>在使用Bert模型时，需要的run_glue.py，具体代码内容请访问：<a href="http://git.itcast.cn/Stephen/AI-key-file/blob/master/run_glue.py">http://git.itcast.cn/Stephen/AI-key-file/blob/master/run_glue.py</a></li>
+</ul>
+<hr />
+<h3 id="api_2">数据分析图片解析API说明</h3>
+<ul>
+<li>URL:<ul>
+<li>http://47.241.24.21:8087/api/v1/get_pm/</li>
+</ul>
+</li>
+<li>METHOD:<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>DATA:<ul>
+<li>必须为json格式.</li>
+<li>image_id: 字符串类型，图片的唯一标识</li>
+<li>str(image_base64): 字符串类型，图片被base64编码后还要转成str</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>DATA sample:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;image_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span> 
+    <span class="nt">&quot;image_base64&quot;</span><span class="p">:</span> <span class="err">str(base</span><span class="mi">64</span><span class="err">_data)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>RETURN:<ul>
+<li>json格式.</li>
+<li>image_id: 字符串类型，图片的唯一标识</li>
+<li>result: 字符串类型，只可能为offline或者online，代表线下或者线上开班</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>RETURN sample:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;image_id&quot;</span><span class="p">:</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="s2">&quot;offline&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>PYTHON 请求代码:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+
+<span class="c1"># 在该路径下准备一张带识别的图片</span>
+<span class="n">image_path</span> <span class="o">=</span> <span class="s2">&quot;/data/ItcastBrain/Pm/image/sample.jpg&quot;</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># b64encode：编码，b64decode: 解码</span>
+    <span class="n">base64_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;image_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span> <span class="s2">&quot;image_base64&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">base64_data</span><span class="p">)}</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://47.241.24.21:8087/api/v1/get_pm/&quot;</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;image_id&quot;</span><span class="p">:</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="s2">&quot;offline&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<h4 id="_4">硬件需求</h4>
+<ul>
+<li>该任务属于离线任务，可申请：<ul>
+<li>16C（CPU核数），32G（内存空间），100G（硬盘空间）的服务器规格</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>根据经验以上硬件的AI服务接口QPS上限约为：1500</li>
+</ul>
+<hr />
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://www.linkedin.com/in/%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-%E5%8C%97%E4%BA%AC%E6%A9%98%E6%98%9F-6bb7081a1/" class="md-footer-social__link fa fa-linkedin"></a>
+    
+      <a href="https://weibo.com/u/3469990762?is_all=1" class="md-footer-social__link fa fa-weibo"></a>
+    
+      <a href="http://bitbucket.org/AITutorials" class="md-footer-social__link fa fa-bitbucket"></a>
+    
+      <a href="https://github.com/AITutorials/datasets/issues" class="md-footer-social__link fa fa-gitlab"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+        
+        
+          
+          <script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1.2",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

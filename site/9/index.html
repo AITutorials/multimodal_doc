@@ -1,0 +1,492 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/9/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>9 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-36723568-3", "mkdocs.org")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo">
+          
+            <img src="../img/AI.jpg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              基于多模态的视频标签化系统
+            </span>
+            <span class="md-header-nav__topic">
+              
+                9
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo">
+      
+        <img src="../img/AI.jpg" width="48" height="48">
+      
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1/" title="第一章：工程师眼中的多模态发展" class="md-nav__link">
+      第一章：工程师眼中的多模态发展
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3/" title="图像数据增强工具Albumentations" class="md-nav__link">
+      图像数据增强工具Albumentations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../4/" title="使用flask部署模型服务" class="md-nav__link">
+      使用flask部署模型服务
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="立项背景" class="md-nav__link">
+    立项背景
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai" title="非展示端AI项目进展简述" class="md-nav__link">
+    非展示端AI项目进展简述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="更多的功能" class="md-nav__link">
+    更多的功能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="项目的作用" class="md-nav__link">
+    项目的作用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="总结" class="md-nav__link">
+    总结
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>9</h1>
+                
+                <h2 id="_1">立项背景</h2>
+<ul>
+<li>明确AI学科的属性："后端的后端"，与Java／Python略有不同，AI的项目并不是一个从0-1的过程，大多数情况下
+，它是一个1+的过程。它必须在已有的项目基础上对某些功能进行优化赋能，例如：从统计推荐系统到基于数据挖掘的个性化推荐系统，从简单的文本索引搜索到文本语义搜索。</li>
+</ul>
+<p><center><img alt="avatar" src="https://pic4.zhimg.com/v2-9b1be1d9c2ffc173297fa7562ccb0b12_1200x500.jpg" /></center></p>
+<ul>
+<li>
+<p>正因如此，AI项目的"界"就是一个包含<a href="http://52.83.69.131:8123/1/">N个API的服务</a>，这些服务一般只被后端系统调用。AI的项目形态无法很好的以一个应用或网站的形式展现给大家。考虑到让学员更好的理解项目，早期的AI项目展示，也是由我们研究员自己搭建简单的后端和前端页面（比如现在pip的CLS项目），但是从效果的美观和人员投入的精力上，我们觉得这样并不合适。</p>
+</li>
+<li>
+<p>至此，我们开始抽象AI能够的展示模式：文本输入---&gt;文本输出，图片输入---&gt;文本输出，图片输入---&gt;图片输出</p>
+</li>
+</ul>
+<p><img alt="" src="../img/0.png" /></p>
+<p>我们希望有这样一个系统，在AI工程师完成AI服务打包后，通过配置展示信息，输入示例，输出示例，服务说明等等，就可以生成统一样式的展示页面用于教学。这也是立项的背景也是初衷。</p>
+<hr />
+<h2 id="ai">非展示端AI项目进展简述</h2>
+<p>对于展示端如何，并不影响AI项目的实际应用的进展。</p>
+<ul>
+<li>完成对信息中心咨询部门信息提取服务的支持。<ul>
+<li>详情：<a href="http://52.83.69.131:8123/2/">http://52.83.69.131:8123/2/</a></li>
+</ul>
+</li>
+<li>完成院校邦考试题自动批阅服务的支持。<ul>
+<li>详情: <a href="http://52.83.69.131:8123/4/">http://52.83.69.131:8123/4/</a></li>
+</ul>
+</li>
+<li>完成数据分析团队在疫情影响下全国机线上开班统计（图像类）服务的支持。<ul>
+<li>详情: <a href="http://52.83.69.131:8123/6/">http://52.83.69.131:8123/4/</a></li>
+</ul>
+</li>
+<li>完成产品经理团队竞品分析流量统计（图像类）服务的支持。</li>
+</ul>
+<p>为什么要合作呢，实现真实的AI项目的痛点就是：真实的数据和业务场景，合作能帮我们解决这样的需求。
+以上的技术点都将在一定加工后转化成实际的AI课程讲义和视频。同时也是传智大脑展示端需要呈现的内容。如下图所示：</p>
+<p><img alt="" src="../img/1.png" /></p>
+<p><img alt="" src="../img/2.png" /></p>
+<hr />
+<h2 id="_2">更多的功能</h2>
+<p>除了展示外，因为我们的AI被实际应用，对于服务在生产环境下的测试和监控也是必不可少，现在，我们正在自己完成这些工作。我们希望这些功能也能成为其中的一部分：</p>
+<ul>
+<li>对提供的AI服务进行相关的测试。</li>
+<li>对服务状态提供一定的监控。</li>
+</ul>
+<p>这是一个对工程师开放的后端平台，如图所示：</p>
+<p><img alt="" src="../img/ceshi.png" /></p>
+<hr />
+<h2 id="_3">项目的作用</h2>
+<ul>
+<li>更好的增强AI教学效果，让学生能够看到并试用这些功能。</li>
+<li>更好的展示已有的AI项目，以促成更多的内部合作。</li>
+<li>减少AI研究员在展示端的精力，以便更好的研究有关的模型教学。</li>
+</ul>
+<hr />
+<h2 id="_4">总结</h2>
+<ul>
+<li>我们需要一个具有指定抽象模式的可配置的AI项目效果展示平台。</li>
+</ul>
+<hr />
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://www.linkedin.com/in/%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-%E5%8C%97%E4%BA%AC%E6%A9%98%E6%98%9F-6bb7081a1/" class="md-footer-social__link fa fa-linkedin"></a>
+    
+      <a href="https://weibo.com/u/3469990762?is_all=1" class="md-footer-social__link fa fa-weibo"></a>
+    
+      <a href="http://bitbucket.org/AITutorials" class="md-footer-social__link fa fa-bitbucket"></a>
+    
+      <a href="https://github.com/AITutorials/datasets/issues" class="md-footer-social__link fa fa-gitlab"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+        
+        
+          
+          <script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1.2",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

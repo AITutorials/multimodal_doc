@@ -1,0 +1,43 @@
+site_name: '基于多模态的视频标签化系统'
+site_url: 'https://www.tisv.cn/'
+# site_description: 'AI Tutorials'
+repo_url: 'https://github.com/AITutorials/datasets'
+repo_name: 'Github | Give Me A Star'
+edit_uri: ''
+
+copyright: ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+
+google_analytics: ['UA-36723568-3', 'mkdocs.org']
+
+nav:
+    # - 第一章：工程师眼中的多模态发展: 1.md
+    - 第二章：多模态整体解决方案: 2.md
+    # - 图像数据增强工具Albumentations: 3.md
+    # - 使用flask部署模型服务: 4.md
+    - 项目背景: 101.md
+    - 任务一:构建文本标签化主服务: 102.md
+    - 任务二:构建标签词汇图谱: 103.md
+    - 任务三:文本标签化模型的训练和部署: 104.md
+    - 任务四:文本标签化服务的分布式集成: 105.md
+    - 任务五:使用Resnet+GRU进行多模态处理: 106.md
+    - 任务六:使用VisualBERT进行多模态处理: 107.md
+    - 任务七:模态交互方式Co-Attention的优化改进: 108.md
+
+theme:
+  name: 'material'
+  language: 'zh'
+  favicon: 'img/AI.jpg'
+  # feature:
+  #  tabs: true
+  logo: 'img/AI.jpg'
+     #icon: 'star'
+
+
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+
+
+

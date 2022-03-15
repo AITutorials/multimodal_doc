@@ -1,0 +1,1048 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/3/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>图像数据增强工具Albumentations - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-36723568-3", "mkdocs.org")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo">
+          
+            <img src="../img/AI.jpg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              基于多模态的视频标签化系统
+            </span>
+            <span class="md-header-nav__topic">
+              
+                图像数据增强工具Albumentations
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo">
+      
+        <img src="../img/AI.jpg" width="48" height="48">
+      
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1/" title="第一章：工程师眼中的多模态发展" class="md-nav__link">
+      第一章：工程师眼中的多模态发展
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        图像数据增强工具Albumentations
+      </label>
+    
+    <a href="./" title="图像数据增强工具Albumentations" class="md-nav__link md-nav__link--active">
+      图像数据增强工具Albumentations
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#albumentations" title="Albumentations简介" class="md-nav__link">
+    Albumentations简介
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#albumentations_1" title="Albumentations的增强能力" class="md-nav__link">
+    Albumentations的增强能力
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="对目标检测任务进行数据增强的实现" class="md-nav__link">
+    对目标检测任务进行数据增强的实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../4/" title="使用flask部署模型服务" class="md-nav__link">
+      使用flask部署模型服务
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#albumentations" title="Albumentations简介" class="md-nav__link">
+    Albumentations简介
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#albumentations_1" title="Albumentations的增强能力" class="md-nav__link">
+    Albumentations的增强能力
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="对目标检测任务进行数据增强的实现" class="md-nav__link">
+    对目标检测任务进行数据增强的实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>图像数据增强工具Albumentations</h1>
+                
+                <h3 id="_1">学习目标</h3>
+<ul>
+<li>掌握图像数据增强工具Albumentations的“能力”。</li>
+<li>掌握对目标检测任务进行数据增强的实现。</li>
+</ul>
+<hr />
+<p><center></p>
+<p><img alt="" src="../img/Albumentations.png" /></p>
+<p></center></p>
+<h3 id="albumentations">Albumentations简介</h3>
+<ul>
+<li>整合了70+种图像数据增强方法，针对各种CV常规任务，如分类，目标检测，语义分割等的数据增强，在业界，科学竞赛，科研中的都有很大程度的应用。</li>
+</ul>
+<h3 id="albumentations_1">Albumentations的增强能力</h3>
+<ul>
+<li>像素级变换</li>
+<li>空间级变换</li>
+</ul>
+<hr />
+<ul>
+<li>像素级变换：<ul>
+<li>Blur（模糊化）</li>
+<li>CLAHE（对比度均衡化）</li>
+<li>ChannelDropout（颜色通道置0）</li>
+<li>ChannelShuffle（颜色通道打散）</li>
+<li>ColorJitter（随机改变图像的亮度、对比度和饱和度）</li>
+<li>Downscale（通过回缩降低图片质量）</li>
+<li>Emboss（对输入图像进行浮雕并将结果与原始图像叠加）</li>
+<li>Equalize（遮掩均衡）</li>
+<li>FancyPCA（论文中使用的一种综合增强方法）</li>
+<li>FromFloat（对浮点型矩阵的运算方法）</li>
+<li>GaussNoise（对图片添加高斯噪音）</li>
+<li>GaussianBlur（高斯模糊化）</li>
+<li>GlassBlur（玻璃模糊化）</li>
+<li>HueSaturationValue（随机改变色调和饱和度）</li>
+<li>ISONoise（对图片添加传感器噪音，针对移动设备中的增强）</li>
+<li>ImageCompression（图片压缩）</li>
+<li>InvertImg（通过255减去当前像素值实现反转）</li>
+<li>MedianBlur（中值模糊化）</li>
+<li>MotionBlur（运动模糊化）</li>
+<li>MultiplicativeNoise（对图片添加乘性噪音）</li>
+<li>Normalize（对像素进行规范化）</li>
+<li>Posterize（海报化）</li>
+<li>RGBShift（颜色通道变换）</li>
+<li>RandomBrightnessContrast（随机亮度和对比度调节）</li>
+<li>RandomFog（随机雾化）</li>
+<li>RandomGamma（随机调整图片中的gamma值）</li>
+<li>RandomRain（随机添加雨天效果）</li>
+<li>RandomShadow（随机添加阴影）</li>
+<li>RandomSnow（随机添加雪天效果）</li>
+<li>RandomSunFlare（随机添加太阳耀斑）</li>
+<li>RandomToneCurve（随机改变色调曲线）</li>
+<li>Sharpen（锐化特效）</li>
+<li>Solarize（日晒特效）</li>
+<li>Superpixels（超像素特效）</li>
+<li>ToFloat（向浮点型转化）</li>
+<li>ToGray（变成灰度图片）</li>
+<li>ToSepia（变成棕褐图片）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>示例：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>pip install albumentations
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入必备的工具包</span>
+<span class="kn">import</span> <span class="nn">albumentations</span> <span class="kn">as</span> <span class="nn">A</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+
+
+<span class="c1"># 使用cv2读取图片</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;./input.png&quot;</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+
+
+<span class="c1"># 进行一系列的增强操作</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="c1"># 运动模糊</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">MotionBlur</span><span class="p">(),</span>
+    <span class="c1"># 海报化</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">Posterize</span><span class="p">(),</span>
+    <span class="c1"># 随机雾化</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">RandomFog</span><span class="p">()</span>
+<span class="p">])</span>
+
+<span class="c1"># 取出结果并保存图片</span>
+<span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">)[</span><span class="s2">&quot;image&quot;</span><span class="p">]</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;./output.png&quot;</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">transformed</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>效果对比：</li>
+</ul>
+</blockquote>
+<p><img alt="" src="../img/output.png" />
+<img alt="" src="../img/input.png" /></p>
+<hr />
+<ul>
+<li>空间级变换：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Transform</th>
+<th align="center">Image</th>
+<th align="center">Masks</th>
+<th align="center">BBoxes</th>
+<th align="center">Keypoints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/transforms/#albumentations.augmentations.geometric.transforms.Affine">Affine（仿射变换）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.CenterCrop">CenterCrop（中心剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.CoarseDropout">CoarseDropout（线条舍弃以增加粗糙度）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.Crop">Crop（剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.CropAndPad">CropAndPad（剪裁并填充）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.CropNonEmptyMaskIfExists">CropNonEmptyMaskIfExists（根据mask进行剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/transforms/#albumentations.augmentations.geometric.transforms.ElasticTransform">ElasticTransform（对图片进行弹性变换）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.Flip">Flip（水平／垂直翻转）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.GridDistortion">GridDistortion（指定区域失真）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.GridDropout">GridDropout（网格区域舍弃）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.HorizontalFlip">HorizontalFlip（水平翻转）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.Lambda">Lambda（用户自定义方法）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/resize/#albumentations.augmentations.geometric.resize.LongestMaxSize">LongestMaxSize（图片尺寸放大）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.MaskDropout">MaskDropout（mask区域舍弃）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/core/transforms_interface/#albumentations.core.transforms_interface.NoOp">NoOp（空操作）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.OpticalDistortion">OpticalDistortion（光学失真）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.PadIfNeeded">PadIfNeeded（按需填充）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/transforms/#albumentations.augmentations.geometric.transforms.Perspective">Perspective（四点透视变换）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/transforms/#albumentations.augmentations.geometric.transforms.PiecewiseAffine">PiecewiseAffine（分段仿射）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.RandomCrop">RandomCrop（随机剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.RandomCropNearBBox">RandomCropNearBBox（图像中裁剪bbox，随机移动坐标）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.RandomGridShuffle">RandomGridShuffle（随机网格打乱）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.RandomResizedCrop">RandomResizedCrop（随机大小剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/rotate/#albumentations.augmentations.geometric.rotate.RandomRotate90">RandomRotate90（随机翻转90度）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/resize/#albumentations.augmentations.geometric.resize.RandomScale">RandomScale（随机缩放）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.RandomSizedBBoxSafeCrop">RandomSizedBBoxSafeCrop（不丢失bbox下随机剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/crops/transforms/#albumentations.augmentations.crops.transforms.RandomSizedCrop">RandomSizedCrop（随机尺寸剪裁）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/resize/#albumentations.augmentations.geometric.resize.Resize">Resize（改变图片尺寸）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/rotate/#albumentations.augmentations.geometric.rotate.Rotate">Rotate（旋转）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/rotate/#albumentations.augmentations.geometric.rotate.SafeRotate">SafeRotate（安全旋转，旋转符合均匀分布）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/transforms/#albumentations.augmentations.geometric.transforms.ShiftScaleRotate">ShiftScaleRotate（平移缩放旋转）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/geometric/resize/#albumentations.augmentations.geometric.resize.SmallestMaxSize">SmallestMaxSize（缩小图片）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.Transpose">Transpose（转置操作）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td><a href="https://albumentations.ai/docs/api_reference/augmentations/transforms/#albumentations.augmentations.transforms.VerticalFlip">VerticalFlip（垂直翻转）</a></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>试一试：<ul>
+<li>根据像素级变换的代码，请同学们自己结合文档<a href="https://albumentations.ai/docs/">https://albumentations.ai/docs/</a>尝试空间级的变换。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<h3 id="_2">对目标检测任务进行数据增强的实现</h3>
+<ul>
+<li>
+<p>说明：</p>
+<ul>
+<li>albumentations的bbox坐标形式类似于pascal_voc，采用极坐标表示，形如：[x_min, y_min, x_max, y_max]，而且albumentations要求坐标表示必须规范化，即使用真实坐标值除以对应的宽高，形如：[98 / 640, 345 / 480, 420 / 640, 462 / 480]。</li>
+<li>之前的coco是中心坐标表示，形如：[x_min, y_min, width, height]，而yolo是规范化中心坐标表示，形如：[((420 + 98) / 2) / 640, ((462 + 345) / 2) / 480, 322 / 640, 117 / 480]。</li>
+</ul>
+</li>
+<li>
+<p>接下来，我们以coco数据集中的图片为例进行增强，首先下载<a href="https://cocodataset.org/">coco目标检测数据集</a>，或者我们使用的实例：<a href="https://cocodataset.org/#explore?id=386298">https://cocodataset.org/#explore?id=386298</a></p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入必备的工具包</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">albumentations</span> <span class="kn">as</span> <span class="nn">A</span>
+
+
+<span class="c1"># 使用cv2读取选择的一张图片</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;images/000000386298.jpg&#39;</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+
+<span class="c1"># 找到该图片对应的标注信息，coco格式的bbox以及对应的标签</span>
+<span class="n">bboxes</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">5.66</span><span class="p">,</span> <span class="mf">138.95</span><span class="p">,</span> <span class="mf">147.09</span><span class="p">,</span> <span class="mf">164.88</span><span class="p">],</span> <span class="p">[</span><span class="mf">366.7</span><span class="p">,</span> <span class="mf">80.84</span><span class="p">,</span> <span class="mf">132.8</span><span class="p">,</span> <span class="mf">181.84</span><span class="p">]]</span>
+<span class="n">category_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+
+<span class="c1"># 以及标签数值对应的实际文本</span>
+<span class="n">category_id_to_name</span> <span class="o">=</span> <span class="p">{</span><span class="mi">17</span><span class="p">:</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="s1">&#39;dog&#39;</span><span class="p">}</span>
+
+
+
+<span class="c1"># 接下来我们要可视化一下这个目标检测的用例</span>
+<span class="c1"># 我们要把这个bbox画在图片上并显示具体的标签文本</span>
+
+
+<span class="c1"># 先定义框的颜色和文本颜色</span>
+<span class="n">BOX_COLOR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># Red</span>
+<span class="n">TEXT_COLOR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="c1"># White</span>
+
+
+
+
+<span class="k">def</span> <span class="nf">visualize_bbox</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">BOX_COLOR</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;单个可视化目标框函数，参数包括，图片本身，目标框坐标，类别名字，框颜色，以及框的条纹宽度&quot;&quot;&quot;</span>
+    <span class="c1"># 使用cv2.rectangle要使用极坐标，所以首先做坐标转换</span>
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">bbox</span>
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_min</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_min</span> <span class="o">+</span> <span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_min</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_min</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="c1"># 先根据坐标画上目标框</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">),</span> <span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
+
+    <span class="c1"># 设定参数来获得目标框对应的标签文本大小</span>
+    <span class="p">((</span><span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span><span class="p">),</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">class_name</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    
+    <span class="c1"># 再根据文本的宽高调整目标框</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.3</span> <span class="o">*</span> <span class="n">text_height</span><span class="p">)),</span> <span class="p">(</span><span class="n">x_min</span> <span class="o">+</span> <span class="n">text_width</span><span class="p">,</span> <span class="n">y_min</span><span class="p">),</span> <span class="n">BOX_COLOR</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 最后把文本放在目标框附近，其中设定一系列的文本参数，颜色，线条类型，字体类型等等</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span>
+        <span class="n">img</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">class_name</span><span class="p">,</span>
+        <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">text_height</span><span class="p">)),</span>
+        <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span>
+        <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> 
+        <span class="n">color</span><span class="o">=</span><span class="n">TEXT_COLOR</span><span class="p">,</span> 
+        <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+
+<span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">category_ids</span><span class="p">,</span> <span class="n">category_id_to_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;对每一个目标框进行绘制&quot;&quot;&quot;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">category_id</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">category_ids</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="n">category_id_to_name</span><span class="p">[</span><span class="n">category_id</span><span class="p">]</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">visualize_bbox</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;./ob_sample.png&quot;</span><span class="p">)</span>
+
+
+
+<span class="c1"># 调用该函数显示coco图片</span>
+<span class="n">visualize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">category_ids</span><span class="p">,</span> <span class="n">category_id_to_name</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p><img alt="" src="../img/coco1.png" /></p>
+<ul>
+<li>接下来就是进行数据增强：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用A构建数据增强流水线</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
+    <span class="c1"># 先用一个简单的水平翻转</span>
+    <span class="p">[</span><span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)],</span>
+    <span class="c1"># 因为是目标检测的数据增强，要给出bbox_params，包括重要的format</span>
+    <span class="n">bbox_params</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">BboxParams</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">&#39;coco&#39;</span><span class="p">,</span> <span class="n">label_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;category_ids&#39;</span><span class="p">]),</span>
+<span class="p">)</span>
+
+<span class="c1"># 将图片，bbox以及类别id传入数据增强流水线</span>
+<span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">bboxes</span><span class="o">=</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">category_ids</span><span class="o">=</span><span class="n">category_ids</span><span class="p">)</span>
+
+
+<span class="c1"># 将得到的结果进行可视化</span>
+<span class="n">visualize</span><span class="p">(</span>
+    <span class="n">transformed</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">],</span>
+    <span class="n">transformed</span><span class="p">[</span><span class="s1">&#39;bboxes&#39;</span><span class="p">],</span>
+    <span class="n">transformed</span><span class="p">[</span><span class="s1">&#39;category_ids&#39;</span><span class="p">],</span>
+    <span class="n">category_id_to_name</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p><img alt="" src="../img/coco2.png" /></p>
+<hr />
+<ul>
+<li>这里我们可以使用更加复杂的数据增强方式：</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用A构建数据增强流水线</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">ShiftScaleRotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">RGBShift</span><span class="p">(</span><span class="n">r_shift_limit</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">g_shift_limit</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">b_shift_limit</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)],</span>
+    <span class="c1"># 因为是目标检测的数据增强，要给出bbox_params，包括重要的format</span>
+    <span class="n">bbox_params</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">BboxParams</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">&#39;coco&#39;</span><span class="p">,</span> <span class="n">label_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;category_ids&#39;</span><span class="p">]),</span>
+<span class="p">)</span>
+
+<span class="c1"># 将图片，bbox以及类别id传入数据增强流水线</span>
+<span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">bboxes</span><span class="o">=</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">category_ids</span><span class="o">=</span><span class="n">category_ids</span><span class="p">)</span>
+
+
+<span class="c1"># 将得到的结果进行可视化</span>
+<span class="n">visualize</span><span class="p">(</span>
+    <span class="n">transformed</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">],</span>
+    <span class="n">transformed</span><span class="p">[</span><span class="s1">&#39;bboxes&#39;</span><span class="p">],</span>
+    <span class="n">transformed</span><span class="p">[</span><span class="s1">&#39;category_ids&#39;</span><span class="p">],</span>
+    <span class="n">category_id_to_name</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p><img alt="" src="../img/coco3.png" /></p>
+<hr />
+<h3 id="_3">小节总结</h3>
+<ul>
+<li>学习了图像数据增强工具Albumentations的“能力”。</li>
+<li>掌握了对目标检测任务进行数据增强的实现。 </li>
+</ul>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../2/" title="第二章：多模态整体解决方案" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                第二章：多模态整体解决方案
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../4/" title="使用flask部署模型服务" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                使用flask部署模型服务
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://www.linkedin.com/in/%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-%E5%8C%97%E4%BA%AC%E6%A9%98%E6%98%9F-6bb7081a1/" class="md-footer-social__link fa fa-linkedin"></a>
+    
+      <a href="https://weibo.com/u/3469990762?is_all=1" class="md-footer-social__link fa fa-weibo"></a>
+    
+      <a href="http://bitbucket.org/AITutorials" class="md-footer-social__link fa fa-bitbucket"></a>
+    
+      <a href="https://github.com/AITutorials/datasets/issues" class="md-footer-social__link fa fa-gitlab"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+        
+        
+          
+          <script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1.2",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

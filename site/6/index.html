@@ -1,0 +1,3114 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/6/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>6 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-36723568-3", "mkdocs.org")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#61" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo">
+          
+            <img src="../img/AI.jpg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              基于多模态的视频标签化系统
+            </span>
+            <span class="md-header-nav__topic">
+              
+                6
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo">
+      
+        <img src="../img/AI.jpg" width="48" height="48">
+      
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1/" title="第一章：工程师眼中的多模态发展" class="md-nav__link">
+      第一章：工程师眼中的多模态发展
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3/" title="图像数据增强工具Albumentations" class="md-nav__link">
+      图像数据增强工具Albumentations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../4/" title="使用flask部署模型服务" class="md-nav__link">
+      使用flask部署模型服务
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61" title="6.1 背景需求与分析" class="md-nav__link">
+    6.1 背景需求与分析
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="背景需求" class="md-nav__link">
+    背景需求
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" title="需求分析" class="md-nav__link">
+    需求分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62" title="6.2 产品形态与效果展示" class="md-nav__link">
+    6.2 产品形态与效果展示
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" title="产品形态" class="md-nav__link">
+    产品形态
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" title="产品设计逻辑" class="md-nav__link">
+    产品设计逻辑
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63" title="6.3 整体解决方案初定" class="md-nav__link">
+    6.3 整体解决方案初定
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" title="初始整体解决方案的步骤" class="md-nav__link">
+    初始整体解决方案的步骤
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" title="第一步: 明确问题并提出数据要求" class="md-nav__link">
+    第一步: 明确问题并提出数据要求
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" title="第二步: 对原始数据进行数据分析" class="md-nav__link">
+    第二步: 对原始数据进行数据分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" title="第三步：使用模型进行图像分类" class="md-nav__link">
+    第三步：使用模型进行图像分类
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" title="第四步: 模型部署服务概述" class="md-nav__link">
+    第四步: 模型部署服务概述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64" title="6.4 整体解决方案实施与调整" class="md-nav__link">
+    6.4 整体解决方案实施与调整
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" title="整体解决方案的实施步骤" class="md-nav__link">
+    整体解决方案的实施步骤
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" title="第一步: 获取指定数据并进行数据分析" class="md-nav__link">
+    第一步: 获取指定数据并进行数据分析
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" title="第二步: 进行模型训练和验证过程的实现" class="md-nav__link">
+    第二步: 进行模型训练和验证过程的实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" title="第三步: 提升模型的训练速度" class="md-nav__link">
+    第三步: 提升模型的训练速度
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" title="第四步: 提升模型的推断速度-模型剪枝" class="md-nav__link">
+    第四步: 提升模型的推断速度-模型剪枝
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65" title="6.5 模型服务的部署" class="md-nav__link">
+    6.5 模型服务的部署
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" title="学习目标" class="md-nav__link">
+    学习目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" title="什么是模型热更新" class="md-nav__link">
+    什么是模型热更新
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" title="如何做到热更新" class="md-nav__link">
+    如何做到热更新
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flask" title="Flask服务组件" class="md-nav__link">
+    Flask服务组件
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flask_1" title="使用Flask框架将模型封装成服务" class="md-nav__link">
+    使用Flask框架将模型封装成服务
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apppy" title="第一步: 编写app.py文件，代码实现如下:" class="md-nav__link">
+    第一步: 编写app.py文件，代码实现如下:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gunicorn" title="第二步: 使用gunicorn来启动服务" class="md-nav__link">
+    第二步: 使用gunicorn来启动服务
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testpy" title="第三步: 编写test.py进行接口测试" class="md-nav__link">
+    第三步: 编写test.py进行接口测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx" title="第四步: 使用Nginx代理两个服务满足热更新" class="md-nav__link">
+    第四步: 使用Nginx代理两个服务满足热更新
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" title="整体服务部署与联调测试" class="md-nav__link">
+    整体服务部署与联调测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" title="小节总结" class="md-nav__link">
+    小节总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>6</h1>
+                
+                <h2 id="61">6.1 背景需求与分析</h2>
+<hr />
+<h3 id="_1">学习目标</h3>
+<ul>
+<li>了解该系统的背景需求。</li>
+<li>通过对需求分析明确交付系统要求。</li>
+</ul>
+<p><center><img alt="avatar" src="https://pic4.zhimg.com/v2-9b1be1d9c2ffc173297fa7562ccb0b12_1200x500.jpg" /></center></p>
+<hr />
+<h3 id="_2">背景需求</h3>
+<ul>
+<li>
+<p>该需求来自公司的数据分析团队，他们负责着全国教育市场现状的统计分析工作，尤其在疫情期间，多少机构从线下转到线上，不同机构线下转线上的速度以及不同区域受疫情影响的情况。这些重要信息将帮助决策层把控当前公司发展和调整的方向。</p>
+</li>
+<li>
+<p>数据分析团队的数据抓取工程师会对各个教育机构发布的开班情况进行抓取，包括开班文案（标题和正文），开班照片等，我们希望通过这个抓取信息判断该地区的班级是否为线下开班（实际上，只有两种情况，要么线上要么线下），在这里，AI团队决定使用图片识别来区分开班情况。</p>
+</li>
+</ul>
+<hr />
+<h3 id="_3">需求分析</h3>
+<p>通过上述背景需求，该问题被转换成图片的二分类问题，我们首先明确以下几点:</p>
+<ul>
+<li>
+<p>系统输入: 一张班级开班照片。</p>
+</li>
+<li>
+<p>系统输出: 是否为线下开班（0/1的决策值）。</p>
+</li>
+<li>
+<p>在线服务: 经过与后端工程师的沟通，我最终将需要交付图片识别API，并且尽可能的缩短响应时间到ms级别。</p>
+</li>
+</ul>
+<p>以上这些也是我们最终需要交付系统的要求。</p>
+<hr />
+<h3 id="_4">小节总结</h3>
+<ul>
+<li>
+<p>学习了系统背景需求:</p>
+<ul>
+<li>利用人工智能等相关技术识别图片中展现的开班情况，线上开班还是线下开班。</li>
+</ul>
+</li>
+<li>
+<p>学习了交付系统要求:</p>
+<ul>
+<li>明确了输入，输出和在线需求。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="62">6.2 产品形态与效果展示</h2>
+<hr />
+<h3 id="_5">学习目标</h3>
+<ul>
+<li>了解系统的最终产品形态。</li>
+<li>了解系统的产品设计逻辑。</li>
+</ul>
+<hr />
+<h3 id="_6">产品形态</h3>
+<ul>
+<li>整个数据分析产品最终产出的是数据分析报表，里面包含在疫情影响下，各种全国机构的开班情况。</li>
+</ul>
+<p><center><img alt="avatar" src="../img/shuju1.png" /></center></p>
+<hr />
+<h3 id="_7">产品设计逻辑</h3>
+<p><img alt="avatar" src="../img/chanpin1.png" /></p>
+<hr />
+<h3 id="_8">小节总结</h3>
+<ul>
+<li>学习了产品的最终形态。</li>
+<li>学习了系统的输入输出过程，让我们对系统有了更加直观的认识。</li>
+</ul>
+<hr />
+<h2 id="63">6.3 整体解决方案初定</h2>
+<hr />
+<h3 id="_9">学习目标</h3>
+<ul>
+<li>了解初始整体解决方案的各个步骤。 </li>
+</ul>
+<hr />
+<h3 id="_10">初始整体解决方案的步骤</h3>
+<ul>
+<li>第一步: 明确问题并提出数据要求</li>
+<li>第二步: 对原始数据进行数据分析</li>
+<li>第三步: 使用模型进行图像分类</li>
+<li>第四步: 模型部署服务概述</li>
+</ul>
+<hr />
+<h4 id="_11">第一步: 明确问题并提出数据要求</h4>
+<ul>
+<li>明确问题:<ul>
+<li>从根据给定的图片判断是否为线下开班。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>数据要求:<ul>
+<li>数据抓取团队提供的全国机构开班照片不少于500张，并希望这些照片有一定的标注信息（是否为线下开班）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="_12">第二步: 对原始数据进行数据分析</h4>
+<ul>
+<li>数据分析指标：<ul>
+<li>1，图片质量或格式过滤<blockquote>
+<ul>
+<li>作用： 滤除图片中的非法格式（gif，mp4等等）</li>
+</ul>
+</blockquote>
+</li>
+<li>2，统计图片尺寸分布<blockquote>
+<ul>
+<li>作用： 了解当前图片集的图片尺寸概况，用于后续的剪裁尺寸选择。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="_13">第三步：使用模型进行图像分类</h4>
+<ul>
+<li>根据当前的硬件设备和在线需求，我们将均衡准确率和推断时间来选择模型，简单过程如下：<ul>
+<li>1，采集并标注不同类型问题的样本数据</li>
+<li>2，训练并验证Resnet系列进行分类</li>
+</ul>
+</li>
+</ul>
+<p><center><img alt="avatar" src="../img/resnet18_model.png" /></center></p>
+<hr />
+<h4 id="_14">第四步: 模型部署服务概述</h4>
+<ul>
+<li>总体服务架构设计<ul>
+<li>使用基于Django的服务框架。</li>
+<li>使用nginx作为反向代理和负载均衡。</li>
+<li>使用supervisor作为单服务守护与监控。</li>
+<li>使用uwsgi作为高性能web server。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>模型服务封装<ul>
+<li>基于tensorflow/keras框架开发的模型使用tf-serving进行封装，以保证服务健壮性以及模型热更新。</li>
+<li>基于pytorch框架开发的模型使用flask框架进行封装，使用交替双服务保证模型热更新。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>系统联调与测试<ul>
+<li>与外界服务使用REST API（http）进行交互。</li>
+<li>输入与输出为规范json格式（图片数据进行编码）。</li>
+<li>根据实际接口调用情况，进行并发压力测试。</li>
+<li>灰度发布，进行可用性测试。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>服务器资源<ul>
+<li>模型训练服务器:<blockquote>
+<ul>
+<li>CPU：8C，16G内存，100G硬盘</li>
+</ul>
+</blockquote>
+</li>
+<li>模型部署服务器:<blockquote>
+<ul>
+<li>CPU：8C，16G内存，100G硬盘，2M带宽</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="_15">小节总结</h3>
+<ul>
+<li>学习了初始整体解决方案的各个步骤:<ul>
+<li>第一步: 明确问题并提出数据要求</li>
+<li>第二步: 对原始数据进行可视化数据分析</li>
+<li>第三步：使用模型进行图像分类</li>
+<li>第四步: 模型部署服务概述</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="64">6.4 整体解决方案实施与调整</h2>
+<hr />
+<h3 id="_16">学习目标</h3>
+<ul>
+<li>掌握整体解决方案的实施步骤和代码实现。</li>
+<li>掌握根据真实数据情况作出的一些方案调整和代码实现。</li>
+</ul>
+<hr />
+<h3 id="_17">整体解决方案的实施步骤</h3>
+<ul>
+<li>第一步: 获取指定数据并进行数据分析</li>
+<li>第二步: 进行模型训练和验证过程的实现</li>
+<li>第三步: 提升模型的训练速度</li>
+<li>第四步: 提升模型的推断速度-模型剪枝</li>
+</ul>
+<hr />
+<h4 id="_18">第一步: 获取指定数据并进行数据分析</h4>
+<p>根据之前的"数据要求"，我们将从数据抓取工程师手中获得指定数据，大约2000张图片（即包含线上照片也包含线下的照片），但和我们预计的不同，这些图片并没有提供给标签，意味着需要我们自己进行相应的标注。</p>
+<hr />
+<ul>
+<li>进行图片标注</li>
+</ul>
+<blockquote>
+<ul>
+<li>这些图片被存储在训练服务器的/data/ItcastBrain_CV/image/路径下.</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 通过以下shell命令获得图片数量</span>
+<span class="c1"># 考虑数据安全，在这里并没有提供全部2132张图片，</span>
+<span class="c1"># 只提供了部分图片，并进行了模糊化</span>
+<span class="c1"># 图像的名字已被脱敏成数字，</span>
+<span class="c1"># 实际上它应该是&#39;xxx校区xxx学科xxx期开班合照&#39;</span>
+<span class="nb">cd</span> /data/ItcastBrain_CV/image/
+ls <span class="p">|</span> wc -l
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>在人工标注前，先创建两个文件夹分别存储对应的图片，offline和online，代表线下和线上。</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>mkdir /data/ItcastBrain_CV/online
+mkdir /data/ItcastBrain_CV/offline 
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>接下来，我们希望像本机一样能够查看这些图片，因此我们来到服务器的/data/ItcastBrain_CV/目录下，启动一个简单的服务：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 你的服务器需要开通8000端口，这样就可以通过浏览器进行图片查看</span>
+python -m http.server <span class="m">8000</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<p><center><img alt="" src="../img/direct.png" /></center></p>
+<hr />
+<ul>
+<li>这样我们就通过浏览器来查看该目录下的所有文件。查看每一张图片，将线上的图片通过<code>mv命令</code>转到online文件夹中，这样最后image就剩下offline图片，同时，在整个标注过程中，我们也将过滤掉所有非法格式和已经损坏的图片，在后续的数据分析处理过程中，将不再需要这些步骤。</li>
+</ul>
+<hr />
+<ul>
+<li>通过数据增强来均衡数据集</li>
+</ul>
+<blockquote>
+<ul>
+<li>标注完成后，我们需要统计两种类型图片的数量</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> /data/ItcastBrain_CV/online
+ls <span class="p">|</span> wc -l
+<span class="c1"># 按照给定的部分数据，online图片数量应该是500左右</span>
+
+
+<span class="nb">cd</span> /data/ItcastBrain_CV/offline
+ls <span class="p">|</span> wc -l
+<span class="c1"># 按照给定的部分数据，offline图片数量应该是180左右</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>数据不均衡对二分类的影响：<ul>
+<li>对于分类问题的评估指标（比如acc），不均衡将导致acc不具有代表性。所以，我们需要以数据增强的方式来拓展数据，使其趋于平衡。当然解决数据不均衡不仅仅一种方式，修改损失函数中标签的权重，使用AUC指标进行评估等都是常见的选择，但是使用数据增强的方式平衡数据量是业界公认的效果更好的方式。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>如何做数据增强:<ul>
+<li>对图像进行增强的方式有很多，比如，随机翻转，中心剪裁，调节亮度，调节饱和度等等，在这里我们将把online数据增强2倍来平衡offline，增强后online数据总数为180 + 2*180=540。我们选择随机调整亮度和随机调整饱和度。</li>
+<li>原因：对于哪种增强方式合适，可以通过任务特点进行一定的选择，对于该任务，即使之后的数据集足够大，在测试中也极少出现图像翻转的情况，因为抓取的开班文案一般发布前都经过审核，不会出现照片被翻转的情况，因此这方面的增强一般最后考虑。我们通过对数据的审查，这些照片来自不同的设备且在多变的环境中，因此图片亮度和饱和度是变化较大的方式。</li>
+<li>注意：关于图片增强工具的使用是没有限定的，pytorch/tensorflow框架都有实现工具，他们的实现也略有差异，我们会选择于我们增强要求最匹配的工具，这里使用tf.image。如果你想使用更加专业的数据增强工具，可以学习<a href="https://github.com/albumentations-team/albumentations#documentation">Albumentations</a>，它的使用很简单，但能够增强的方式却非常丰富。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>亮度和饱和度的区别：<ul>
+<li>亮度往暗走就是整个色相偏暗最暗就会变纯黑，往亮走就是整个色相偏白亮最亮就变纯白。（色相的深浅）</li>
+<li>饱和度最高就是当前色彩能达到的最大饱和程度就是最鲜艳的意思，饱和度最低就代表已经是灰色没有任何饱和度。（色相的强弱）</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<ul>
+<li>使用tf.image进行指定数据增强的示例</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># /data/ItcastBrain_CV/sample.jpg是我们给定的图片</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># pip install tensorflow==2.3.0</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">PIL.Image</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">image_path</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+<span class="n">image_name</span> <span class="o">=</span> <span class="s2">&quot;sample.jpg&quot;</span>
+<span class="c1"># 将图片读入内存，与tf.io.decode_image配合使用</span>
+<span class="n">image_string</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+<span class="c1"># 将其转换成张量，保留颜色通道</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">decode_image</span><span class="p">(</span><span class="n">image_string</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># 接下来我们看一下增强的效果</span>
+<span class="c1"># 饱和度调节</span>
+<span class="n">saturation_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_saturation</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">saturation_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">encode_jpeg</span><span class="p">(</span><span class="n">saturation_image</span><span class="p">)</span>
+<span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s2">&quot;saturation_&quot;</span> <span class="o">+</span> <span class="n">image_name</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">,</span> <span class="n">saturation_image</span>
+<span class="p">)</span>
+<span class="c1"># 亮度调节</span>
+<span class="n">brightness_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_brightness</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">brightness_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">encode_jpeg</span><span class="p">(</span><span class="n">brightness_image</span><span class="p">)</span>
+<span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s2">&quot;brightness_&quot;</span> <span class="o">+</span> <span class="n">image_name</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">,</span> <span class="n">brightness_image</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/data_analysis.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:<ul>
+<li>在当前目录下生成brightness_sample.jpg和saturation_sample.jpg</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>通过浏览器查看原图，亮度增强图，饱和度增强图</li>
+</ul>
+</blockquote>
+<p><center><img alt="avatar" src="../img/sample.jpg" /></center>
+<center><img alt="avatar" src="../img/brightness_sample.jpg" /></center>
+<center><img alt="avatar" src="../img/saturation_sample.jpg" /></center></p>
+<hr />
+<blockquote>
+<ul>
+<li>对online中的图片进行增强</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 读取所有图片</span>
+<span class="n">online_image_path</span> <span class="o">=</span> <span class="s2">&quot;./online/&quot;</span>
+<span class="n">online_image_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">)</span>
+
+<span class="c1"># 与刚刚的方式类似，只不过这次需要循环</span>
+<span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">online_image_names</span><span class="p">:</span>
+    <span class="n">image_string</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">decode_image</span><span class="p">(</span><span class="n">image_string</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1">## 饱和度调节</span>
+    <span class="n">saturation_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_saturation</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">saturation_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">encode_jpeg</span><span class="p">(</span><span class="n">saturation_image</span><span class="p">)</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">,</span> <span class="s2">&quot;saturation_&quot;</span> <span class="o">+</span> <span class="n">image_name</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">saturation_image</span><span class="p">)</span>
+    <span class="c1">## 亮度调节</span>
+    <span class="n">brightness_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_brightness</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">brightness_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">encode_jpeg</span><span class="p">(</span><span class="n">brightness_image</span><span class="p">)</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">,</span> <span class="s2">&quot;brightness_&quot;</span> <span class="o">+</span> <span class="n">image_name</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">brightness_image</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Finished!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/data_analysis.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:<ul>
+<li>在/data/ItcastBrain_CV/online/路径下，图片数量增至500+</li>
+<li>在该路径下使用<code>ls | wc -l</code>查看文件数量</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><img alt="" src="../img/000.png" /></p>
+<hr />
+<ul>
+<li>统计图片宽-高分布<ul>
+<li>因为图片是我们人工标注的，因此不需要在进行格式过滤。</li>
+<li>但查看宽-高分布是有必要的，因为之后在输入模型前需要规范图片尺寸，通过该分布，可以获得比较合适的中间值。</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+
+<span class="c1"># 准备online和offline路径下的图片名字</span>
+<span class="n">online_image_path</span> <span class="o">=</span> <span class="s2">&quot;./online/&quot;</span>
+<span class="n">online_image_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">)</span>
+<span class="n">offline_image_path</span> <span class="o">=</span> <span class="s2">&quot;./offline/&quot;</span>
+<span class="n">offline_image_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">offline_image_path</span><span class="p">)</span>
+
+<span class="c1"># 初始化宽度和高度列表</span>
+<span class="n">w_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">h_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 对所有的图片（包括online和offline）名字进行遍历</span>
+<span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">online_image_names</span> <span class="o">+</span> <span class="n">offline_image_names</span><span class="p">:</span>
+    <span class="c1"># 这里使用try来区分打开图片，因为这些图片名字既有online又有offline</span>
+    <span class="c1"># 在online路径下打开出错，则在offline路径下打开 </span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">offline_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+    <span class="c1"># 将每张图片的宽高存入列表</span>
+    <span class="n">w_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">h_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+
+<span class="c1"># 接下来绘制学员对话句子的长度分布图</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">w_list</span><span class="p">)</span>
+<span class="c1"># 主要关注dist长度分布横坐标, 不需要绘制纵坐标</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;./w_distribu.png&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># 绘制学员对话句子的长度分布图</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">h_list</span><span class="p">)</span>
+<span class="c1"># 主要关注dist长度分布横坐标, 不需要绘制纵坐标</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;./h_distribu.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/data_analysis.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:<ul>
+<li>在/data/ItcastBrain_CV/路径下生成w_distribu.png和h_distribu.png两张图片。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><img alt="" src="../img/w_distribu.png" />
+<img alt="" src="../img/h_distribu.png" /></p>
+<blockquote>
+<ul>
+<li>分析:<ul>
+<li>从图中我们可以看到所有图片的宽度范围大概为：500-2000，密度较高在500-1000之间；高度范围大概为：250-2000，密度较高在250-750之间，因此较合理的规范裁剪宽度为(500 + 1000)/2 = 750, 剪裁高度为(250 + 750)/2 = 500。这在训练前处理时将会使用。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<ul>
+<li>划分训练集和验证集<ul>
+<li>在这里我们划分比例并不是之前的0.2或者0.3，而是选择了更大的0.7（70%是验证集，只有30%是训练集）</li>
+<li>原因：因为总体上，训练数据总量并不大，因此过小的验证集可能不具有代表性，因此一定要加大验证集部分的比例，同时，你可能担心这会造成训练数据过少，而实际上，我们这里使用的训练方法是在预训练模型上进行微调，实验表明微调能够在很小的数据集上取得效果（甚至仅有100张图片）。</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用shell命令，创建train和val路径, 在train和val内再创建online和offline文件夹</span>
+mkdir /data/ItcastBrain_CV/train/
+mkdir /data/ItcastBrain_CV/train/online/
+mkdir /data/ItcastBrain_CV/train/offline/
+mkdir /data/ItcastBrain_CV/val/
+mkdir /data/ItcastBrain_CV/val/online/
+mkdir /data/ItcastBrain_CV/val/offline/
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># 定义训练集和验证集存储路径</span>
+<span class="n">train_online_image_path</span> <span class="o">=</span> <span class="s2">&quot;./train/online/&quot;</span>
+<span class="n">train_offline_image_path</span> <span class="o">=</span> <span class="s2">&quot;./train/offline/&quot;</span>
+<span class="n">val_online_image_path</span> <span class="o">=</span> <span class="s2">&quot;./val/online/&quot;</span>
+<span class="n">val_offline_image_path</span> <span class="o">=</span> <span class="s2">&quot;./val/offline/&quot;</span>
+
+<span class="c1"># 进行比例划分</span>
+<span class="n">online_train_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">online_image_names</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">online_val_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">online_image_names</span><span class="p">)</span> <span class="o">-</span> <span class="n">online_train_num</span>
+
+<span class="n">offline_train_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">offline_image_names</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">offline_val_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">offline_image_names</span><span class="p">)</span> <span class="o">-</span> <span class="n">offline_train_num</span>
+
+<span class="c1"># 查看online和offline中划分的训练和验证图片数量</span>
+<span class="k">print</span><span class="p">(</span><span class="n">online_train_num</span><span class="p">,</span> <span class="n">online_val_num</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">offline_train_num</span><span class="p">,</span> <span class="n">offline_val_num</span><span class="p">)</span>
+
+<span class="c1"># 使用该工具中的copyfile方法复制粘贴功能</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="c1"># 将online数据分到train/online和val/online中</span>
+<span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">online_image_names</span><span class="p">[:</span><span class="n">online_train_num</span><span class="p">]:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">train_online_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">online_image_names</span><span class="p">[</span><span class="n">online_train_num</span><span class="p">:]:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">online_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val_online_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+
+<span class="c1"># 将offline数据分到train/offline和val/offline中</span>
+<span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">offline_image_names</span><span class="p">[:</span><span class="n">offline_train_num</span><span class="p">]:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">offline_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">train_offline_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">offline_image_names</span><span class="p">[</span><span class="n">offline_train_num</span><span class="p">:]:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">offline_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val_offline_image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">))</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/data_analysis.py</li>
+</ul>
+</li>
+</ul>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># online划分数量
+165 387
+
+# offline划分数量
+152 356
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>在/data/ItcastBrain_CV/train/online/，
+      /data/ItcastBrain_CV/train/offline/，
+      /data/ItcastBrain_CV/val/online/，
+      /data/ItcastBrain_CV/val/offline/路径下都有对应的图片文件。</li>
+</ul>
+</blockquote>
+<hr />
+<h4 id="_19">第二步: 进行模型训练和验证过程的实现</h4>
+<p>在模型训练前，我们需要进行模型的选择，CV发展至今，已经积累了大量的用于分类任务的模型，它们在标准任务上都有不错的表现，同时，这些模型也在pytorch框架中有了标准实现，这对于我们进行快速应用具有重要意义。</p>
+<ul>
+<li>下面我们看一下pytorch实现的29个主流预训练模型在标准数据集ImageNet上的表现：</li>
+</ul>
+<p><img alt="" src="../img/IM1.png" />
+<img alt="" src="../img/IM2.png" />
+<img alt="" src="../img/IM3.png" /></p>
+<blockquote>
+<ul>
+<li>分析：<ul>
+<li>top-N error是图像多分类问题重要的指标，因为该指标代表错误率，因此该值越小模型效果越好。从图中可以看出，ResNet系列模型在分类任务上具有非常不错的表现，无论是top-1 error还是top-5 error都有最佳成绩，这是我们选定该系列模型的原因。选定模型系列后，接下来我们将比对整个Resnet系列中若干模型在实际数据集上的效果。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<ul>
+<li>封装数据成为pytorch中的datasets对象</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1">## torch-1.6.0 torchvision-0.7.0</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="kn">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="kn">as</span> <span class="nn">optim</span>
+<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">lr_scheduler</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="c1"># 该脚本将写在/data/ItcastBrain_CV/路径下</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span>
+
+<span class="c1"># 根据之前的数据分析获得</span>
+<span class="n">gold_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># 使模型输入张量服从标准正态分布，第一个参数为均值列表，代表各个通道的均值，</span>
+<span class="c1"># 第二个参数为标准差列表，代表各个通道的标准差。这里的图片都是有三个通道。</span>
+<span class="c1"># 其中均值和标准差列表中的数值来自对ImageNet的全局采样结果。 </span>
+<span class="c1"># gold_normalize = ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</span>
+
+<span class="c1"># 定义一系列标准处理流程，Resize，张量化，规范化</span>
+<span class="c1"># Resize和张量化用于统一图片尺寸和满足框架要求</span>
+<span class="c1"># 规范化便于模型快速收敛</span>
+<span class="n">data_transforms</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="n">gold_size</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">gold_normalize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gold_normalize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">]),</span>
+    <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">gold_size</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">gold_normalize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gold_normalize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">]),</span>
+<span class="p">}</span>
+
+<span class="c1"># 使用datasets的ImageFolder方法进行数据读取，并通过data_transforms处理</span>
+<span class="n">image_datasets</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+                                          <span class="n">data_transforms</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+                  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]}</span>
+
+
+<span class="c1"># 之后使用DataLoader进行封装，使其每个批次能够使用迭代器以便减小内存，</span>
+<span class="c1"># 这里设置批次大小为8，并打乱顺序，每次启用4个子进程来一同加载对应批次的数据。</span>
+<span class="n">dataloaders</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">image_datasets</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                                             <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+              <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]}</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="n">dataloaders</span><span class="p">)</span>
+<span class="n">dataset_sizes</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_datasets</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]}</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataset_sizes</span><span class="p">)</span>
+
+<span class="c1"># 如果有GPU我们将使用该设备训练</span>
+<span class="c1"># 我们将在一台Tesla T4上进行训练，单精度峰值算力8.1TFLOPS</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置: <ul>
+<li>/data/ItcastBrain_CV/data_analysis.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>{&#39;train&#39;: &lt;torch.utils.data.dataloader.DataLoader object at 0x7f620d4d2550&gt;, 
+ &#39;val&#39;: &lt;torch.utils.data.dataloader.DataLoader object at 0x7f620d4d2390&gt;}
+{&#39;train&#39;: 317, &#39;val&#39;: 743}
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>模型训练与验证的实现</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">train_and_eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;训练并验证模型</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      model: 模型对象，这里将传入预训练模型</span>
+<span class="sd">      criterion: 损失计算方法</span>
+<span class="sd">      optimizer: 优化器</span>
+<span class="sd">      sheduler: 学习率调节器</span>
+<span class="sd">      num_epochs: 训练轮数</span>
+
+<span class="sd">    Return: </span>
+<span class="sd">      训练后的模型</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 获得训练开始时间</span>
+    <span class="n">since</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c1"># 获得最初的model状态字典(参数)，使用深拷贝使best_model_wts值稳定</span>
+    <span class="n">best_model_wts</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+    <span class="c1"># 初始化模型准确率</span>
+    <span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c1"># 循环轮数训练</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+        <span class="c1"># 打印轮数</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Epoch {}/{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># 依次进入训练和验证阶段，处理方式有所不同</span>
+        <span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]:</span>
+            <span class="c1"># 开启训练模式或验证模式</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span> <span class="k">else</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            <span class="c1"># 初始化该轮次的损失和准确率</span>
+            <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">running_corrects</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># 在该轮次中迭代批次数据</span>
+            <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloaders</span><span class="p">[</span><span class="n">phase</span><span class="p">]:</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+                <span class="c1"># 梯度初始化</span>
+                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+                <span class="c1"># 自动梯度计算是否开启，训练则开启，验证则不开启</span>
+                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">set_grad_enabled</span><span class="p">(</span><span class="n">phase</span><span class="o">==</span><span class="s1">&#39;train&#39;</span><span class="p">):</span>
+                    <span class="c1"># 使用模型获得输出分布</span>
+                    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+                    <span class="c1"># 从分布中获取概率最大的结果</span>
+                    <span class="n">_</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="c1"># 计算当前损失</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+                        <span class="c1"># 如果是训练阶段，误差反向传播</span>
+                        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+                        <span class="c1"># 更新参数</span>
+                        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+                <span class="c1"># 计算平均损失和准确率</span>
+                <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">inputs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">running_corrects</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="c1"># 每一轮调整一次学习率</span>
+            <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="c1"># 计算每轮的平均损失和准确率</span>
+            <span class="n">epoch_loss</span> <span class="o">=</span> <span class="n">running_loss</span> <span class="o">/</span> <span class="n">dataset_sizes</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+            <span class="n">epoch_acc</span> <span class="o">=</span> <span class="n">running_corrects</span><span class="o">.</span><span class="n">double</span><span class="p">()</span> <span class="o">/</span> <span class="n">dataset_sizes</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+
+            <span class="c1"># 打印每轮的结果</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{} Loss: {:.4f} Acc: {:.4f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">phase</span><span class="p">,</span> <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">))</span>
+
+            <span class="c1"># 在验证过程中，找到准确率最高的结果并保存该次模型的参数</span>
+            <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;val&#39;</span> <span class="ow">and</span> <span class="n">epoch_acc</span> <span class="o">&gt;</span> <span class="n">best_acc</span><span class="p">:</span>
+                <span class="n">best_acc</span> <span class="o">=</span> <span class="n">epoch_acc</span>
+                <span class="n">best_model_wts</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+
+    <span class="c1"># 获得模型训练和验证结束时间</span>
+    <span class="n">time_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">since</span>
+    <span class="c1"># 打印模型训练和验证耗时最佳准确率</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Training complete in {:.0f}m {:.0f}s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">time_elapsed</span> <span class="o">//</span> <span class="mi">60</span><span class="p">,</span> <span class="n">time_elapsed</span> <span class="o">%</span> <span class="mi">60</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Best val Acc: {:4f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_acc</span><span class="p">))</span>
+
+    <span class="c1"># 模型重载最佳参数</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_model_wts</span><span class="p">)</span>
+    <span class="c1"># 返回结果</span>
+    <span class="k">return</span> <span class="n">model</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>调用：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 加载resnet18模型和全部预训练参数</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+<span class="c1"># 取resnet18原有的最后一层(全连接层)输入特征(in_features)维度</span>
+<span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+
+<span class="c1"># 替换原有的最后一层，输入维度不变，输出维度变为2</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 将修改后的模型发到指定设备上</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># 定义交叉熵损失函数</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="c1"># 定义SGD优化器</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="c1"># 定义学习率调节器</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">StepLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># 调用train_model进行模型训练</span>
+<span class="n">model_ft</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/train.py</li>
+</ul>
+</li>
+</ul>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>Epoch 1/5
+----------
+train Loss: 0.3131 Acc: 0.8770
+val Loss: 0.0840 Acc: 0.9865
+Epoch 2/5
+----------
+train Loss: 0.1194 Acc: 0.9558
+val Loss: 0.0083 Acc: 1.0000
+Epoch 3/5
+----------
+train Loss: 0.0925 Acc: 0.9621
+val Loss: 0.0093 Acc: 1.0000
+Epoch 4/5
+----------
+train Loss: 0.1181 Acc: 0.9495
+val Loss: 0.0039 Acc: 1.0000
+Epoch 5/5
+----------
+train Loss: 0.0852 Acc: 0.9621
+val Loss: 0.0068 Acc: 1.0000
+Training complete in 1m 5s
+Best val Acc: 1.000000
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>结论：<ul>
+<li>我们发现，使用少量微调数据，就可以使用resnet18在验证集上达到近100%的准确率，可见迁移学习的“功力”所在，这也是为什么现在迁移学习风靡的重要原因。最终5个轮次在Tesla T4上训练耗时仅为1m5s。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>如何在其他Resnet系列模型上训练</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 只需修改模型名称即可, 修改上述代码</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># 修改为以下模型，可以逐个进行尝试</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet34</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet101</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet152</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>对比结果<ul>
+<li>所有模型均可达到验证准确率近100%，Telas T4上的5轮训练时间如下表：</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><center></p>
+<table>
+<thead>
+<tr>
+<th>resnet18</th>
+<th>resnet34</th>
+<th>resnet50</th>
+<th>resnet101</th>
+<th>resnet152</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1m5s</td>
+<td>1m55s</td>
+<td>2m32s</td>
+<td>5m2s</td>
+<td>9m17s</td>
+</tr>
+</tbody>
+</table>
+<p></center></p>
+<hr />
+<ul>
+<li>保存模型</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">PATH_</span> <span class="o">=</span> <span class="s2">&quot;./18_model_ft_params.pth&quot;</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_ft</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">PATH_</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置：<ul>
+<li>/data/ItcastBrain_CV/train.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果：<ul>
+<li>在该目录下将得到18_model_ft_params.pth参数文件。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<h4 id="_20">第三步: 提升模型的训练速度</h4>
+<p>当前我们的模型在验证集的准确率已经非常高，我们不再需要优化准确率，但我们希望模型训练的速度能够进一步提升，这样就能够根据每一批新来的数据快速的迭代模型，以适应最新的数据规律。</p>
+<ul>
+<li>冻结大部分参数的方式进行微调</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 与之前相同，加载resnet18的模型和参数</span>
+<span class="n">model_conv</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># 冻结指定网络的参数，</span>
+<span class="c1"># 这里将resnet18特征提取部分的所有参数冻结(不求梯度)</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model_conv</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># 相当于只去微调最后面的输出层</span>
+<span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model_conv</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+<span class="n">model_conv</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">model_conv</span> <span class="o">=</span> <span class="n">model_conv</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="n">optimizer_conv</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model_conv</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">exp_lr_scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">StepLR</span><span class="p">(</span><span class="n">optimizer_conv</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># 调用train_model进行模型训练</span>
+<span class="n">model_ft</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">model_conv</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer_conv</span><span class="p">,</span> <span class="n">exp_lr_scheduler</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置：<ul>
+<li>/data/ItcastBrain_CV/train.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>Epoch 1/5
+----------
+train Loss: 0.4970 Acc: 0.7161
+val Loss: 0.1035 Acc: 1.0000
+Epoch 2/5
+----------
+train Loss: 0.2245 Acc: 0.9085
+val Loss: 0.0733 Acc: 0.9919
+Epoch 3/5
+----------
+train Loss: 0.2272 Acc: 0.9274
+val Loss: 0.0376 Acc: 1.0000
+Epoch 4/5
+----------
+train Loss: 0.1374 Acc: 0.9653
+val Loss: 0.0747 Acc: 0.9812
+Epoch 5/5
+----------
+train Loss: 0.1624 Acc: 0.9369
+val Loss: 0.0262 Acc: 1.0000
+Training complete in 0m 43s
+Best val Acc: 1.000000
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>结论：<ul>
+<li>该种微调方式仍能保证验证准确率，同时将5轮训练时间缩短为43s（之前为1m5s），同学们可以自测该种方式下其它Resnet系列模型的训练时间。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<ul>
+<li>不同微调方式下模型的参数情况<ul>
+<li>通过summary工具包查看模型参数。</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>pip install <span class="nv">torchsummary</span><span class="o">==</span><span class="m">1</span>.5.1
+</code></pre></div>
+
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="kn">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">torchsummary</span> <span class="kn">import</span> <span class="n">summary</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="c1"># 恢复模型结构</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 参数路径</span>
+<span class="n">PATH</span> <span class="o">=</span> <span class="s2">&quot;18_model_ft_params.pth&quot;</span>
+<span class="c1"># 恢复参数</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PATH</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 查看当前模型情况</span>
+<span class="n">summary</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/test.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1         [-1, 64, 112, 112]           9,408
+       BatchNorm2d-2         [-1, 64, 112, 112]             128
+              ReLU-3         [-1, 64, 112, 112]               0
+         MaxPool2d-4           [-1, 64, 56, 56]               0
+            Conv2d-5           [-1, 64, 56, 56]          36,864
+       BatchNorm2d-6           [-1, 64, 56, 56]             128
+              ReLU-7           [-1, 64, 56, 56]               0
+            Conv2d-8           [-1, 64, 56, 56]          36,864
+       BatchNorm2d-9           [-1, 64, 56, 56]             128
+             ReLU-10           [-1, 64, 56, 56]               0
+       BasicBlock-11           [-1, 64, 56, 56]               0
+           Conv2d-12           [-1, 64, 56, 56]          36,864
+      BatchNorm2d-13           [-1, 64, 56, 56]             128
+             ReLU-14           [-1, 64, 56, 56]               0
+           Conv2d-15           [-1, 64, 56, 56]          36,864
+      BatchNorm2d-16           [-1, 64, 56, 56]             128
+             ReLU-17           [-1, 64, 56, 56]               0
+       BasicBlock-18           [-1, 64, 56, 56]               0
+           Conv2d-19          [-1, 128, 28, 28]          73,728
+      BatchNorm2d-20          [-1, 128, 28, 28]             256
+             ReLU-21          [-1, 128, 28, 28]               0
+           Conv2d-22          [-1, 128, 28, 28]         147,456
+      BatchNorm2d-23          [-1, 128, 28, 28]             256
+           Conv2d-24          [-1, 128, 28, 28]           8,192
+      BatchNorm2d-25          [-1, 128, 28, 28]             256
+             ReLU-26          [-1, 128, 28, 28]               0
+       BasicBlock-27          [-1, 128, 28, 28]               0
+           Conv2d-28          [-1, 128, 28, 28]         147,456
+      BatchNorm2d-29          [-1, 128, 28, 28]             256
+             ReLU-30          [-1, 128, 28, 28]               0
+           Conv2d-31          [-1, 128, 28, 28]         147,456
+      BatchNorm2d-32          [-1, 128, 28, 28]             256
+             ReLU-33          [-1, 128, 28, 28]               0
+       BasicBlock-34          [-1, 128, 28, 28]               0
+           Conv2d-35          [-1, 256, 14, 14]         294,912
+      BatchNorm2d-36          [-1, 256, 14, 14]             512
+             ReLU-37          [-1, 256, 14, 14]               0
+           Conv2d-38          [-1, 256, 14, 14]         589,824
+      BatchNorm2d-39          [-1, 256, 14, 14]             512
+           Conv2d-40          [-1, 256, 14, 14]          32,768
+      BatchNorm2d-41          [-1, 256, 14, 14]             512
+             ReLU-42          [-1, 256, 14, 14]               0
+       BasicBlock-43          [-1, 256, 14, 14]               0
+           Conv2d-44          [-1, 256, 14, 14]         589,824
+      BatchNorm2d-45          [-1, 256, 14, 14]             512
+             ReLU-46          [-1, 256, 14, 14]               0
+           Conv2d-47          [-1, 256, 14, 14]         589,824
+      BatchNorm2d-48          [-1, 256, 14, 14]             512
+             ReLU-49          [-1, 256, 14, 14]               0
+       BasicBlock-50          [-1, 256, 14, 14]               0
+           Conv2d-51            [-1, 512, 7, 7]       1,179,648
+      BatchNorm2d-52            [-1, 512, 7, 7]           1,024
+             ReLU-53            [-1, 512, 7, 7]               0
+           Conv2d-54            [-1, 512, 7, 7]       2,359,296
+      BatchNorm2d-55            [-1, 512, 7, 7]           1,024
+           Conv2d-56            [-1, 512, 7, 7]         131,072
+      BatchNorm2d-57            [-1, 512, 7, 7]           1,024
+             ReLU-58            [-1, 512, 7, 7]               0
+       BasicBlock-59            [-1, 512, 7, 7]               0
+           Conv2d-60            [-1, 512, 7, 7]       2,359,296
+      BatchNorm2d-61            [-1, 512, 7, 7]           1,024
+             ReLU-62            [-1, 512, 7, 7]               0
+           Conv2d-63            [-1, 512, 7, 7]       2,359,296
+      BatchNorm2d-64            [-1, 512, 7, 7]           1,024
+             ReLU-65            [-1, 512, 7, 7]               0
+       BasicBlock-66            [-1, 512, 7, 7]               0
+AdaptiveAvgPool2d-67            [-1, 512, 1, 1]               0
+           Linear-68                    [-1, 2]           1,026
+================================================================
+Total params: 11,177,538
+Trainable params: 1,026
+Non-trainable params: 11,176,512
+----------------------------------------------------------------
+Input size (MB): 0.57
+Forward/backward pass size (MB): 62.79  ## 该模型完成正向/反向传播时需要占用的内存空间
+Params size (MB): 42.64
+Estimated Total Size (MB): 106.00
+----------------------------------------------------------------
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>结论：<ul>
+<li>通过第二种微调方式，该模型只训练了1026个可调参数，而使用第一种微调方式，则是下面的参数量，这也是训练速度的差异所在。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>================================================================
+Total params: 11,177,538
+Trainable params: 11,177,538
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 4.01
+Forward/backward pass size (MB): 441.02
+Params size (MB): 42.64
+Estimated Total Size (MB): 487.66
+----------------------------------------------------------------
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>使用模型进行预测并计算单条推断时间</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># 以sample.jpg为例，它是一张offline（线下开班）的图片</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+<span class="n">image</span> <span class="o">=</span> <span class="s2">&quot;sample.jpg&quot;</span>
+
+<span class="c1"># 使用GPU时使用</span>
+<span class="c1"># model.to(device)</span>
+
+<span class="k">def</span> <span class="nf">singe_predict</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+    <span class="c1"># 读取图片</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="c1"># 图片预处理</span>
+    <span class="n">data_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">)),</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+        <span class="p">])</span>
+
+    <span class="n">image_tensor</span> <span class="o">=</span> <span class="n">data_transforms</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+    <span class="c1"># 拓展维度，因为之前训练时有batch_size这个维度</span>
+    <span class="n">image_tensor</span> <span class="o">=</span> <span class="n">image_tensor</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># 使用GPU时使用</span>
+    <span class="c1"># image_tensor = image_tensor.to(device)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">image_tensor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">singe_predict</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="c1"># 打印单条预测时间</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Interval:&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+    <span class="c1"># 打印预测结果</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/test.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># 在CPU上单条推断时间在125ms左右
+Interval: 0.12526451587677002
+
+# 在GPU（Tesla T4）上单条推断时间在44ms左右
+Interval: 0.4454502123531231
+
+# 0表示offline，1表示online
+0
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>更多的测试<ul>
+<li>我们可以使用更多的图片，如image_dir = "./offline/77.jpg"等进行测试效果。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4 id="-">第四步: 提升模型的推断速度-模型剪枝</h4>
+<p>关于剪枝技术原理可参见<a href="http://52.83.69.131:8123/7/">第七章：模型剪枝技术</a>，下面是有关剪枝技术的直接应用。</p>
+<ul>
+<li>使用剪枝技术的原因：<ul>
+<li>我们CPU设备（16C）上的单条推断时间，包括图片预处理和模型推断时间，共计125ms左右（其中仅模型推断时间约95ms），我们希望将单条推断时间由125ms控制到90ms左右，即100ms内，同时准确率不可以下降低于95%，这里选择了剪枝技术来实现。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>使用剪枝技术的步骤：<ul>
+<li>1：加载未剪枝模型</li>
+<li>2：进行全局剪枝</li>
+<li>3：查看当前推断时间</li>
+<li>4：查看当前准确率</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>1：加载未剪枝模型</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入必备的工具包</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.utils.prune</span> <span class="kn">as</span> <span class="nn">prune</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="kn">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="c1"># 保存的模型参数地址</span>
+<span class="n">PATH</span> <span class="o">=</span> <span class="s2">&quot;./18_model_ft_params.pth&quot;</span>
+
+<span class="c1"># 重现模型结构</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 加载参数</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PATH</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 打印模型结构，以确定剪枝名称</span>
+<span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>
+<p>代码位置:</p>
+<ul>
+<li>/data/ItcastBrain_CV/pruned.py</li>
+</ul>
+</li>
+<li>
+<p>输出效果:</p>
+</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># 之后我们的剪枝时将指定该结构中的层名称
+
+ResNet(
+  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (fc): Linear(in_features=512, out_features=2, bias=True)
+)
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>2：进行全局剪枝</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 用元组指定需要剪枝的层和参数类型</span>
+<span class="n">parameters_to_prune</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bn2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bn2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bn2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bn2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bn2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bn2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># 进行全局剪枝，参数分别是需要剪枝的层和参数类型，剪枝方法，剪枝比例</span>
+<span class="c1"># 通过这样的操作我们就可以得到剪枝后的模型，这里的0.45是整体的45%，各个部分剪枝在45%左右</span>
+<span class="c1"># 这里使用了L1剪枝</span>
+<span class="n">prune</span><span class="o">.</span><span class="n">global_unstructured</span><span class="p">(</span>
+    <span class="n">parameters_to_prune</span><span class="p">,</span>
+    <span class="c1"># pruning_method=prune.RandomUnstructured,</span>
+    <span class="n">pruning_method</span><span class="o">=</span><span class="n">prune</span><span class="o">.</span><span class="n">L1Unstructured</span><span class="p">,</span>
+    <span class="n">amount</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># 永久化参数</span>
+<span class="k">for</span> <span class="n">module</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameters_to_prune</span><span class="p">:</span>
+    <span class="n">prune</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># 查看任意层的参数情况，以确保剪枝成功</span>
+<span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/pruned.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># 根据0的情况就说明剪枝成功 
+
+Parameter containing:
+tensor([[[[ 0.0000,  0.0000, -0.0000],
+          [ 0.0000,  0.0000, -0.0000],
+          [ 0.0000,  0.0000,  0.0000]],
+
+         [[-0.0113, -0.0132, -0.0103],
+          [-0.0000, -0.0000, -0.0000],
+          [-0.0000, -0.0000, -0.0000]],
+
+         [[-0.0119, -0.0121, -0.0102],
+          [-0.0121, -0.0116, -0.0000],
+          [-0.0125, -0.0000, -0.0000]],
+
+         ...,
+
+
+        [[[ 0.0000,  0.0000,  0.0000],
+          [-0.0000, -0.0000, -0.0000],
+          [-0.0000, -0.0000, -0.0000]],
+
+         [[-0.0146, -0.0123, -0.0145],
+          [-0.0000, -0.0000, -0.0111],
+          [-0.0000, -0.0000, -0.0000]],
+
+         [[ 0.0000,  0.0000, -0.0000],
+          [-0.0000,  0.0000, -0.0000],
+          [ 0.0000,  0.0000,  0.0000]],
+
+         ...,
+
+
+         [[-0.0164, -0.0169, -0.0190],
+          [-0.0000, -0.0113, -0.0103],
+          [-0.0123, -0.0159, -0.0142]],
+
+         [[ 0.0000, -0.0000,  0.0000],
+          [ 0.0000, -0.0000, -0.0000],
+          [-0.0000, -0.0000, -0.0000]],
+
+         [[-0.0144, -0.0135, -0.0114],
+          [-0.0000, -0.0000, -0.0000],
+          [ 0.0000,  0.0000,  0.0000]]]], requires_grad=True)
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>3：查看当前推断时间</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 与之前相同，计算单条的推断时间</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># 以sample.jpg为例，它是一张offline（线下开班）的图片</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+<span class="n">image</span> <span class="o">=</span> <span class="s2">&quot;sample.jpg&quot;</span>
+
+<span class="c1"># 使用GPU时使用</span>
+<span class="c1"># model.to(device)</span>
+
+<span class="k">def</span> <span class="nf">singe_predict</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+    <span class="c1"># 读取图片</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="c1"># 图片预处理</span>
+    <span class="n">data_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">)),</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+        <span class="p">])</span>
+
+    <span class="n">image_tensor</span> <span class="o">=</span> <span class="n">data_transforms</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+    <span class="c1"># 拓展维度，因为之前训练时有batch_size这个维度</span>
+    <span class="n">image_tensor</span> <span class="o">=</span> <span class="n">image_tensor</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># 使用GPU时使用</span>
+    <span class="c1"># image_tensor = image_tensor.to(device)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">image_tensor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">singe_predict</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">))</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Interval:&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/pruned.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># 推断时间降至100ms以内
+Interval: 0.09217426109313965
+0
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>4：查看当前准确率</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 定义验证集路径</span>
+<span class="n">off_data_dir</span> <span class="o">=</span> <span class="s2">&quot;./val/offline/&quot;</span>
+<span class="n">on_data_dir</span> <span class="o">=</span> <span class="s2">&quot;./val/online/&quot;</span>
+
+<span class="k">def</span> <span class="nf">calc_acc</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;计算指定路径下统一标签的准确率&quot;&quot;&quot;</span>
+    <span class="c1"># 预测正确的计数</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># 该路径下的图片名</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">singe_predict</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">score</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># offline数据的预测准确率</span>
+<span class="n">off_acc</span> <span class="o">=</span> <span class="n">calc_acc</span><span class="p">(</span><span class="n">off_data_dir</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+
+<span class="c1"># online数据的预测准确率</span>
+<span class="n">on_acc</span> <span class="o">=</span> <span class="n">calc_acc</span><span class="p">(</span><span class="n">on_data_dir</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+
+<span class="c1"># 平均准确率</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">off_acc</span> <span class="o">+</span> <span class="n">on_acc</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;ACC:&quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+
+<span class="c1"># 保存模型参数</span>
+<span class="n">PATH_</span> <span class="o">=</span> <span class="s2">&quot;./pruned_18_model_ft_params.pth&quot;</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_ft</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">PATH_</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain_CV/pruned.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># 最终准确率仍能保持在99%左右
+ACC: 0.9943820224719101
+</code></pre></div>
+
+
+<hr />
+<hr />
+<h3 id="_21">小节总结</h3>
+<ul>
+<li>学习了整体解决方案的实施步骤<ul>
+<li>第一步: 获取指定数据并进行数据分析</li>
+<li>第二步: 进行模型训练和验证过程的实现</li>
+<li>第三步: 提升模型的训练速度</li>
+<li>第四步: 提升模型的推断速度-模型剪枝<ul>
+<li>1：加载未剪枝模型</li>
+<li>2：进行全局剪枝</li>
+<li>3：查看当前推断时间</li>
+<li>4：查看当前准确率</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="65">6.5 模型服务的部署</h2>
+<h3 id="_22">学习目标</h3>
+<ul>
+<li>了解什么是模型热更新以及如何做到热更新。</li>
+<li>了解Flask框架及其相关的服务组件。</li>
+<li>掌握使用Flask框架将模型封装成服务的流程。</li>
+<li>整体服务部署与联调测试。</li>
+</ul>
+<hr />
+<h3 id="_23">什么是模型热更新</h3>
+<ul>
+<li>因为训练AI模型往往是较大的文件，在每次IO时往往比较耗时，因此会选择在服务开启时读入内存，避免IO操作。而这样的话，就意味着当我们更新模型时需要暂停服务， 这对于在线任务是非常不可取的行为；因此我们需要一种既能避免IO又能使用户无感知的方式，这种的要求就是模型热更新要求。</li>
+</ul>
+<hr />
+<h3 id="_24">如何做到热更新</h3>
+<ul>
+<li>最常见的满足热更新要求的方法就是一同开启两个模型服务，一个作为正式使用，一个作为backup(备用)，当我们有更新需求时，将正式服务暂停进行模型更换，而此时备用服务将继续为用户服务，直到正式服务重新上线。在正式服务运转正常后，再为备用服务更换模型。</li>
+</ul>
+<hr />
+<h3 id="flask">Flask服务组件</h3>
+<p><img alt="" src="../img/Flask.png" /></p>
+<ul>
+<li>web框架FLask：<ul>
+<li>Flask框架是当下最受欢迎的python轻量级框架, 也是pytorch官网指定的部署框架. Flask的基本模式为在程序里将一个视图函数分配给一个URL，每当用户访问这个URL时，系统就会执行给该URL分配好的视图函数，获取函数的返回值.</li>
+</ul>
+</li>
+</ul>
+<p><center><img alt="" src="../img/Flask_1.png" /></center></p>
+<hr />
+<ul>
+<li>作用:<ul>
+<li>在项目中, Flask框架是主逻辑服务和句子相关模型服务使用的服务框架.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>安装:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用pip安装Flask</span>
+pip install <span class="nv">Flask</span><span class="o">==</span><span class="m">1</span>.1.1
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>基本使用方法:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入Flask类</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="c1"># 创建一个该类的实例app, 参数为__name__, 这个参数是必需的，</span>
+<span class="c1"># 这样Flask才能知道在哪里可找到模板和静态文件等东西.</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># 使用route()装饰器来告诉Flask触发函数的URL</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;请求指定的url后，执行的主要逻辑函数&quot;&quot;&quot;</span>
+    <span class="c1"># 在用户浏览器中显示信息:&#39;Hello, World!&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello, World!&#39;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5005</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain/Pm/resnet_server/app.py</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>启动服务:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>python app.py
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>查看效果:<ul>
+<li>通过浏览器打开地址http://0.0.0.0:5001可看见打印了'Hello, World'.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><img alt="" src="../img/gunicorn.png" /></p>
+<ul>
+<li>web组件Gunicorn:<ul>
+<li>Gunicorn是一个被广泛使用的高性能的Python WSGI UNIX HTTP服务组件(WSGI: Web Server Gateway Interface)，移植自Ruby的独角兽（Unicorn ）项目，具有使用非常简单，轻量级的资源消耗，以及高性能等特点。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>作用:<ul>
+<li>在项目中, Gunicorn和Flask框架一同使用, 处理请求, 因其高性能的特点能够有效减少服务丢包率.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>安装:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用pip安装gunicorn</span>
+pip install <span class="nv">gunicorn</span><span class="o">==</span><span class="m">20</span>.0.4
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>基本使用方法:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 注意：kill掉之前的5001端口服务，不再使用原生的启动方式</span>
+<span class="c1"># 而是使用gunicorn启动Flask服务:</span>
+gunicorn -w <span class="m">1</span> -b <span class="m">0</span>.0.0.0:5005 app:app
+<span class="c1"># -w 代表开启的进程数, 我们只开启一个进程</span>
+<span class="c1"># -b 服务的IP地址和端口</span>
+<span class="c1"># app:app 是指执行的主要对象位置, 在app.py中的app对象</span>
+</code></pre></div>
+
+
+<hr />
+<h3 id="flask_1">使用Flask框架将模型封装成服务</h3>
+<p>我们可以将模型封装成服务的流程分为三步:</p>
+<ul>
+<li>第一步: 编写app.py文件</li>
+<li>第二步: 使用gunicorn启动服务</li>
+<li>第三步: 编写test.py进行接口测试</li>
+<li>第四步: 使用Nginx代理两个服务满足热更新</li>
+</ul>
+<hr />
+<h4 id="apppy">第一步: 编写app.py文件，代码实现如下:</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Flask框架固定工具</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="kn">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="c1"># 最新的模型，大家根据自己之前训练的模型名字进行修改</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;18_model_ft_params.pth&quot;</span>
+
+<span class="c1"># 最新模型的全路径</span>
+<span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;/data/ItcastBrain/Pm/resnet_model/&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
+
+<span class="c1"># 加载已训练的模型，注意: 这段加载语句不能写入下方的函数中，</span>
+<span class="c1"># 否则将会每次请求都会重新加载</span>
+<span class="c1"># 恢复模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># 加载权重</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 定义服务请求路径和方式, 这里使用POST请求</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/v1/is_online/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">recogniition</span><span class="p">():</span>
+    <span class="c1"># 传入的参数是json格式的图片路径</span>
+    <span class="n">image_path</span>  <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">&quot;image_path&quot;</span><span class="p">]</span>
+    <span class="c1"># 根据路径打开图片</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="c1"># 和之前验证数据集做相同的处理</span>
+    <span class="n">data_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">)),</span>
+             <span class="c1"># transforms.CenterCrop(224),</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+             <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+        <span class="p">])</span>
+    <span class="n">image_tensor</span> <span class="o">=</span> <span class="n">data_transforms</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+    <span class="c1"># 拓展一个维度（因为之前有batch_size这个维度）</span>
+    <span class="n">image_tensor</span> <span class="o">=</span> <span class="n">image_tensor</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># 模型预测</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">image_tensor</span><span class="p">)</span>
+    <span class="c1"># 得到最大值对应的索引</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain/Pm/resnet_server/app.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<h4 id="gunicorn">第二步: 使用gunicorn来启动服务</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 可以添加--chdir参数来指明app路径</span>
+gunicorn -w <span class="m">1</span> -b <span class="m">0</span>.0.0.0:5005  --chdir /data/ItcastBrain/Pm/resnet_server/ app:app
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>[2020-06-04 17:04:11 +0800] [28276] [INFO] Starting gunicorn 20.0.4
+[2020-06-04 17:04:11 +0800] [28276] [INFO] Listening at: http://0.0.0.0:5005 (29276)
+[2020-06-04 17:04:11 +0800] [28276] [INFO] Using worker: sync
+[2020-06-04 17:04:11 +0800] [28279] [INFO] Booting worker with pid: 29279
+</code></pre></div>
+
+
+<hr />
+<h4 id="testpy">第三步: 编写test.py进行接口测试</h4>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://0.0.0.0:5005/v1/is_online/&quot;</span>
+
+<span class="c1"># 你可以自己在该目录下放置任意图片</span>
+<span class="n">image_path</span> <span class="o">=</span> <span class="s2">&quot;/data/ItcastBrain/Pm/image/sample.jpg&quot;</span>
+
+<span class="c1"># 传输的数据体</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;image_path&#39;</span><span class="p">:</span> <span class="n">image_path</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>data/ItcastBrain/Pm/resnet_server/test.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code># 输出0或者1，代表online或者offline
+0/1
+</code></pre></div>
+
+
+<hr />
+<h4 id="nginx">第四步: 使用Nginx代理两个服务满足热更新</h4>
+<p>到这里说明我们模型服务能够正常工作，之后我们将启动两个同样的服务，分别使用5001和5002端口, 并将两个服务使用Nginx代理宜满足热更新。下面对nginx进行一些简单介绍，并对其中的配置进行说明。</p>
+<hr />
+<ul>
+<li>Nginx:<ul>
+<li>Nginx是一个高性能的HTTP和反向代理web服务器，也是工业界web服务最常使用的外层代理。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>Nginx热更新部分配置说明:<ul>
+<li>这些配置已经为大家写好，可以在/data/ItcastBrain/conf/nginx/nginx.conf中进行查看。</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>...
+
+ # 以下是与热更新有关的配置
+ # 这里代理两个端口的服务
+ # 其中5005为backup，即当5006服务停止时被启用
+ # 这里的prod要与下面proxy_pass中http://后的名称相同
+ upstream prod {
+<span class="hll">        server 0.0.0.0:5005;
+</span><span class="hll">        server 0.0.0.0:5006 backup;
+</span>     }
+
+ # nginx的外层服务使用8086端口
+ server {
+        listen       8086;
+        server_name  0.0.0.0;
+         location /static/ {
+            alias /data/ItcastBrain/static/;
+         }
+
+        # 这里注意prod要与上面upstream后的名称相同
+        location / {
+            proxy_pass     http://prod;
+            include      /data/ItcastBrain/conf/nginx/uwsgi_params;
+            proxy_set_header X-Real-IP $remote_addr;
+
+        }
+    }
+
+...
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>Nginx的启动与关闭:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 实际中我们并不会直接启动Nginx，而是在整体服务部署时使用supervisor进行启动和关闭</span>
+<span class="c1"># 因此这里大家了解以下启动命令即可</span>
+<span class="c1"># -c是指向配置文件</span>
+nginx -c /data/ItcastBrain/conf/nginx/nginx.conf
+
+<span class="c1"># 关闭nginx</span>
+nginx -s stop
+</code></pre></div>
+
+
+<hr />
+<h3 id="_25">整体服务部署与联调测试</h3>
+<p>为了完成整体服务部署，我们需要让AI系统与咨询师后端系统进行对接。以往AI中的函数都是在处理一些自定义格式的数据，但是现在我们需要和后端工程师一同定义输入和输出的数据格式，以方便他们来请求我们的接口和使用数据。作为REST API，输入输出的基本格式都应是JSON。但现在，后端工程师需要传输的信息是图片，图片如何表示成json呢，这里需要编码成base64。</p>
+<ul>
+<li>输入的JSON格式：<ul>
+<li>我们在后面会讲解如何将本地图片转码成base64_data</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;image_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span> 
+    <span class="nt">&quot;image_base64&quot;</span><span class="p">:</span> <span class="err">str(base</span><span class="mi">64</span><span class="err">_data)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>数据说明:<ul>
+<li>必须为json格式</li>
+<li>image_id: 字符串类型，图片的唯一标识</li>
+<li>str(image_base64): 字符串类型，图片被base64编码后还要转成str</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>关于输出则简单许多，输出的JSON格式如下:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;image_id&quot;</span><span class="p">:</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="s2">&quot;offline&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>数据说明:<ul>
+<li>必须为json格式</li>
+<li>image_id: 字符串类型，图片的唯一标识</li>
+<li>result: 字符串类型，只可能为offline或者online，代表线下或者线上开班</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>这样我们就明确了AI整体服务的输入和输出，接下来我们开始搭建这个服务，整个服务框架基于Django，过程可分为一下几个步骤:</p>
+<ul>
+<li>第一步: 拷贝服务框架的基本文件</li>
+<li>第二步: 编写两个核心文件中的代码内容</li>
+<li>第三步: 安装supervisor监控守护工具并启动服务</li>
+<li>第四步: 进行联调测试</li>
+</ul>
+<hr />
+<ul>
+<li>第一步: 拷贝服务框架的基本文件<ul>
+<li>我们已经为大家准备好了Django服务的基本文件</li>
+<li>注意：需要在/data/目录下安装Anaconda3</li>
+</ul>
+</li>
+</ul>
+<hr />
+<blockquote>
+<ul>
+<li>文件查看效果, 它们应该在/data/ItcastBrain/路径下:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>drwxr-xr-x  4 root root   4096 5月  11 17:21 api
+drwxr-xr-x  3 root root   4096 5月  28 16:00 conf
+-rw-r--r--  1 root root 180224 5月   9 15:30 db.sqlite3
+<span class="hll">drwxr-xr-x  5 root root   4096 6月   5 13:37 Pm
+</span>-rw-r--r--  1 root root      0 1月  26 2019 __init__.py
+drwxr-xr-x  2 root root   4096 5月  28 16:42 log
+-rwxr-xr-x  1 root root   1501 1月  26 2019 manage.py
+-rw-r--r--  1 root root   1643 1月  26 2019 README.md
+-rw-r--r--  1 root root    237 6月   1 16:13 requirements.txt
+drwxr-xr-x  3 root root   4096 5月   9 15:46 server
+drwxr-xr-x 12 root root   4096 2月   6 18:43 static
+-rw-r--r--  1 root root  10177 5月  28 16:07 supervisord.conf
+drwxr-xr-x  2 root root   4096 5月   9 15:33 supervisord.conf.d
+-rw-r--r--  1 root root   6038 6月   1 17:35 test.py
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>安装必备的工具:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 确保你的pip是python3下的pip</span>
+<span class="c1"># 在/data/ItcastBrain/路径下执行:</span>
+pip install -r requirements.txt
+</code></pre></div>
+
+
+<hr />
+<p>第二步: 编写两个核心文件中的内容</p>
+<p>先来了解一下Django服务中的两个文件:</p>
+<ul>
+<li>urls.py, 位于/data/ItcastBrain/api/目录下, 用于将前端的请求url转发到views函数中。</li>
+<li>views.py, 位于/data/ItcastBrain/Pm/目录下, 用于接收来自前端请求的数据, 并请求模型微服务获得结果, 封装成响应体返回。</li>
+</ul>
+<hr />
+<ul>
+<li>编写url.py:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="c1"># 引入Yxb中的views.py</span>
+<span class="kn">from</span> <span class="nn">Yxb</span> <span class="kn">import</span> <span class="n">views</span> <span class="k">as</span> <span class="n">y_views</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+<span class="hll">    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^api/v1/get_pm[/]?$&#39;</span><span class="p">,</span> <span class="n">p_views</span><span class="o">.</span><span class="n">get_pm</span><span class="p">),</span>
+</span><span class="p">]</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>编写views.py</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># coding: utf8</span>
+<span class="c1"># Copyright 2017 Stephen. All Rights Reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="c1"># ============================================================================</span>
+
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">HttpResponse</span><span class="p">,</span>
+    <span class="n">StreamingHttpResponse</span><span class="p">,</span>
+    <span class="n">FileResponse</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
+<span class="kn">from</span> <span class="nn">rest_framework.authentication</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SessionAuthentication</span><span class="p">,</span>
+    <span class="n">BasicAuthentication</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">authentication_classes</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">permission_classes</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">Pm.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_pm</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;主要处理逻辑</span>
+<span class="sd">    Args:</span>
+<span class="sd">      request: 请求体, {&quot;image_id&quot;: &quot;12345&quot;, &quot;image_base64&quot;: str(base64_data)}</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">      {&quot;image_id&quot;:&quot;12345&quot;,&quot;result&quot;:&quot;offline&quot;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 获得请求数据</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="n">img_id</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;image_id&quot;</span><span class="p">]</span>
+    <span class="c1"># 获得base64编码，因为之前加了str，所以这里使用eval</span>
+    <span class="n">img_base64</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s2">&quot;image_base64&quot;</span><span class="p">])</span>
+    <span class="c1"># 创建一个路径，用于存储每次用户请求的数据</span>
+    <span class="n">img_path</span> <span class="o">=</span> <span class="s2">&quot;/data/ItcastBrain/Pm/image/{}.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">img_id</span><span class="p">)</span>
+    <span class="c1"># 解码base64，存储该图片</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">img_base64</span><span class="p">))</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># 请求模型服务</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://0.0.0.0:5005/v1/is_online/&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;image_path&#39;</span><span class="p">:</span> <span class="n">img_path</span><span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;offline&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;online&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;image_id&quot;</span><span class="p">:</span> <span class="n">img_id</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)]})</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain/Pm/views.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<ul>
+<li>第三步: 安装supervisor监控守护工具并启动服务</li>
+</ul>
+<blockquote>
+<ul>
+<li>Supervisor服务监控:
+        * Supervisor是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具。它可
+以很方便的监听、启动、停止、重启一个或多个进程, 并守护这些进程。
+        * 在项目中, Supervisor用于监控和守护AI整体服务服务和模型服务.</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>安装并启动supervisor:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用yum安装supervisor</span>
+yum install supervisor -y
+基本使用方法:
+<span class="c1"># 编辑配置文件, 指明监控和守护的进程开启命令,</span>
+<span class="c1"># 请查看/data/ItcastBrain/supervisord.conf文件</span>
+<span class="c1"># 开启supervisor, -c用于指定配置文件</span>
+sueprvisord -c /data/ItcastBrain/supervisord.conf
+</code></pre></div>
+
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="c1"># 查看监控的进程状态:</span>
+supervisorctl status
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="hll">resnet_server1                     RUNNING   pid 23836, uptime 8 days, 1:02:59
+</span><span class="hll">resnet_server2                     RUNNING   pid 23893, uptime 8 days, 1:02:57
+</span>main_server                      RUNNING   pid 8018, uptime 0:07:54
+nginx                            RUNNING   pid 23911, uptime 8 days, 1:02:57
+</code></pre></div>
+
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="c1"># 关闭supervisor</span>
+supervisorctl shutdown
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>关于supervisor.conf的简单分析:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>...
+
+...
+
+<span class="c1">; 主服务配置命令，使用/data/anaconda3/bin/下的uwsgi命令，</span>
+<span class="c1">; 指向/data/ItcastBrain/conf/uwsgi.ini配置</span>
+<span class="c1">; 这些配置文件已经为同学们准备就绪</span>
+<span class="hll">[<span class="nv">program</span>:<span class="nv">main_server</span>]
+</span><span class="nv">command</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">anaconda3</span><span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">uwsgi</span> <span class="o">--</span><span class="nv">ini</span> <span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">conf</span><span class="o">/</span><span class="nv">uwsgi</span>.<span class="nv">ini</span> <span class="o">--</span><span class="nv">close</span><span class="o">-</span><span class="nv">on</span><span class="o">-</span><span class="k">exec</span>                 <span class="c1">; the program (relative uses PATH, can take args)</span>
+<span class="c1">;process_name=%(program_name)s ; process_name expr (default %(program_name)s)</span>
+<span class="c1">;numprocs=1                    ; number of processes copies to start (def 1)</span>
+<span class="c1">;directory=/tmp                ; directory to cwd to before exec (def no cwd)</span>
+<span class="c1">;umask=022                     ; umask for process (default None)</span>
+<span class="c1">;priority=999                  ; the relative start priority (default 999)</span>
+<span class="c1">;autostart=true                ; start at supervisord start (default: true)</span>
+<span class="c1">;startsecs=1                   ; # of secs prog must stay up to be running (def. 1)</span>
+<span class="c1">;startretries=3                ; max # of serial start failures when starting (default 3)</span>
+<span class="c1">;autorestart=unexpected        ; when to restart if exited after running (def: unexpected)</span>
+<span class="c1">;exitcodes=0,2                 ; &#39;expected&#39; exit codes used with autorestart (default 0,2)</span>
+<span class="nv">stopsignal</span><span class="o">=</span><span class="nv">QUIT</span>               <span class="c1">; signal used to kill process (default TERM)</span>
+<span class="c1">;stopwaitsecs=10               ; max num secs to wait b4 SIGKILL (default 10)</span>
+<span class="nv">stopasgroup</span><span class="o">=</span><span class="nv">false</span>             <span class="c1">; send stop signal to the UNIX process group (default false)</span>
+<span class="nv">killasgroup</span><span class="o">=</span><span class="nv">false</span>             <span class="c1">; SIGKILL the UNIX process group (def false)</span>
+<span class="c1">;user=chrism                   ; setuid to this UNIX account to run the program</span>
+<span class="c1">;redirect_stderr=true          ; redirect proc stderr to stdout (default false)</span>
+<span class="nv">stdout_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">main_server_out</span>.<span class="nv">log</span>       <span class="c1">; stdout log path, NONE for none; default AUTO</span>
+<span class="nv">stdout_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>   <span class="c1">; max # logfile bytes b4 rotation (default 50MB)</span>
+<span class="c1">;stdout_logfile_backups=10     ; # of stdout logfile backups (0 means none, default 10)</span>
+<span class="c1">;stdout_capture_maxbytes=1MB   ; number of bytes in &#39;capturemode&#39; (default 0)</span>
+<span class="c1">;stdout_events_enabled=false   ; emit events on stdout writes (default false)</span>
+<span class="nv">stderr_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">main_server_err</span>.<span class="nv">log</span>        <span class="c1">; stderr log path, NONE for none; default AUTO</span>
+<span class="nv">stderr_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>   <span class="c1">; max # logfile bytes b4 rotation (default 50MB)</span>
+<span class="c1">;stderr_logfile_backups=10     ; # of stderr logfile backups (0 means none, default 10)</span>
+<span class="c1">;stderr_capture_maxbytes=1MB   ; number of bytes in &#39;capturemode&#39; (default 0)</span>
+<span class="c1">;stderr_events_enabled=false   ; emit events on stderr writes (default false)</span>
+<span class="c1">;environment=A=&quot;1&quot;,B=&quot;2&quot;       ; process environment additions (def no adds)</span>
+<span class="c1">;serverurl=AUTO                ; override serverurl computation (childutils)</span>
+
+
+
+<span class="c1">; 监控代理模型服务的nginx，配置文件指向/data/ItcastBrain/conf/nginx/nginx.conf</span>
+<span class="hll">[<span class="nv">program</span>:<span class="nv">nginx</span>]
+</span><span class="nv">command</span><span class="o">=/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">sbin</span><span class="o">/</span><span class="nv">nginx</span> <span class="o">-</span><span class="nv">c</span> <span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">conf</span><span class="o">/</span><span class="nv">nginx</span><span class="o">/</span><span class="nv">nginx</span>.<span class="nv">conf</span> <span class="o">-</span><span class="nv">g</span> <span class="s2">&quot;</span><span class="s">daemon off;</span><span class="s2">&quot;</span>
+
+<span class="c1">; 下面是日志写入位置和最大限制</span>
+<span class="nv">stdout_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">nginx_out</span>.<span class="nv">log</span>
+<span class="nv">stderr_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">nginx_err</span>.<span class="nv">log</span>
+<span class="nv">stdout_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>
+<span class="nv">stderr_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>
+
+<span class="c1">; 模型服务</span>
+<span class="hll">[<span class="nv">program</span>:<span class="nv">resnet_server1</span>]
+</span><span class="nv">command</span><span class="o">=</span><span class="nv">gunicorn</span> <span class="o">-</span><span class="nv">w</span> <span class="mi">4</span> <span class="o">-</span><span class="nv">b</span> <span class="mi">0</span>.<span class="mi">0</span>.<span class="mi">0</span>.<span class="mi">0</span>:<span class="mi">5005</span> <span class="o">--</span><span class="nv">chdir</span> <span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">Yxb</span><span class="o">/</span><span class="nv">resnet_server</span><span class="o">/</span> <span class="nv">app</span>:<span class="nv">app</span>
+<span class="nv">stdout_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">res1_out</span>.<span class="nv">log</span>
+<span class="nv">stderr_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">res1_err</span>.<span class="nv">log</span>
+<span class="nv">stdout_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>
+<span class="nv">stderr_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>
+
+<span class="c1">; 备用模型服务</span>
+<span class="hll">[<span class="nv">program</span>:<span class="nv">resnet_server2</span>]
+</span><span class="nv">command</span><span class="o">=</span><span class="nv">gunicorn</span> <span class="o">-</span><span class="nv">w</span> <span class="mi">4</span> <span class="o">-</span><span class="nv">b</span> <span class="mi">0</span>.<span class="mi">0</span>.<span class="mi">0</span>.<span class="mi">0</span>:<span class="mi">5006</span> <span class="o">--</span><span class="nv">chdir</span> <span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">Pm</span><span class="o">/</span><span class="nv">resnet_server</span><span class="o">/</span> <span class="nv">app</span>:<span class="nv">app</span>
+<span class="nv">stdout_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">res2_out</span>.<span class="nv">log</span>
+<span class="nv">stderr_logfile</span><span class="o">=/</span><span class="nv">data</span><span class="o">/</span><span class="nv">ItcastBrain</span><span class="o">/</span><span class="nv">log</span><span class="o">/</span><span class="nv">res2_err</span>.<span class="nv">log</span>
+<span class="nv">stdout_logfile_maxbytes</span><span class="o">=</span><span class="mi">1</span><span class="nv">MB</span>
+</code></pre></div>
+
+
+<hr />
+<p>接下来，我们还需要最后一步，向Django指明新增的应用Yxb，即修改/data/ItcastBrain/server/settings.py文件：</p>
+<div class="codehilite"><pre><span></span><code> 52 INSTALLED_APPS = [
+ 53     &#39;django.contrib.admin&#39;,
+ 54     &#39;django.contrib.auth&#39;,
+ 55     &#39;django.contrib.contenttypes&#39;,
+ 56     &#39;django.contrib.sessions&#39;,
+ 57     &#39;django.contrib.messages&#39;,
+ 58     &#39;django.contrib.staticfiles&#39;,
+ 59     &#39;api&#39;,
+ 60     &#39;django_celery_beat&#39;,
+ 61     &#39;rest_framework&#39;,
+ 62     &#39;corsheaders&#39;,              # pip install django-cors-headers
+ 63     &#39;Info&#39;,                     # 上一个信息中心的应用Info，默认给大家添加
+<span class="hll"> 64     &#39;Pm&#39;,                      # 本次需要添加的应用，也就是Pm文件夹名称
+</span> 65 ]
+
+ ...
+</code></pre></div>
+
+
+<hr />
+<p>全部准备就绪，我们需要使用supervisor重启服务（每次修改代码都需要重新启动服务）</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 在/data/ItcastBrain/目录下运行</span>
+supervisord -c supervisord.conf
+
+<span class="c1"># 如果你需要查看报错日志，可以通过/data/ItcastBrain/log中的main_server_err.log查看</span>
+</code></pre></div>
+
+
+<hr />
+<p>假设已经正常启动服务，下面我们将编写一个测试脚本进行测试.</p>
+<ul>
+<li>测试脚本:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+
+<span class="c1"># 在该路径下准备一张带识别的图片</span>
+<span class="n">image_path</span> <span class="o">=</span> <span class="s2">&quot;/data/ItcastBrain/Pm/image/sample.jpg&quot;</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># b64encode：编码，b64decode: 解码</span>
+    <span class="n">base64_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;image_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;image_base64&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">base64_data</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://0.0.0.0:8087/api/v1/get_pm/&quot;</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+
+<hr />
+<blockquote>
+<ul>
+<li>代码位置:<ul>
+<li>/data/ItcastBrain/Pm/test.py</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<ul>
+<li>输出效果:</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;image_id&quot;</span><span class="p">:</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="s2">&quot;offline&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<hr />
+<ul>
+<li>当然，对于使用方来讲，他们在测试过程中会使用更大量的数据进行测试，以确保所有代码能够运行成功。最后我们将给对方一个API文档作为最终交付物，内容详见 附件<a href="http://52.83.69.131:8123/8/#api_2">《数据分析图片解析API说明》</a></li>
+</ul>
+<hr />
+<h3 id="_26">小节总结</h3>
+<ul>
+<li>
+<p>学习了什么是热更新与如何做到热更新</p>
+</li>
+<li>
+<p>学习了Flask服务组件的使用</p>
+</li>
+<li>
+<p>学习了将模型封装成服务的流程</p>
+<ul>
+<li>第一步: 编写app.py文件</li>
+<li>第二步: 使用gunicorn启动服务</li>
+<li>第三步: 编写test.py进行接口测试</li>
+<li>第四步: 使用Nginx代理两个服务满足热更新</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>学习了整体服务部署与联调测试<ul>
+<li>第一步: 拷贝服务框架的基本文件</li>
+<li>第二步: 编写两个个核心文件中的代码内容</li>
+<li>第三步: 安装supervisor监控守护工具并启动服务</li>
+<li>第四步: 进行联调测试</li>
+</ul>
+</li>
+</ul>
+<hr />
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://www.linkedin.com/in/%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-%E5%8C%97%E4%BA%AC%E6%A9%98%E6%98%9F-6bb7081a1/" class="md-footer-social__link fa fa-linkedin"></a>
+    
+      <a href="https://weibo.com/u/3469990762?is_all=1" class="md-footer-social__link fa fa-weibo"></a>
+    
+      <a href="http://bitbucket.org/AITutorials" class="md-footer-social__link fa fa-bitbucket"></a>
+    
+      <a href="https://github.com/AITutorials/datasets/issues" class="md-footer-social__link fa fa-gitlab"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+        
+        
+          
+          <script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1.2",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

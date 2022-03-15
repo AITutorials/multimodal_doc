@@ -1,0 +1,642 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://www.tisv.cn/10/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../img/AI.jpg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>10 - 基于多模态的视频标签化系统</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-36723568-3", "mkdocs.org")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-header-nav__button md-logo">
+          
+            <img src="../img/AI.jpg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              基于多模态的视频标签化系统
+            </span>
+            <span class="md-header-nav__topic">
+              
+                10
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.tisv.cn/" title="基于多模态的视频标签化系统" class="md-nav__button md-logo">
+      
+        <img src="../img/AI.jpg" width="48" height="48">
+      
+    </a>
+    基于多模态的视频标签化系统
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/AITutorials/datasets" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Github | Give Me A Star
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1/" title="第一章：工程师眼中的多模态发展" class="md-nav__link">
+      第一章：工程师眼中的多模态发展
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2/" title="第二章：多模态整体解决方案" class="md-nav__link">
+      第二章：多模态整体解决方案
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3/" title="图像数据增强工具Albumentations" class="md-nav__link">
+      图像数据增强工具Albumentations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../4/" title="使用flask部署模型服务" class="md-nav__link">
+      使用flask部署模型服务
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="展示端首页" class="md-nav__link">
+    展示端首页
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#banner" title="详情页展示banner" class="md-nav__link">
+    详情页展示banner
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="功能介绍" class="md-nav__link">
+    功能介绍
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="功能演示" class="md-nav__link">
+    功能演示
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="应用场景" class="md-nav__link">
+    应用场景
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" title="技术特色" class="md-nav__link">
+    技术特色
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>10</h1>
+                
+                <h3 id="_1">展示端首页</h3>
+<p><img alt="" src="../img/IB1.png" /></p>
+<ul>
+<li>传智AI赋能：咨询对话系统优化<ul>
+<li>利用AI技术，帮助信息中心从真实咨询对话中自动提取关键实体，如学员姓名，手机号，意向校区和意向学科，帮助咨询人员提升学员转化效率。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>传智AI赋能：试卷自动批阅系统<ul>
+<li>利用AI技术，帮助院校邦部门对学生网上作答的填空题题型进行自动打分，并给定对应的评分置信度，帮助教师更好更快的完成海量试卷批阅。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>传智AI赋能：数据分析之图像解析<ul>
+<li>利用AI技术，帮助数据分析团队对全国机构图片进行解析，从而判断该各个校区受疫情影响是否在线上进行教学，从而完成更具有说服力的数据分析报告。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><img alt="" src="../img/IB2.png" /></p>
+<ul>
+<li>
+<p>文本标签化</p>
+<ul>
+<li>给定一段文本，通过语义技术，进行兴趣类标签判断。</li>
+</ul>
+</li>
+<li>
+<p>实体抽取</p>
+<ul>
+<li>给定指定格式的文本，通过上下文关联，进行主要实体抽取。</li>
+</ul>
+</li>
+<li>
+<p>相似度打分</p>
+<ul>
+<li>给定两段文本，通过AI模型判断语义相似，得到它们的相似度分值。</li>
+</ul>
+</li>
+<li>
+<p>图片分类</p>
+<ul>
+<li>给定一张学员学习图片进行判断是否在线上或者线下学习。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><img alt="" src="../img/IB3.png" /></p>
+<ul>
+<li>
+<p>学习路线</p>
+<ul>
+<li>针对零基础小白精心设计，开启你的AI学习之旅吧！</li>
+</ul>
+</li>
+<li>
+<p>联合立项</p>
+<ul>
+<li>如果你的部门或团队已经积累了一定的历史数据，并希望进行AI赋能，请联系我们！</li>
+</ul>
+</li>
+<li>
+<p>行业应用</p>
+<ul>
+<li>AI真的火热吗，来看看整个互联网圈中的AI应用案例，或许会给你一些启发！</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><img alt="" src="../img/IB4.png" /></p>
+<ul>
+<li>二维码（我的二维码）</li>
+<li>Github</li>
+<li>抖音号</li>
+<li>官网地址</li>
+<li>我的团队</li>
+<li>院校邦</li>
+<li>项目信息站</li>
+<li>信息中心</li>
+</ul>
+<hr />
+<hr />
+<hr />
+<h3 id="banner">详情页展示banner</h3>
+<p><img alt="" src="../img/xqy1.png" /></p>
+<blockquote>
+<ul>
+<li>立即使用按钮跳转功能演示</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>文本标签化</p>
+<ul>
+<li>给定一段文本，通过语义技术，进行兴趣类标签判断。</li>
+</ul>
+</li>
+<li>
+<p>实体抽取</p>
+<ul>
+<li>给定指定格式的文本，通过上下文关联，进行主要实体抽取。</li>
+</ul>
+</li>
+<li>
+<p>相似度打分</p>
+<ul>
+<li>给定两段文本，通过AI模型判断语义相似，得到它们的相似度分值。</li>
+</ul>
+</li>
+<li>
+<p>图片分类</p>
+<ul>
+<li>给定一张学员学习图片进行判断是否在线上或者线下学习。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="_2">功能介绍</h3>
+<p><img alt="" src="../img/xqy5.png" /></p>
+<blockquote>
+<ul>
+<li>功能小图标 + 文案</li>
+</ul>
+</blockquote>
+<ul>
+<li>文本标签化<ul>
+<li>这是一款专注于泛娱乐领域的标签化系统，它尤为擅长处理与明星，音乐，影视，游戏，美食等相关的文本内容并生成合适的标签。可输入的文本内容包括：对话，评论，留言，描述等。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="_3">功能演示</h3>
+<p><img alt="" src="../img/xqy2.png" /></p>
+<blockquote>
+<ul>
+<li>建议使用上下的形式，输入的框只有图片和文本两种样式，输出框只有文本</li>
+<li>必须有随机示例，且需要比较明显的按钮</li>
+</ul>
+</blockquote>
+<ul>
+<li>文本标签化</li>
+</ul>
+<blockquote>
+<ul>
+<li>输入文本样式：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="err">我爱踢足球</span>
+</code></pre></div>
+
+
+<blockquote>
+<ul>
+<li>输出文本样式：</li>
+</ul>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;足球&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;score&quot;</span><span class="p">:</span> <span class="mf">0.715871</span><span class="p">,</span>
+        <span class="nt">&quot;related&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;体育&quot;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+
+<hr />
+<h3 id="_4">应用场景</h3>
+<p><img alt="" src="../img/xqy4.png" /></p>
+<blockquote>
+<ul>
+<li>形式为：一段文案，一张图片（合作logo）</li>
+</ul>
+</blockquote>
+<ul>
+<li>文本标签化：<ul>
+<li>文案：该系统应用于传智播客python web项目的推荐系统之中，用于用户之间的兴趣推荐，对教学来讲，更加真实的还原了企业级的web项目，并在一定程度上将AI引入web课堂。</li>
+<li>图片：python web组logo</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="_5">技术特色</h3>
+<p><img alt="" src="../img/xqy3.png" /></p>
+<blockquote>
+<ul>
+<li>三段文案，三张图片（具体模型，优化工具，部署工具）</li>
+</ul>
+</blockquote>
+<ul>
+<li>文本标签化：<ul>
+<li>1，使用Fasttext模型进行多标签多分类</li>
+<li>2，对模型进行Keras tuner</li>
+<li>3，使用tf-serving进行多模型部署</li>
+</ul>
+</li>
+</ul>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ©Copyright 2020, AITutorials.CN This website has been reviewed by the review agency. 京ICP备19006137号
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://www.linkedin.com/in/%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-%E5%8C%97%E4%BA%AC%E6%A9%98%E6%98%9F-6bb7081a1/" class="md-footer-social__link fa fa-linkedin"></a>
+    
+      <a href="https://weibo.com/u/3469990762?is_all=1" class="md-footer-social__link fa fa-weibo"></a>
+    
+      <a href="http://bitbucket.org/AITutorials" class="md-footer-social__link fa fa-bitbucket"></a>
+    
+      <a href="https://github.com/AITutorials/datasets/issues" class="md-footer-social__link fa fa-gitlab"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+        
+        
+          
+          <script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1.2",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>
